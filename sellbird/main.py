@@ -143,11 +143,11 @@ def unusable_backlog_notice(summary: dict) -> str:
     if writable or recent < PROSPECT_BACKLOG:
         return ""
     return (
-        f"Sellbird found {recent} prospects in the last day, but none has a verified "
-        "or catch-all email, so it paused prospecting for about a day to save search "
-        "and verifier credits. Add an email verifier key (REOON_API_KEY, "
-        "ZEROBOUNCE_API_KEY or HUNTER_API_KEY in .env) or check it still has credits. "
-        "`sellbird export --all` exports the list as it is."
+        f"O Sellbird encontrou {recent} prospects no último dia, mas nenhum tem e-mail verificado "
+        "ou catch-all, então pausou a prospecção por cerca de um dia para economizar créditos de "
+        "busca e verificação. Adicione uma chave de verificador de e-mail (REOON_API_KEY, "
+        "ZEROBOUNCE_API_KEY ou HUNTER_API_KEY no .env) ou verifique se ainda há créditos. "
+        "`sellbird export --all` exporta a lista como está."
     )
 
 
@@ -278,7 +278,7 @@ async def heartbeat(stop_event: asyncio.Event | None = None):
         stop_event = asyncio.Event()
 
     logger.info("=" * 60)
-    logger.info("Sellbird is online.")
+    logger.info("O Sellbird está online.")
     logger.info("=" * 60)
 
     try:
@@ -286,15 +286,15 @@ async def heartbeat(stop_event: asyncio.Event | None = None):
     except (ConfigError, Exception) as e:
         if isinstance(e, (KeyboardInterrupt, asyncio.CancelledError)):
             raise
-        logger.error(f"Cannot start — configuration error:\n{e}")
+        logger.error(f"Não foi possível iniciar — erro de configuração:\n{e}")
         return
     env = load_env()
     state = StateManager()
     brain = Brain(state, config.brain)
     logger.info(
-        f"Thinking with {brain.provider_label}"
+        f"Pensando com {brain.provider_label}"
         + (f" ({brain.model})" if brain.model else "")
-        + ". Change brain.provider in sellbird.yaml to switch."
+        + ". Mude brain.provider no sellbird.yaml para trocar."
     )
     for notice in (sending_notice(config), compliance_notice(config)):
         if notice:
@@ -303,7 +303,7 @@ async def heartbeat(stop_event: asyncio.Event | None = None):
             logger.warning("=" * 60)
 
     await state.init_db()
-    logger.info("Database initialized.")
+    logger.info("Banco de dados inicializado.")
 
     # Import agents here to avoid circular imports
     from sellbird.agents.scout import Scout
@@ -500,7 +500,7 @@ async def heartbeat(stop_event: asyncio.Event | None = None):
             if await _interruptible_sleep(backoff, stop_event):
                 break
 
-    logger.info("Sellbird shutting down. Deals don't close themselves, but I need a break.")
+    logger.info("O Sellbird está encerrando. Negócios não se fecham sozinhos, mas eu preciso de uma pausa.")
 
 
 def _needs_setup() -> bool:
@@ -564,9 +564,9 @@ def main():
     if _needs_setup():
         if not sys.stdin.isatty():
             # Started by the dashboard or a service: nobody can answer the wizard.
-            print("Sellbird isn't set up yet. Run `sellbird setup` in a terminal first.")
+            print("O Sellbird ainda não está configurado. Rode `sellbird setup` em um terminal primeiro.")
             sys.exit(1)
-        print("\n  First time running Sellbird? Let's get you set up.\n")
+        print("\n  Primeira vez rodando o Sellbird? Vamos configurar.\n")
         from sellbird.setup import run_setup
         asyncio.run(run_setup())
         return
@@ -576,14 +576,14 @@ def main():
     lock = hold_loop_lock(LOCK_FILE)
     if lock is None:
         running = read_pid()
-        print(f"Sellbird is already running{f' (pid {running})' if running else ''}. "
-              "Stop it first, from the dashboard or with Ctrl+C in its terminal.")
+        print(f"O Sellbird já está rodando{f' (pid {running})' if running else ''}. "
+              "Pare-o primeiro, pelo painel ou com Ctrl+C no terminal dele.")
         sys.exit(1)
     write_pid_file()
     try:
         asyncio.run(_run_with_signals())
     except KeyboardInterrupt:
-        logger.info("Goodbye.")
+        logger.info("Até mais.")
     finally:
         remove_pid_file()
         release_loop_lock(lock)

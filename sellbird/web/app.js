@@ -80,57 +80,57 @@ function safeHref(u) {
 // tone: waiting (needs a human) | active (in flight) | good | bad | idle
 const STATUS = {
   // prospects
-  new:            ['New', 'active'],
-  contacted:      ['Contacted', 'active'],
-  replied:        ['Replied', 'good'],
-  accepted_offer: ['Said yes to your offer', 'good'],
-  interested:     ['Interested', 'good'],
-  meeting:        ['Meeting booked', 'note'],
-  not_interested: ['Not interested', 'bad'],
-  bounced:        ['Bounced', 'bad'],
-  write_failed:   ["Couldn't write", 'bad'],
-  no_tip:         ['Nothing to write about yet', 'idle'],
-  queued:         ['Queued', 'active'],
-  opted_out:      ['Opted out', 'bad'],
+  new:            ['Novo', 'active'],
+  contacted:      ['Contatado', 'active'],
+  replied:        ['Respondeu', 'good'],
+  accepted_offer: ['Disse sim à sua oferta', 'good'],
+  interested:     ['Interessado', 'good'],
+  meeting:        ['Reunião marcada', 'note'],
+  not_interested: ['Não interessado', 'bad'],
+  bounced:        ['Devolvido', 'bad'],
+  write_failed:   ['Não foi possível escrever', 'bad'],
+  no_tip:         ['Nada para escrever ainda', 'idle'],
+  queued:         ['Na fila', 'active'],
+  opted_out:      ['Descadastrado', 'bad'],
   // campaigns
-  draft:          ['Draft', 'waiting'],
-  active:         ['Active', 'good'],
-  completed:      ['Completed', 'idle'],
-  paused:         ['Paused', 'bad'],
+  draft:          ['Rascunho', 'waiting'],
+  active:         ['Ativa', 'good'],
+  completed:      ['Concluída', 'idle'],
+  paused:         ['Pausada', 'bad'],
   // conversations
-  open:           ['Open', 'active'],
-  closed:         ['Closed', 'idle'],
-  closed_won:     ['Won', 'good'],
-  closed_lost:    ['Lost', 'bad'],
-  objection:      ['Objection', 'waiting'],
-  question:       ['Question', 'active'],
-  ooo:            ['Out of office', 'idle'],
-  wrong_person:   ['Wrong person', 'waiting'],
-  unsubscribe:    ['Unsubscribed', 'bad'],
-  escalate:       ['Needs a human', 'bad'],
-  needs_human:    ['Needs you', 'waiting'],
+  open:           ['Aberta', 'active'],
+  closed:         ['Fechada', 'idle'],
+  closed_won:     ['Ganha', 'good'],
+  closed_lost:    ['Perdida', 'bad'],
+  objection:      ['Objeção', 'waiting'],
+  question:       ['Pergunta', 'active'],
+  ooo:            ['Fora do escritório', 'idle'],
+  wrong_person:   ['Pessoa errada', 'waiting'],
+  unsubscribe:    ['Descadastrado', 'bad'],
+  escalate:       ['Precisa de um humano', 'bad'],
+  needs_human:    ['Precisa de você', 'waiting'],
   // outbox
-  pending_review: ['Waiting on you', 'waiting'],
-  approved:       ['Approved', 'good'],
-  sending:        ['Sending now', 'active'],
-  scheduled:      ['Scheduled', 'active'],
-  sent:           ['Sent', 'good'],
-  awaiting_reply: ['Awaiting reply', 'active'],
-  failed:         ['Failed', 'bad'],
-  rejected:       ['Rejected', 'idle'],
-  cancelled:      ['Cancelled', 'idle'],
+  pending_review: ['Esperando por você', 'waiting'],
+  approved:       ['Aprovado', 'good'],
+  sending:        ['Enviando agora', 'active'],
+  scheduled:      ['Agendado', 'active'],
+  sent:           ['Enviado', 'good'],
+  awaiting_reply: ['Aguardando resposta', 'active'],
+  failed:         ['Falhou', 'bad'],
+  rejected:       ['Rejeitado', 'idle'],
+  cancelled:      ['Cancelado', 'idle'],
   // signals
-  proposed:       ['Waiting on you', 'waiting'],
-  confirmed:      ['Confirmed', 'good'],
+  proposed:       ['Esperando por você', 'waiting'],
+  confirmed:      ['Confirmado', 'good'],
   // email deliverability
-  verified:       ['Verified', 'good'],
+  verified:       ['Verificado', 'good'],
   risky:          ['Catch-all', 'waiting'],
-  guess:          ['Unverified', 'idle'],
-  invalid:        ['Invalid', 'bad'],
+  guess:          ['Não verificado', 'idle'],
+  invalid:        ['Inválido', 'bad'],
   // runs
-  running:        ['Running', 'active'],
-  stale:          ['Stale', 'bad'],
-  stalled:        ['Stopped', 'bad'],
+  running:        ['Executando', 'active'],
+  stale:          ['Desatualizado', 'bad'],
+  stalled:        ['Parado', 'bad'],
 };
 
 function statusMeta(status) {
@@ -184,15 +184,15 @@ function relTime(d) {
   const dt = parseTs(d);
   if (isNaN(dt)) return escHtml(d);
   const mins = Math.round((Date.now() - dt) / 60000);
-  if (mins < -1 && mins > -60) return 'in ' + -mins + 'm';
-  if (mins < -1 && mins > -60 * 24) return 'in ' + Math.round(-mins / 60) + 'h';
-  if (mins >= -1 && mins < 1) return 'just now';
-  if (mins >= 1 && mins < 60) return mins + 'm ago';
-  if (mins >= 60 && mins < 60 * 24) return Math.round(mins / 60) + 'h ago';
-  if (mins >= 60 * 24 && mins < 60 * 48) return 'Yesterday';
+  if (mins < -1 && mins > -60) return 'em ' + -mins + 'm';
+  if (mins < -1 && mins > -60 * 24) return 'em ' + Math.round(-mins / 60) + 'h';
+  if (mins >= -1 && mins < 1) return 'agora mesmo';
+  if (mins >= 1 && mins < 60) return 'há ' + mins + 'm';
+  if (mins >= 60 && mins < 60 * 24) return 'há ' + Math.round(mins / 60) + 'h';
+  if (mins >= 60 * 24 && mins < 60 * 48) return 'Ontem';
   const opts = {month: 'short', day: 'numeric'};
   if (dt.getFullYear() !== new Date().getFullYear()) opts.year = 'numeric';
-  return dt.toLocaleDateString('en-US', opts);
+  return dt.toLocaleDateString('pt-BR', opts);
 }
 
 function dayLabel(d) {
@@ -201,14 +201,14 @@ function dayLabel(d) {
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const that = new Date(dt); that.setHours(0, 0, 0, 0);
   const diff = Math.round((today - that) / 86400000);
-  if (diff === 0) return 'Today';
-  if (diff === 1) return 'Yesterday';
-  return dt.toLocaleDateString('en-US', {weekday: 'long', month: 'short', day: 'numeric'});
+  if (diff === 0) return 'Hoje';
+  if (diff === 1) return 'Ontem';
+  return dt.toLocaleDateString('pt-BR', {weekday: 'long', month: 'short', day: 'numeric'});
 }
 
 function timeOfDay(d) {
   const dt = parseTs(d);
-  return isNaN(dt) ? '' : dt.toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'});
+  return isNaN(dt) ? '' : dt.toLocaleTimeString('pt-BR', {hour: 'numeric', minute: '2-digit'});
 }
 
 // Columns of a tiny bar chart; the last day is "today".
@@ -233,9 +233,9 @@ function meterHtml(pct, segments) {
 }
 
 const SOURCE_LABELS = {
-  company_website: 'Team page', known_company_backfill: 'Team page',
-  scraped_mailto: 'Published address', hunter_domain_search: 'Hunter', linkedin_search: 'LinkedIn',
-  job_board: 'Job board', web_search: 'Web search', company_inbox: 'Company inbox',
+  company_website: 'Página da equipe', known_company_backfill: 'Página da equipe',
+  scraped_mailto: 'Endereço publicado', hunter_domain_search: 'Hunter', linkedin_search: 'LinkedIn',
+  job_board: 'Quadro de vagas', web_search: 'Busca na web', company_inbox: 'Caixa de entrada da empresa',
   osm: 'OpenStreetMap', dataforseo_listings: 'DataForSEO', dataforseo_serp: 'DataForSEO SERP', dataforseo_maps: 'DataForSEO Maps',
   serper: 'Serper', tinyfish: 'TinyFish', scavio_maps: 'Scavio Maps', scavio_search: 'Scavio Search',
 };
@@ -255,27 +255,27 @@ function actionText(a) {
   const intent = d.intent ? ' · ' + escHtml(String(d.intent).replace(/_/g, ' ')) : '';
   const n = (v, one, many) => (Number(v) || 0) + ' ' + ((Number(v) || 0) === 1 ? one : many);
   switch (a.action_type) {
-    case 'prospect': return 'Found ' + n(d.prospects_found, 'new contact', 'new contacts');
-    case 'write_campaign': return 'Wrote “' + camp + '” for ' + n(d.prospect_count, 'contact', 'contacts');
-    case 'write_failed': return 'Couldn’t write for some contacts' + (camp ? ' in “' + camp + '”' : '');
-    case 'stage_campaign': return 'Queued ' + n(d.staged, 'email', 'emails') + ' from “' + camp + '”' +
+    case 'prospect': return 'Encontrou ' + n(d.prospects_found, 'novo contato', 'novos contatos');
+    case 'write_campaign': return 'Escreveu “' + camp + '” para ' + n(d.prospect_count, 'contato', 'contatos');
+    case 'write_failed': return 'Não foi possível escrever para alguns contatos' + (camp ? ' em “' + camp + '”' : '');
+    case 'stage_campaign': return 'Enfileirou ' + n(d.staged, 'e-mail', 'e-mails') + ' de “' + camp + '”' +
       (d.mode ? ' · ' + escHtml(d.mode) : '');
-    case 'send_campaign': return 'Sent “' + camp + '” to Instantly · ' + n(d.leads_added, 'lead', 'leads');
-    case 'email_sent': return d.kind === 'reply' ? 'Sent a reply to ' + who
-      : 'Sent email ' + escHtml(String(d.step || 1)) + ' to ' + who;
-    case 'reply': return 'Answered ' + who + intent;
-    case 'reply_queued': return 'Drafted a reply to ' + who + intent;
-    case 'opt_out': return who + ' opted out' + (d.why ? ' · ' + escHtml(d.why) : '');
-    case 'opt_out_undone': return 'You undid ' + (who || 'a contact') + '’s opt-out';
-    case 'reply_after_opt_out': return who + ' wrote again after opting out · no reply sent';
-    case 'escalation': return 'Flagged ' + who + ' for you' + (d.reason ? ' · ' + escHtml(d.reason) : '');
-    case 'bounce': return 'Email to ' + who + ' bounced';
-    case 'manual_send': return 'You marked a contact as emailed by hand';
-    case 'manual_send_undone': return 'You undid a hand-sent mark';
-    case 'outbox_edited': return 'You edited a draft';
+    case 'send_campaign': return 'Enviou “' + camp + '” para o Instantly · ' + n(d.leads_added, 'lead', 'leads');
+    case 'email_sent': return d.kind === 'reply' ? 'Enviou uma resposta para ' + who
+      : 'Enviou o e-mail ' + escHtml(String(d.step || 1)) + ' para ' + who;
+    case 'reply': return 'Respondeu ' + who + intent;
+    case 'reply_queued': return 'Rascunhou uma resposta para ' + who + intent;
+    case 'opt_out': return who + ' se descadastrou' + (d.why ? ' · ' + escHtml(d.why) : '');
+    case 'opt_out_undone': return 'Você desfez o descadastro de ' + (who || 'um contato');
+    case 'reply_after_opt_out': return who + ' escreveu novamente depois de se descadastrar · nenhuma resposta enviada';
+    case 'escalation': return 'Sinalizou ' + who + ' para você' + (d.reason ? ' · ' + escHtml(d.reason) : '');
+    case 'bounce': return 'E-mail para ' + who + ' foi devolvido';
+    case 'manual_send': return 'Você marcou um contato como enviado manualmente';
+    case 'manual_send_undone': return 'Você desfez uma marcação de envio manual';
+    case 'outbox_edited': return 'Você editou um rascunho';
     case 'conversation_status':
-      return d.to === 'closed' ? 'You closed a conversation'
-        : d.from === 'needs_human' ? 'You handed a conversation back to Sellbird' : 'You reopened a conversation';
+      return d.to === 'closed' ? 'Você fechou uma conversa'
+        : d.from === 'needs_human' ? 'Você devolveu uma conversa ao Sellbird' : 'Você reabriu uma conversa';
   }
   const text = escHtml(String(a.action_type || '').replace(/_/g, ' '));
   return a.agent === 'main' ? 'Heartbeat: ' + text : text;
@@ -288,8 +288,8 @@ function emptyState(glyph, title, copy) {
 }
 
 function offlineState() {
-  return emptyState('&#9888;', 'Dashboard can\'t reach the server',
-    'The dashboard process may have stopped. Restart it with <b>sellbird dashboard</b> and refresh this page.');
+  return emptyState('&#9888;', 'O painel não conseguiu se conectar ao servidor',
+    'O processo do painel pode ter parado. Reinicie com <b>sellbird dashboard</b> e atualize esta página.');
 }
 
 async function api(path, opts) {
@@ -323,10 +323,10 @@ async function lockIfRefused(r) {
     try { why = ((await r.json()) || {}).message || ''; } catch { /* ignore */ }
   }
   showLock(r.status === 503
-    ? 'The dashboard server can\'t use its token file, so it is refusing every request. ' + why
+    ? 'O servidor do painel não conseguiu usar seu arquivo de token, então está recusando toda requisição. ' + why
     : authToken()
-      ? 'The saved token was not accepted (the dashboard may have a new one).'
-      : 'This tab doesn\'t have the dashboard token yet.');
+      ? 'O token salvo não foi aceito (o painel pode ter um novo).'
+      : 'Esta aba ainda não tem o token do painel.');
   return true;
 }
 
@@ -339,7 +339,7 @@ function showLock(reason) {
   const dot = document.getElementById('header-dot');
   const text = document.getElementById('header-status-text');
   if (dot) dot.className = 'status-dot offline';
-  if (text) text.textContent = 'Locked';
+  if (text) text.textContent = 'Bloqueado';
 }
 
 function hideLock() {
@@ -355,7 +355,7 @@ function unlockWithToken(event) {
   input.value = '';
   if (!setAuthToken(value)) {
     document.getElementById('lock-reason').textContent =
-      'That doesn\'t look like a dashboard token. Copy it again from the link or data/dashboard-token.';
+      'Isso não parece um token de painel válido. Copie-o novamente do link ou de data/dashboard-token.';
     return;
   }
   hideLock();
@@ -370,7 +370,7 @@ async function downloadCsv(path, filename, btn) {
   try {
     const r = await authFetch(path);
     if (await lockIfRefused(r)) return;
-    if (!r.ok) { showToast('Export failed.', 'error'); return; }
+    if (!r.ok) { showToast('A exportação falhou.', 'error'); return; }
     const href = URL.createObjectURL(await r.blob());
     const a = document.createElement('a');
     a.href = href;
@@ -380,7 +380,7 @@ async function downloadCsv(path, filename, btn) {
     a.remove();
     setTimeout(() => URL.revokeObjectURL(href), 10000);
   } catch {
-    showToast('Export failed — is the dashboard still running?', 'error');
+    showToast('A exportação falhou — o painel ainda está rodando?', 'error');
   } finally {
     if (btn) btn.disabled = false;
   }
@@ -438,8 +438,8 @@ async function loadToday() {
   if (!data) { el.innerHTML = offlineState(); return; }
   if (data.error) {
     // A failed check must never read as "Nothing needs you".
-    el.innerHTML = emptyState(icon('alert'), 'Couldn\'t check what needs you',
-      'The dashboard hit an error reading Sellbird\'s data: ' + escHtml(data.error));
+    el.innerHTML = emptyState(icon('alert'), 'Não foi possível verificar o que precisa de você',
+      'O painel encontrou um erro ao ler os dados do Sellbird: ' + escHtml(data.error));
     return;
   }
 
@@ -454,9 +454,9 @@ async function loadToday() {
   if (!items.length) {
     el.innerHTML = '<div class="queue-clear">' +
       '<div class="queue-icon">' + icon('check') + '</div><div>' +
-      '<div class="qtitle">Nothing needs you</div>' +
-      '<div class="qdetail">Sellbird has everything it needs. Anything that requires a ' +
-      'decision — an email to approve, a signal to confirm — shows up here.</div>' +
+      '<div class="qtitle">Nada precisa de você</div>' +
+      '<div class="qdetail">O Sellbird tem tudo o que precisa. Qualquer coisa que exija uma ' +
+      'decisão — um e-mail para aprovar, um sinal para confirmar — aparece aqui.</div>' +
       '</div></div>';
     return;
   }
@@ -485,9 +485,9 @@ async function loadLiveStatus() {
   if (!d || !Array.isArray(d.steps)) {
     // Keep the last good numbers on screen, but never let them pass for live.
     const flag = el.querySelector('.live-flag');
-    if (flag) flag.textContent = "Can't reach Sellbird right now — numbers below may be old.";
-    else el.innerHTML = '<p class="muted live-flag">Can\'t reach Sellbird right now. ' +
-      'Is the dashboard window still open?</p>';
+    if (flag) flag.textContent = "Não foi possível conectar ao Sellbird agora — os números abaixo podem estar desatualizados.";
+    else el.innerHTML = '<p class="muted live-flag">Não foi possível conectar ao Sellbird agora. ' +
+      'A janela do painel ainda está aberta?</p>';
     return;
   }
   const glyph = {done: icon('check'), running: '<span class="pulse"></span>', partial: '', waiting: ''};
@@ -504,27 +504,27 @@ async function loadLiveStatus() {
       '<span class="step-detail">' + escHtml(s.detail) + '</span>' + bar +
     '</div>';
   }).join('');
-  const jobName = r => r.stage === 'profile' ? 'Reading websites'
-    : r.stage === 'discover' ? 'Searching for businesses (' + (r.provider || '') + ')'
-    : String(r.stage || 'Job');
+  const jobName = r => r.stage === 'profile' ? 'Lendo sites'
+    : r.stage === 'discover' ? 'Buscando empresas (' + (r.provider || '') + ')'
+    : String(r.stage || 'Tarefa');
   const running = d.running || [];
   const runningHtml = running.length
     ? running.map(r => '<span class="live-now"><span class="pulse"></span>' + escHtml(jobName(r)) +
         ' · ' + r.elapsed_min + ' min' + (r.eta_text ? ' · ' + escHtml(r.eta_text) : '') + '</span>').join('')
-    : '<span class="live-now">Nothing running right now</span>';
+    : '<span class="live-now">Nada em execução agora</span>';
   const stoppedHtml = (d.stopped || []).length
     ? '<div class="banner bad" style="margin:8px 0 0">' + icon('alert') + '<p style="color:inherit">' +
-      (d.stopped || []).map(r => escHtml(jobName(r))).join(', ') + ' stopped before finishing.</p></div>'
+      (d.stopped || []).map(r => escHtml(jobName(r))).join(', ') + ' parou antes de terminar.</p></div>'
     : '';
   el.innerHTML =
     '<div class="live-head">' + runningHtml +
-      '<span class="setup-pct">Cost so far $' + Number(d.cost_usd || 0).toFixed(2) + '</span></div>' +
+      '<span class="setup-pct">Custo até agora $' + Number(d.cost_usd || 0).toFixed(2) + '</span></div>' +
     stoppedHtml +
     '<div class="steps">' + rows + '</div>' +
-    (d.next ? '<div class="live-next">' + icon('arrow') + '<span><b>Next</b> · ' + escHtml(d.next) + '</span>' +
-      (d.next_tab ? '<button class="btn btn-secondary btn-sm" onclick="goTab(' + jsq(d.next_tab) + ')">Go</button>' : '') +
+    (d.next ? '<div class="live-next">' + icon('arrow') + '<span><b>Próximo</b> · ' + escHtml(d.next) + '</span>' +
+      (d.next_tab ? '<button class="btn btn-secondary btn-sm" onclick="goTab(' + jsq(d.next_tab) + ')">Ir</button>' : '') +
       '</div>' : '') +
-    '<div class="live-flag">Updated ' + new Date().toLocaleTimeString() + ' · refreshes every 10 seconds</div>';
+    '<div class="live-flag">Atualizado às ' + new Date().toLocaleTimeString('pt-BR') + ' · atualiza a cada 10 segundos</div>';
 }
 
 // KPI cards. Totals come from /api/today; the 14-day bars from /api/trend.
@@ -541,27 +541,27 @@ function renderFigures(stats) {
 
   // Instantly sends from its own servers, so the Outbox never sees them.
   const sent = stats.email_provider === 'instantly'
-    ? card('Emails sent', '&mdash;', '', 'Instantly tracks sends')
-    : card('Emails sent', sum(t.sent), sparkBars(t.sent, 'Emails sent per day, last 14 days'),
-           'last 14 days · <b>' + (stats.outbox_approved || 0) + '</b> scheduled');
+    ? card('Emails enviados', '&mdash;', '', 'O Instantly registra os envios')
+    : card('Emails enviados', sum(t.sent), sparkBars(t.sent, 'Emails sent per day, last 14 days'),
+           'últimos 14 dias · <b>' + (stats.outbox_approved || 0) + '</b> agendados');
   const waiting = (stats.outbox_pending || 0) + (stats.needs_human || 0);
   const waitNote = [
-    stats.outbox_pending ? stats.outbox_pending + ' to approve' : '',
-    stats.needs_human ? stats.needs_human + ' handed to you' : '',
-  ].filter(Boolean).join(' · ') || 'nothing to approve';
+    stats.outbox_pending ? stats.outbox_pending + ' para aprovar' : '',
+    stats.needs_human ? stats.needs_human + ' passados para você' : '',
+  ].filter(Boolean).join(' · ') || 'nada para aprovar';
   const facts = document.getElementById('today-facts');
   if (facts) facts.innerHTML =
-    '<span><b>' + (stats.companies || 0) + '</b> companies</span>' +
-    '<span><b>' + (stats.unprofiled || 0) + '</b> sites not read yet</span>' +
-    '<span><b>' + (stats.signals_confirmed || 0) + '</b> signals on</span>';
+    '<span><b>' + (stats.companies || 0) + '</b> empresas</span>' +
+    '<span><b>' + (stats.unprofiled || 0) + '</b> sites ainda não lidos</span>' +
+    '<span><b>' + (stats.signals_confirmed || 0) + '</b> sinais ativos</span>';
 
   el.innerHTML = '<div class="kpis">' +
-    card('Contacts found', stats.prospects || 0, sparkBars(t.found, 'Contacts found per day, last 14 days'),
-         '<b>+' + last7(t.found) + '</b> this week') +
+    card('Contatos encontrados', stats.prospects || 0, sparkBars(t.found, 'Contacts found per day, last 14 days'),
+         '<b>+' + last7(t.found) + '</b> esta semana') +
     sent +
-    card('Conversations', stats.open_conversations || 0, sparkBars(t.replies, 'New replies per day, last 14 days'),
-         '<b>' + sum(t.replies) + '</b> new in 14 days') +
-    card('Waiting on you', waiting, '', waitNote) +
+    card('Conversas', stats.open_conversations || 0, sparkBars(t.replies, 'New replies per day, last 14 days'),
+         '<b>' + sum(t.replies) + '</b> novas em 14 dias') +
+    card('Esperando por você', waiting, '', waitNote) +
   '</div>';
 }
 
@@ -579,19 +579,19 @@ async function loadFunnel() {
   if (!el) return;
   const data = await api('/api/stats');
   if (!data) return;  // offline: keep the last numbers; Today's queue says so
-  if (data.error) { el.innerHTML = '<p class="muted" style="font-size:13px">Couldn\'t read the pipeline.</p>'; return; }
+  if (data.error) { el.innerHTML = '<p class="muted" style="font-size:13px">Não foi possível ler o funil.</p>'; return; }
   const total = (data.prospects || {}).total || 0;
   const pipe = data.pipeline || {};
   const stages = [
-    ['To write', pipe.to_write || 0, 'c-accent-soft'],
-    ['Contacted', pipe.contacted || 0, 'c-accent'],
-    ['Replied', pipe.replied || 0, 'c-active'],
-    ['Interested', pipe.interested || 0, 'c-good'],
-    ['Ready to meet', pipe.ready_to_meet || 0, 'c-note'],
-    ['Closed out', pipe.closed_out || 0, 'c-idle'],
+    ['Para escrever', pipe.to_write || 0, 'c-accent-soft'],
+    ['Contatado', pipe.contacted || 0, 'c-accent'],
+    ['Respondeu', pipe.replied || 0, 'c-active'],
+    ['Interessado', pipe.interested || 0, 'c-good'],
+    ['Pronto para reunir', pipe.ready_to_meet || 0, 'c-note'],
+    ['Encerrado', pipe.closed_out || 0, 'c-idle'],
   ];
   if (!total) {
-    el.innerHTML = '<p class="muted" style="font-size:13px">No contacts yet. Scout adds them as it finds people.</p>';
+    el.innerHTML = '<p class="muted" style="font-size:13px">Ainda sem contatos. O Scout os adiciona conforme encontra pessoas.</p>';
     return;
   }
   el.innerHTML =
@@ -615,7 +615,7 @@ async function loadTodayActivity() {
   const shown = data.filter(a => a.agent !== 'main').slice(0, 8);
   if (!shown.length) {
     el.innerHTML = '<p class="muted" style="font-size:13px">' +
-      'Nothing yet. Every action Sellbird takes shows up here.</p>';
+      'Nada ainda. Toda ação que o Sellbird realiza aparece aqui.</p>';
     return;
   }
   el.innerHTML = '<div class="timeline">' + shown.map(a =>
@@ -671,12 +671,12 @@ async function loadRenameNotice() {
   if (!data || !data.show) { el.innerHTML = ''; return; }
   el.innerHTML =
     '<div class="card rename-card">' +
-      '<div><h3>Harvey is now Sellbird</h3>' +
-        '<p class="muted">Same project, new name. Your settings, data and sign-in came with you. ' +
-        'The <code>harvey</code> command still works for now; use <code>sellbird</code> from here on.</p></div>' +
+      '<div><h3>Harvey agora é Sellbird</h3>' +
+        '<p class="muted">Mesmo projeto, novo nome. Suas configurações, dados e login vieram com você. ' +
+        'O comando <code>harvey</code> ainda funciona por enquanto; use <code>sellbird</code> daqui em diante.</p></div>' +
       '<div class="rename-actions">' +
-        '<a class="btn btn-ghost" href="https://github.com/ethanplusai/sellbird#upgrading-from-harvey" target="_blank" rel="noopener">What changed</a>' +
-        '<button class="btn btn-secondary" onclick="dismissRenameNotice()">Got it</button>' +
+        '<a class="btn btn-ghost" href="https://github.com/ethanplusai/sellbird#upgrading-from-harvey" target="_blank" rel="noopener">O que mudou</a>' +
+        '<button class="btn btn-secondary" onclick="dismissRenameNotice()">Entendi</button>' +
       '</div></div>';
 }
 
@@ -703,7 +703,7 @@ async function loadSetupStatus() {
               : '<span class="check-icon pending"></span>') +
       '<div class="check-info">' +
         '<div class="check-label ' + (c.done ? 'done' : '') + '">' + escHtml(c.label) +
-          (optional ? '<span class="optional-tag">optional</span>' : '') + '</div>' +
+          (optional ? '<span class="optional-tag">opcional</span>' : '') + '</div>' +
         (!c.done ? '<div class="check-help">' + escHtml(c.help) + '</div>' : '') +
         (!c.done && c.id === 'warmup_service' ? warmupServiceActions(c) : '') +
       '</div></div>';
@@ -714,14 +714,14 @@ async function loadSetupStatus() {
 
   el.innerHTML =
     '<div class="card setup-card">' +
-      '<div class="setup-head"><div><h3>Finish setting up Sellbird</h3>' +
-        '<p class="muted">Sellbird starts finding prospects and sending once these are done.</p></div>' +
-        '<span class="setup-pct">' + done + ' of ' + required.length + ' done</span></div>' +
+      '<div class="setup-head"><div><h3>Finalize a configuração do Sellbird</h3>' +
+        '<p class="muted">O Sellbird começa a encontrar prospects e enviar e-mails assim que isso for feito.</p></div>' +
+        '<span class="setup-pct">' + done + ' de ' + required.length + ' concluídos</span></div>' +
       '<div class="bar thick" style="margin-bottom:8px"><span style="width:' + pct + '%;background:var(--accent)"></span></div>' +
       required.map(c => renderCheck(c, false)).join('') +
       (optional.length
         ? '<details style="margin-top:10px"><summary class="muted" ' +
-          'style="font-size:12px">' + optional.length + ' optional</summary>' +
+          'style="font-size:12px">' + optional.length + ' opcionais</summary>' +
           '<div style="margin-top:6px">' +
           optional.map(c => renderCheck(c, true)).join('') + '</div></details>'
         : '') +
@@ -732,12 +732,12 @@ async function loadSetupStatus() {
 function warmupServiceActions(c) {
   return '<div class="btn-group warmup-actions">' +
       '<a class="btn btn-primary btn-sm" href="' + safeHref(c.link) + '" target="_blank" ' +
-        'rel="noopener sponsored">Get TrulyInbox</a>' +
+        'rel="noopener sponsored">Obter TrulyInbox</a>' +
       '<input class="form-input" id="trulyinbox-key" type="password" autocomplete="off" ' +
-        'placeholder="Paste your TrulyInbox API key" aria-label="TrulyInbox API key" ' +
+        'placeholder="Cole sua chave de API do TrulyInbox" aria-label="Chave de API do TrulyInbox" ' +
         'onkeydown="if (event.key === \'Enter\') connectTrulyInbox()">' +
-      '<button class="btn btn-secondary btn-sm" id="trulyinbox-go" onclick="connectTrulyInbox()">Connect</button>' +
-      '<button class="btn btn-ghost btn-sm" onclick="useOtherWarmup()">I use another service</button>' +
+      '<button class="btn btn-secondary btn-sm" id="trulyinbox-go" onclick="connectTrulyInbox()">Conectar</button>' +
+      '<button class="btn btn-ghost btn-sm" onclick="useOtherWarmup()">Uso outro serviço</button>' +
     '</div>';
 }
 
@@ -753,10 +753,10 @@ async function connectTrulyInbox() {
   if (go) go.disabled = false;
   if (data && data.success) {
     input.value = '';
-    showToast(data.message || 'TrulyInbox connected', 'success');
+    showToast(data.message || 'TrulyInbox conectado', 'success');
     loadSetupStatus();
   } else {
-    showToast((data && data.message) || 'Could not connect TrulyInbox', 'error');
+    showToast((data && data.message) || 'Não foi possível conectar o TrulyInbox', 'error');
   }
 }
 
@@ -776,8 +776,8 @@ async function loadSignals() {
 
   const s = data.summary || {};
   navCount('nav-signals', s.proposed || 0);
-  const parts = [['Confirmed', s.confirmed || 0, 'c-good'], ['Waiting on you', s.proposed || 0, 'c-wait'],
-                 ['Turned off', s.rejected || 0, 'c-idle']];
+  const parts = [['Confirmado', s.confirmed || 0, 'c-good'], ['Esperando por você', s.proposed || 0, 'c-wait'],
+                 ['Desativado', s.rejected || 0, 'c-idle']];
   const all = parts.reduce((x, p) => x + p[1], 0) || 1;
   sumEl.innerHTML = '<div class="card sig-summary"><div class="funnel-bar">' +
     parts.filter(p => p[1]).map(p => '<span class="seg ' + p[2] + '" style="flex:' + p[1] + '"></span>').join('') +
@@ -798,9 +798,9 @@ async function loadSignals() {
       (undecided
         ? '<div style="display:flex;gap:6px;flex-shrink:0">' +
             '<button class="btn btn-primary btn-sm" onclick="setSignals(' + pending +
-              ', \'confirmed\')">Confirm all ' + undecided + '</button>' +
+              ', \'confirmed\')">Confirmar todos (' + undecided + ')</button>' +
             '<button class="btn btn-secondary btn-sm" onclick="setSignals(' + pending +
-              ', \'rejected\')">Skip all ' + undecided + '</button>' +
+              ', \'rejected\')">Pular todos (' + undecided + ')</button>' +
           '</div>'
         : '') +
       '</div>' +
@@ -815,22 +815,22 @@ function sigRow(sig) {
   const free = /free|included/i.test(sig.cost_note || '');
   const costCls = free ? 'free' : (/\$/.test(sig.cost_note || '') ? 'paid' : '');
   const seen = sig.companies
-    ? '<span class="cost-chip">seen on ' + sig.companies +
-      (sig.companies === 1 ? ' company' : ' companies') + ' so far</span>' : '';
+    ? '<span class="cost-chip">visto em ' + sig.companies +
+      (sig.companies === 1 ? ' empresa' : ' empresas') + ' até agora</span>' : '';
   const floor = sig.confidence_floor > 0
-    ? '<span class="cost-chip">only recorded above ' +
-      Math.round(sig.confidence_floor * 100) + '% confidence</span>' : '';
+    ? '<span class="cost-chip">registrado apenas acima de ' +
+      Math.round(sig.confidence_floor * 100) + '% de confiança</span>' : '';
 
   const decide = sig.status === 'confirmed'
     ? '<button class="btn btn-secondary btn-sm" onclick="setSignals([' + jsq(sig.code) +
-        '],\'rejected\')">Turn off</button>'
+        '],\'rejected\')">Desativar</button>'
     : sig.status === 'rejected'
       ? '<button class="btn btn-secondary btn-sm" onclick="setSignals([' + jsq(sig.code) +
-          '],\'confirmed\')">Turn on</button>'
+          '],\'confirmed\')">Ativar</button>'
       : '<button class="btn btn-primary btn-sm" onclick="setSignals([' + jsq(sig.code) +
-          '],\'confirmed\')">Confirm</button>' +
+          '],\'confirmed\')">Confirmar</button>' +
         '<button class="btn btn-secondary btn-sm" onclick="setSignals([' + jsq(sig.code) +
-          '],\'rejected\')">Skip</button>';
+          '],\'rejected\')">Pular</button>';
 
   return '<div class="sig-row ' + (sig.status === 'rejected' ? 'rejected' : '') + '">' +
     '<div class="sig-main">' +
@@ -838,7 +838,7 @@ function sigRow(sig) {
         '<span class="sig-code">' + escHtml(sig.code) + '</span></div>' +
       '<div class="sig-desc">' + escHtml(sig.description) + '</div>' +
       '<div class="sig-meta">' +
-        '<span class="cost-chip ' + costCls + '">' + escHtml(sig.cost_note || 'cost unknown') + '</span>' +
+        '<span class="cost-chip ' + costCls + '">' + escHtml(sig.cost_note || 'custo desconhecido') + '</span>' +
         floor + seen + badge(sig.status) +
       '</div>' +
     '</div>' +
@@ -855,12 +855,12 @@ async function setSignals(codes, status) {
   if (data && data.success) {
     showToast(
       status === 'confirmed'
-        ? 'Confirmed ' + data.changed + ' signal' + (data.changed === 1 ? '' : 's') +
-          ' — Sellbird will collect ' + (data.changed === 1 ? 'it' : 'them') + ' from now on.'
-        : data.changed + ' signal' + (data.changed === 1 ? '' : 's') + ' turned off.',
+        ? 'Confirmado' + (data.changed === 1 ? '' : 's') + ' ' + data.changed + ' sinal' + (data.changed === 1 ? '' : 'is') +
+          ' — o Sellbird vai coletar ' + (data.changed === 1 ? 'ele' : 'eles') + ' a partir de agora.'
+        : data.changed + ' sinal' + (data.changed === 1 ? '' : 'is') + ' desativado' + (data.changed === 1 ? '' : 's') + '.',
       'success');
   } else {
-    showToast(failMsg(data, 'Could not update that signal.'), 'error');
+    showToast(failMsg(data, 'Não foi possível atualizar esse sinal.'), 'error');
   }
   loadSignals();
 }
@@ -878,20 +878,20 @@ async function loadDiscoverProviders() {
   _provider = _provider || data.selected || data.default;
   el.innerHTML = '<div class="prov-grid">' + data.providers.map(p => {
     const ready = p.configured
-      ? '<span class="badge t-good">ready</span>'
-      : '<span class="badge t-waiting">needs a key</span>';
+      ? '<span class="badge t-good">pronto</span>'
+      : '<span class="badge t-waiting">precisa de chave</span>';
     return '<div class="prov-card ' + (p.key === _provider ? 'selected' : '') +
       '" onclick="pickProvider(' + jsq(p.key) + ')">' +
       '<div class="prov-head"><h3>' + escHtml(p.label) + '</h3>' + ready + '</div>' +
       '<div class="blurb">' + escHtml(p.blurb) + '</div>' +
-      '<div class="row"><span class="k">Cost</span><span class="v">' +
+      '<div class="row"><span class="k">Custo</span><span class="v">' +
         escHtml(p.cost_note) + '</span></div>' +
-      '<div class="row"><span class="k">Free</span><span class="v">' +
+      '<div class="row"><span class="k">Grátis</span><span class="v">' +
         escHtml(p.free_tier) + '</span></div>' +
       (p.needs_key
-        ? '<div class="row"><span class="k">Setup</span><span class="v">' +
-          escHtml(p.env_keys.join(', ')) + ' in .env &middot; ' +
-          '<a href="' + safeHref(p.signup_url) + '" target="_blank" rel="noopener noreferrer">get a key</a>' +
+        ? '<div class="row"><span class="k">Configuração</span><span class="v">' +
+          escHtml(p.env_keys.join(', ')) + ' em .env &middot; ' +
+          '<a href="' + safeHref(p.signup_url) + '" target="_blank" rel="noopener noreferrer">obtenha uma chave</a>' +
           '</span></div>'
         : '') +
       (p.caveat ? '<div class="caveat">' + escHtml(p.caveat) + '</div>' : '') +
@@ -910,8 +910,8 @@ async function loadDiscoverProviders() {
     // A finished run leaves the button stuck on "Running…" otherwise.
     const btn = document.getElementById('disc-run');
     btn.disabled = true;
-    btn.textContent = 'Estimate first';
-    showToast(data.running_kind === 'profile' ? 'Finished reading websites.' : 'Discovery finished.', 'success');
+    btn.textContent = 'Estime primeiro';
+    showToast(data.running_kind === 'profile' ? 'Leitura dos sites concluída.' : 'Descoberta concluída.', 'success');
   }
   renderDiscoverResult(data.last_report, running);
 }
@@ -919,7 +919,7 @@ async function loadDiscoverProviders() {
 function pickProvider(key) {
   _provider = key;
   document.getElementById('disc-run').disabled = true;
-  document.getElementById('disc-run').textContent = 'Estimate first';
+  document.getElementById('disc-run').textContent = 'Estime primeiro';
   document.getElementById('discover-estimate').innerHTML = '';
   loadDiscoverProviders();
 }
@@ -939,14 +939,14 @@ function discoverBody() {
 
 async function estimateDiscovery() {
   const el = document.getElementById('discover-estimate');
-  el.innerHTML = '<p class="muted" style="font-size:13px">Pricing it…</p>';
+  el.innerHTML = '<p class="muted" style="font-size:13px">Calculando o custo…</p>';
   const data = await api('/api/discover/estimate', {
     method: 'POST', headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(discoverBody()),
   });
   if (!data || data.error) {
     el.innerHTML = '<div class="test-result error">' +
-      escHtml((data && data.error) || 'Could not estimate.') + '</div>';
+      escHtml((data && data.error) || 'Não foi possível estimar.') + '</div>';
     return;
   }
 
@@ -954,35 +954,35 @@ async function estimateDiscovery() {
   const over = data.estimated_cost > cap;
   el.innerHTML = '<div class="estimate-box">' +
     '<div class="amount ' + (data.free ? 'free' : 'paid') + '">' +
-      (data.free ? 'Free' : '$' + data.estimated_cost.toFixed(4)) + '</div>' +
+      (data.free ? 'Grátis' : '$' + data.estimated_cost.toFixed(4)) + '</div>' +
     '<div class="muted" style="font-size:13px;margin-top:2px">' +
-      data.query_count + ' quer' + (data.query_count === 1 ? 'y' : 'ies') +
-      (data.free ? '' : ' &middot; cap is $' + cap.toFixed(2)) + '</div>' +
+      data.query_count + ' consulta' + (data.query_count === 1 ? '' : 's') +
+      (data.free ? '' : ' &middot; limite é $' + cap.toFixed(2)) + '</div>' +
     (over ? '<div class="test-result error" style="margin-top:12px">' +
-      'Over your cap. Raise the cap or narrow the search.</div>' : '') +
+      'Acima do seu limite. Aumente o limite ou restrinja a busca.</div>' : '') +
     '<div class="query-list">' +
       data.queries.slice(0, 40).map(escHtml).join('<br>') +
-      (data.queries.length > 40 ? '<br>… and ' + (data.queries.length - 40) + ' more' : '') +
+      (data.queries.length > 40 ? '<br>… e mais ' + (data.queries.length - 40) : '') +
     '</div></div>';
 
   const btn = document.getElementById('disc-run');
   btn.disabled = over;
-  btn.textContent = over ? 'Over cap'
-    : (data.free ? 'Run — free' : 'Run — spend up to $' + data.estimated_cost.toFixed(2));
+  btn.textContent = over ? 'Acima do limite'
+    : (data.free ? 'Executar — grátis' : 'Executar — gastar até $' + data.estimated_cost.toFixed(2));
 }
 
 async function runDiscovery() {
   const btn = document.getElementById('disc-run');
   btn.disabled = true;
-  btn.textContent = 'Running…';
+  btn.textContent = 'Executando…';
   const data = await api('/api/discover/run', {
     method: 'POST', headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(discoverBody()),
   });
   if (data && data.success) {
-    showToast('Discovery started — ' + data.queries + ' queries.', 'success');
+    showToast('Descoberta iniciada — ' + data.queries + ' consultas.', 'success');
   } else {
-    showToast((data && data.message) || 'Could not start.', 'error');
+    showToast((data && data.message) || 'Não foi possível iniciar.', 'error');
     btn.disabled = false;
   }
   loadDiscoverProviders();
@@ -990,8 +990,8 @@ async function runDiscovery() {
 
 async function stopDiscovery() {
   const data = await api('/api/discover/stop', {method: 'POST'});
-  showToast(data && data.success ? 'Stopping after the current query.'
-                                 : failMsg(data, 'Could not stop.'), data && data.success ? 'success' : 'error');
+  showToast(data && data.success ? 'Parando após a consulta atual.'
+                                 : failMsg(data, 'Não foi possível parar.'), data && data.success ? 'success' : 'error');
   loadDiscoverProviders();
 }
 
@@ -1001,23 +1001,23 @@ function renderProfileCard(pending, running) {
   const el = document.getElementById('discover-profile');
   if (!el) return;
   if (!pending) { el.innerHTML = ''; return; }
-  el.innerHTML = '<div class="subhead">Read websites</div><div class="card"><div class="queue-item good" style="padding:0;border:0;box-shadow:none">' +
-    '<div class="qtext"><div class="qtitle">' + pending + ' compan' + (pending === 1 ? 'y' : 'ies') +
-    ' not looked at yet</div><div class="qdetail">Free, no account needed. Sellbird reads each site for ' +
-    'who their agency is, what they are missing, and whether they run ads. Up to 200 per run.</div></div>' +
+  el.innerHTML = '<div class="subhead">Ler sites</div><div class="card"><div class="queue-item good" style="padding:0;border:0;box-shadow:none">' +
+    '<div class="qtext"><div class="qtitle">' + pending + ' empresa' + (pending === 1 ? '' : 's') +
+    ' ainda não analisada' + (pending === 1 ? '' : 's') + '</div><div class="qdetail">Grátis, sem necessidade de conta. O Sellbird lê cada site para saber ' +
+    'quem é sua agência, o que está faltando, e se eles rodam anúncios. Até 200 por execução.</div></div>' +
     '<button class="btn btn-primary btn-sm" onclick="runProfile(this)"' + (running ? ' disabled' : '') + '>' +
-    (running ? 'Busy…' : 'Read their sites') + '</button></div></div>';
+    (running ? 'Ocupado…' : 'Ler os sites') + '</button></div></div>';
 }
 
 async function runProfile(btn) {
   btn.disabled = true;
-  btn.textContent = 'Starting…';
+  btn.textContent = 'Iniciando…';
   const data = await api('/api/profile/run', {method: 'POST'});
   if (data && data.success) {
-    showToast(data.pending ? 'Reading ' + Math.min(data.pending, 200) + ' websites.' : 'Every site is already read.', 'success');
+    showToast(data.pending ? 'Lendo ' + Math.min(data.pending, 200) + ' sites.' : 'Todos os sites já foram lidos.', 'success');
     if (data.pending && !_discoverPoll) _discoverPoll = setInterval(loadDiscoverProviders, 4000);
   } else {
-    showToast(failMsg(data, 'Could not start.'), 'error');
+    showToast(failMsg(data, 'Não foi possível iniciar.'), 'error');
   }
   loadDiscoverProviders();
 }
@@ -1025,9 +1025,9 @@ async function runProfile(btn) {
 function renderDiscoverResult(report, running) {
   const el = document.getElementById('discover-result');
   if (running) {
-    el.innerHTML = '<div class="card"><h2>Running…</h2>' +
-      '<p class="muted" style="font-size:13px">Sellbird is working through the ' +
-      'queries. Results land in Companies, and the run log is on Today.</p></div>';
+    el.innerHTML = '<div class="card"><h2>Executando…</h2>' +
+      '<p class="muted" style="font-size:13px">O Sellbird está processando as ' +
+      'consultas. Os resultados aparecem em Empresas, e o log da execução fica em Hoje.</p></div>';
     return;
   }
   if (!report) { el.innerHTML = ''; return; }
@@ -1038,26 +1038,26 @@ function renderDiscoverResult(report, running) {
     value + '</div></div>';
 
   if (report.profiled_companies !== undefined && report.new_companies === undefined) {
-    el.innerHTML = '<div class="subhead">Last run</div><div class="stats-grid">' +
-      stat('Websites read', report.profiled_companies || 0, 'accent') +
-      stat('Facts recorded', report.profile_observations || 0) +
-      stat('Cost', 'free') + '</div>' +
-      (report.stopped ? '<div class="test-result error" style="margin-top:14px">Stopped early: ' + escHtml(report.stopped) + '</div>' : '');
+    el.innerHTML = '<div class="subhead">Última execução</div><div class="stats-grid">' +
+      stat('Sites lidos', report.profiled_companies || 0, 'accent') +
+      stat('Fatos registrados', report.profile_observations || 0) +
+      stat('Custo', 'grátis') + '</div>' +
+      (report.stopped ? '<div class="test-result error" style="margin-top:14px">Interrompido antes do fim: ' + escHtml(report.stopped) + '</div>' : '');
     return;
   }
-  el.innerHTML = '<div class="subhead">Last run</div>' +
+  el.innerHTML = '<div class="subhead">Última execução</div>' +
     '<div class="stats-grid">' +
-      stat('New companies', report.new_companies || 0, 'accent') +
-      stat('Already known', report.known_companies || 0) +
-      stat('Observations', report.observations || 0) +
-      stat('Filtered as junk', report.junk || 0) +
-      (report.profiled_companies ? stat('Websites read', report.profiled_companies) : '') +
-      stat('Actual cost', report.actual_cost ? '$' + report.actual_cost.toFixed(4) : 'free') +
+      stat('Novas empresas', report.new_companies || 0, 'accent') +
+      stat('Já conhecidas', report.known_companies || 0) +
+      stat('Observações', report.observations || 0) +
+      stat('Filtradas como lixo', report.junk || 0) +
+      (report.profiled_companies ? stat('Sites lidos', report.profiled_companies) : '') +
+      stat('Custo real', report.actual_cost ? '$' + report.actual_cost.toFixed(4) : 'grátis') +
     '</div>' +
     (report.stopped ? '<div class="test-result error" style="margin-top:14px">' +
-      'Stopped early: ' + escHtml(report.stopped) + '</div>' : '') +
+      'Interrompido antes do fim: ' + escHtml(report.stopped) + '</div>' : '') +
     ((report.errors || []).length
-      ? '<div class="card" style="margin-top:14px"><h2>Problems</h2>' +
+      ? '<div class="card" style="margin-top:14px"><h2>Problemas</h2>' +
         (report.errors || []).slice(0, 8).map(e =>
           '<div class="check-help">' + escHtml(e) + '</div>').join('') + '</div>'
       : '');
@@ -1080,7 +1080,7 @@ function renderCohortBuilder() {
 
   if (!confirmed.length) {
     el.innerHTML = '<p class="muted" style="font-size:13px">' +
-      'Confirm some signals above and they become the building blocks here.</p>';
+      'Confirme alguns sinais acima e eles se tornam os blocos de construção aqui.</p>';
     document.getElementById('cohort-result').innerHTML = '';
     return;
   }
@@ -1107,18 +1107,18 @@ function renderCohortBuilder() {
       'onchange="setCohortRange(' + jsq(code) + ',' + jsq(side) + ',this.value)">';
   };
   const rangeCol = numeric.length ?
-    '<div style="height:18px"></div><div><div class="subhead" style="margin-top:0">In range ' +
+    '<div style="height:18px"></div><div><div class="subhead" style="margin-top:0">No intervalo ' +
       '<span class="muted" style="font-weight:400;text-transform:none;letter-spacing:0">' +
-      '&mdash; e.g. organic rank 11 to 30; leave a side blank for no limit</span></div>' +
+      '&mdash; ex.: posição orgânica 11 a 30; deixe um lado em branco para sem limite</span></div>' +
       '<div class="cohort-grid">' +
       numeric.map(s =>
         '<div class="cohort-pick cohort-range"><span>' + escHtml(s.label || s.code) + '</span>' +
-          bound(s.code, 'min') + '<span class="muted">to</span>' + bound(s.code, 'max') + '</div>'
+          bound(s.code, 'min') + '<span class="muted">até</span>' + bound(s.code, 'max') + '</div>'
       ).join('') + '</div></div>' : '';
 
-  el.innerHTML = col('Must have', 'require', '&mdash; every company in the cohort carries all of these') +
+  el.innerHTML = col('Deve ter', 'require', '&mdash; toda empresa na coorte carrega todos estes') +
     '<div style="height:18px"></div>' +
-    col('Must not have', 'exclude', '&mdash; disqualifiers') + rangeCol;
+    col('Não deve ter', 'exclude', '&mdash; desqualificadores') + rangeCol;
 }
 
 function setCohortRange(code, side, value) {
@@ -1149,7 +1149,7 @@ async function runCohort() {
   const ranges = _cohortRanges();
   if (!require.length && !ranges.length) { el.innerHTML = ''; return; }
   // Remove the prior export button as soon as its criteria become stale.
-  el.innerHTML = '<p class="muted">Loading cohort…</p>';
+  el.innerHTML = '<p class="muted">Carregando coorte…</p>';
 
   const data = await api('/api/cohort', {
     method: 'POST',
@@ -1165,12 +1165,12 @@ async function runCohort() {
 
   let html = '<div style="border-top:1px solid var(--border);margin-top:20px;padding-top:20px">' +
     '<div class="cohort-size">' + data.size + '</div>' +
-    '<div class="muted" style="font-size:13px;margin-top:2px">compan' +
-      (data.size === 1 ? 'y matches' : 'ies match') + ' this cohort right now</div>';
+    '<div class="muted" style="font-size:13px;margin-top:2px">' +
+      (data.size === 1 ? 'empresa corresponde' : 'empresas correspondem') + ' a esta coorte agora</div>';
 
   if (data.companies && data.companies.length) {
     html += '<div class="table-card" style="margin-top:16px"><table><thead><tr>' +
-      '<th>Company</th><th>Domain</th><th>Industry</th><th>Location</th>' +
+      '<th>Empresa</th><th>Domínio</th><th>Indústria</th><th>Localização</th>' +
       '</tr></thead><tbody>' +
       data.companies.map(c =>
         '<tr><td>' + escHtml(c.name) + '</td><td class="muted">' + escHtml(c.domain) + '</td>' +
@@ -1181,19 +1181,19 @@ async function runCohort() {
     const first = data.offset + 1, last = data.offset + data.companies.length;
     const hasPrev = data.offset > 0, hasNext = last < data.size;
     html += '<div style="display:flex;align-items:center;gap:8px;margin-top:10px">' +
-      '<span class="muted" style="font-size:12px">Showing ' + first + '&ndash;' + last +
-        ' of ' + data.size + '</span>' +
+      '<span class="muted" style="font-size:12px">Mostrando ' + first + '&ndash;' + last +
+        ' de ' + data.size + '</span>' +
       '<span style="flex:1"></span>' +
       '<button class="btn btn-secondary btn-sm" onclick="pageCohort(-1)"' +
-        (hasPrev ? '' : ' disabled') + '>Prev</button>' +
+        (hasPrev ? '' : ' disabled') + '>Anterior</button>' +
       '<button class="btn btn-secondary btn-sm" onclick="pageCohort(1)"' +
-        (hasNext ? '' : ' disabled') + '>Next</button>' +
-      '<button class="btn btn-secondary btn-sm" onclick="exportCohort(this)">Export CSV</button>' +
+        (hasNext ? '' : ' disabled') + '>Próxima</button>' +
+      '<button class="btn btn-secondary btn-sm" onclick="exportCohort(this)">Exportar CSV</button>' +
       '</div>';
   } else if (data.size === 0) {
     html += '<p class="muted" style="font-size:13px;margin-top:12px">' +
-      'No company carries all of those yet. Either loosen the cohort, or run ' +
-      'prospecting to collect more.</p>';
+      'Nenhuma empresa tem todos esses sinais ainda. Afrouxe a coorte, ou rode a ' +
+      'prospecção para coletar mais.</p>';
   } else if (_cohortOffset > 0) {
     // The cohort shrank under us (a re-profile, a delete): back to page one.
     _cohortOffset = 0;
@@ -1216,22 +1216,22 @@ async function exportCohort(button) {
     .map(([code, r]) => code + ':' + (r.min ?? '') + ':' + (r.max ?? ''));
   if (ranges.length) qs.set('ranges', ranges.join(','));
   button.disabled = true;
-  button.textContent = 'Exporting…';
+  button.textContent = 'Exportando…';
   let url;
   let link;
   try {
     const response = await authFetch('/api/cohort.csv?' + qs);
-    if (await lockIfRefused(response)) throw new Error('Dashboard authorization required');
-    if (!response.ok) throw new Error('Export failed (HTTP ' + response.status + ')');
+    if (await lockIfRefused(response)) throw new Error('Autorização do painel necessária');
+    if (!response.ok) throw new Error('Falha na exportação (HTTP ' + response.status + ')');
     url = URL.createObjectURL(await response.blob());
     link = document.createElement('a');
     link.href = url;
     link.download = 'cohort.csv';
     document.body.appendChild(link);
     link.click();
-    button.textContent = 'Export CSV';
+    button.textContent = 'Exportar CSV';
   } catch (error) {
-    button.textContent = 'Export failed — retry';
+    button.textContent = 'Exportação falhou — tente novamente';
   } finally {
     if (link) link.remove();
     // Give the browser time to start consuming the download before revoking.
@@ -1261,13 +1261,13 @@ async function loadSettings() {
     const el = document.getElementById(id);
     if (!el) return;
     el.value = '';
-    el.placeholder = isSet ? 'Saved — enter new value to change' : base;
+    el.placeholder = isSet ? 'Salvo — digite um novo valor para alterar' : base;
   };
   const tag = (id, ok, okLabel) => {
     const el = document.getElementById(id);
     if (!el) return;
     el.className = 'email-tag ' + (ok ? 'verified' : 'guess');
-    el.textContent = ok ? okLabel : 'not set';
+    el.textContent = ok ? okLabel : 'não definido';
   };
 
   // Non-secret values repopulate
@@ -1283,44 +1283,44 @@ async function loadSettings() {
   document.getElementById('linkedin-email').value = data.linkedin_email || '';
   document.getElementById('cf-account-id').value = data.cloudflare_account_id || '';
 
-  savedPh('gmail-secret', data.gmail_client_secret_set, 'Enter client secret');
-  savedPh('smtp-pass', data.smtp_password_set, 'Enter password / app password');
-  savedPh('imap-pass', data.imap_password_set, 'Same as SMTP password');
+  savedPh('gmail-secret', data.gmail_client_secret_set, 'Digite o segredo do cliente');
+  savedPh('smtp-pass', data.smtp_password_set, 'Digite a senha / senha de app');
+  savedPh('imap-pass', data.imap_password_set, 'Mesma da senha SMTP');
   document.getElementById('imap-same-pass').checked = !data.imap_password_set;
-  savedPh('instantly-key', data.instantly_api_key_set, 'Enter your Instantly API key');
-  savedPh('reoon-key', data.reoon_api_key_set, '600 free/mo — reoon.com/email-verifier');
-  savedPh('zerobounce-key', data.zerobounce_api_key_set, '100 free/mo — best for M365/Workspace catch-alls');
-  savedPh('hunter-key', data.hunter_api_key_set, '50 free/mo + email-pattern lookup');
-  savedPh('linkedin-password', data.linkedin_password_set, 'Enter password');
-  savedPh('cf-api-token', data.cloudflare_api_token_set, 'Your Cloudflare API Token');
+  savedPh('instantly-key', data.instantly_api_key_set, 'Digite sua chave de API do Instantly');
+  savedPh('reoon-key', data.reoon_api_key_set, '600 grátis/mês — reoon.com/email-verifier');
+  savedPh('zerobounce-key', data.zerobounce_api_key_set, '100 grátis/mês — melhor para catch-alls do M365/Workspace');
+  savedPh('hunter-key', data.hunter_api_key_set, '50 grátis/mês + busca de padrão de e-mail');
+  savedPh('linkedin-password', data.linkedin_password_set, 'Digite a senha');
+  savedPh('cf-api-token', data.cloudflare_api_token_set, 'Seu token de API Cloudflare');
 
   // Gmail auth status chip
   const g = document.getElementById('gmail-status');
   if (g) {
     const realId = /^\d+-[0-9a-z]+\.apps\.googleusercontent\.com$/.test((data.gmail_client_id || '').trim());
-    if (data.gmail_client_id && !realId) { g.className = 'email-tag invalid'; g.textContent = 'client ID isn\'t real'; }
-    else if (data.gmail_authorized) { g.className = 'email-tag verified'; g.textContent = 'authorized'; }
-    else if (data.gmail_client_secret_set) { g.className = 'email-tag risky'; g.textContent = 'sign in on Inboxes'; }
-    else { g.className = 'email-tag guess'; g.textContent = 'not set up'; }
+    if (data.gmail_client_id && !realId) { g.className = 'email-tag invalid'; g.textContent = 'o ID do cliente não parece válido'; }
+    else if (data.gmail_authorized) { g.className = 'email-tag verified'; g.textContent = 'autorizado'; }
+    else if (data.gmail_client_secret_set) { g.className = 'email-tag risky'; g.textContent = 'entre na aba Caixas de entrada'; }
+    else { g.className = 'email-tag guess'; g.textContent = 'não configurado'; }
   }
   const m = document.getElementById('m365-status');
   if (m) {
     const realM = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test((data.m365_client_id || '').trim());
-    if (data.m365_client_id && !realM) { m.className = 'email-tag invalid'; m.textContent = 'client ID isn\'t real'; }
-    else if (data.m365_authorized) { m.className = 'email-tag verified'; m.textContent = 'authorized'; }
-    else if (data.m365_client_id) { m.className = 'email-tag risky'; m.textContent = 'sign in on Inboxes'; }
-    else { m.className = 'email-tag guess'; m.textContent = 'not set up'; }
+    if (data.m365_client_id && !realM) { m.className = 'email-tag invalid'; m.textContent = 'o ID do cliente não parece válido'; }
+    else if (data.m365_authorized) { m.className = 'email-tag verified'; m.textContent = 'autorizado'; }
+    else if (data.m365_client_id) { m.className = 'email-tag risky'; m.textContent = 'entre na aba Caixas de entrada'; }
+    else { m.className = 'email-tag guess'; m.textContent = 'não configurado'; }
   }
-  tag('reoon-status', data.reoon_api_key_set, 'set');
-  tag('zerobounce-status', data.zerobounce_api_key_set, 'set');
-  tag('hunter-status', data.hunter_api_key_set, 'set');
+  tag('reoon-status', data.reoon_api_key_set, 'definido');
+  tag('zerobounce-status', data.zerobounce_api_key_set, 'definido');
+  tag('hunter-status', data.hunter_api_key_set, 'definido');
 }
 
 function saveGmail() {
   const payload = {GMAIL_CLIENT_ID: document.getElementById('gmail-id').value.trim()};
   const sec = document.getElementById('gmail-secret').value;
   if (sec) payload.GMAIL_CLIENT_SECRET = sec;
-  saveEnv(payload, 'Saved. Now sign in on the Inboxes tab.').then(loadSettings);
+  saveEnv(payload, 'Salvo. Agora entre na aba Caixas de entrada.').then(loadSettings);
 }
 
 function saveSmtp() {
@@ -1340,14 +1340,14 @@ function saveSmtp() {
   const imapPass = document.getElementById('imap-pass').value;
   if (imapPass) payload.IMAP_PASSWORD = imapPass;
   else if (document.getElementById('imap-same-pass').checked) payload.IMAP_PASSWORD = '';
-  saveEnv(payload, 'SMTP settings saved.').then(loadSettings);
+  saveEnv(payload, 'Configurações SMTP salvas.').then(loadSettings);
 }
 
 function saveMicrosoft() {
   const client = document.getElementById('m365-client').value.trim();
-  if (!client) { showToast('Paste the Application (client) ID first.', 'error'); return; }
+  if (!client) { showToast('Cole o ID do aplicativo (cliente) primeiro.', 'error'); return; }
   saveEnv({M365_CLIENT_ID: client, M365_TENANT_ID: document.getElementById('m365-tenant').value.trim()},
-          'Saved. Now sign in on the Inboxes tab.').then(loadSettings);
+          'Salvo. Agora entre na aba Caixas de entrada.').then(loadSettings);
 }
 
 function saveVerifiers() {
@@ -1358,8 +1358,8 @@ function saveVerifiers() {
   if (r) payload.REOON_API_KEY = r;
   if (z) payload.ZEROBOUNCE_API_KEY = z;
   if (h) payload.HUNTER_API_KEY = h;
-  if (!Object.keys(payload).length) { showToast('Enter at least one key first.', 'error'); return; }
-  saveEnv(payload, 'Verification keys saved.').then(loadSettings);
+  if (!Object.keys(payload).length) { showToast('Digite pelo menos uma chave primeiro.', 'error'); return; }
+  saveEnv(payload, 'Chaves de verificação salvas.').then(loadSettings);
 }
 
 async function saveEnv(payload, okMsg) {
@@ -1368,40 +1368,40 @@ async function saveEnv(payload, okMsg) {
     body: JSON.stringify(payload)
   });
   if (data && data.success) showToast(okMsg, 'success');
-  else showToast((data && data.message) || 'Save failed — is the dashboard still running?', 'error');
+  else showToast((data && data.message) || 'Falha ao salvar — o painel ainda está rodando?', 'error');
 }
 
 // Secrets are only sent when typed: an empty box means "keep the saved one".
 function saveInstantly() {
   const key = document.getElementById('instantly-key').value.trim();
-  if (!key) { showToast('Enter a new key first. The saved one is kept.', 'error'); return; }
-  saveEnv({INSTANTLY_API_KEY: key}, 'Instantly API key saved.');
+  if (!key) { showToast('Digite uma nova chave primeiro. A salva será mantida.', 'error'); return; }
+  saveEnv({INSTANTLY_API_KEY: key}, 'Chave de API do Instantly salva.');
 }
 
 function saveLinkedIn() {
   const payload = {LINKEDIN_EMAIL: document.getElementById('linkedin-email').value.trim()};
   const pass = document.getElementById('linkedin-password').value;
   if (pass) payload.LINKEDIN_PASSWORD = pass;
-  saveEnv(payload, 'LinkedIn credentials saved.');
+  saveEnv(payload, 'Credenciais do LinkedIn salvas.');
 }
 
 function saveCloudflare() {
   const payload = {CLOUDFLARE_ACCOUNT_ID: document.getElementById('cf-account-id').value.trim()};
   const token = document.getElementById('cf-api-token').value.trim();
   if (token) payload.CLOUDFLARE_API_TOKEN = token;
-  saveEnv(payload, 'Cloudflare credentials saved.');
+  saveEnv(payload, 'Credenciais da Cloudflare salvas.');
 }
 
 async function testInstantly() {
   const key = document.getElementById('instantly-key').value.trim();
   const el = document.getElementById('instantly-test-result');
-  el.innerHTML = '<div class="test-result pending">Testing&hellip;</div>';
+  el.innerHTML = '<div class="test-result pending">Testando&hellip;</div>';
   const data = await api('/api/settings/test-instantly', {
     method: 'POST', headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({api_key: key})
   });
   if (!data) {
-    el.innerHTML = '<div class="test-result error">Could not reach the dashboard server.</div>';
+    el.innerHTML = '<div class="test-result error">Não foi possível conectar ao servidor do painel.</div>';
     return;
   }
   el.innerHTML = '<div class="test-result ' + (data.success ? 'success' : 'error') + '">' + escHtml(failMsg(data, '')) + '</div>';
@@ -1423,19 +1423,19 @@ async function loadSellbirdStatus() {
   const running = !!data.running;
 
   headerDot.className = 'status-dot ' + (running ? 'running' : 'stopped');
-  headerText.textContent = running ? 'Sellbird is running' : 'Sellbird is stopped';
+  headerText.textContent = running ? 'O Sellbird está rodando' : 'O Sellbird está parado';
   document.getElementById('control-dot').className = 'dot ' + (running ? 'running' : 'stopped');
   const label = document.getElementById('control-label');
   label.className = 'label ' + (running ? 'running' : 'stopped');
-  label.textContent = running ? 'Running' : 'Stopped';
+  label.textContent = running ? 'Rodando' : 'Parado';
 
   const meta = document.getElementById('control-meta');
   if (running && data.pid) {
     let info = 'PID ' + escHtml(String(data.pid));
-    if (data.started_at) info += ' &middot; started ' + formatDate(data.started_at);
+    if (data.started_at) info += ' &middot; iniciado ' + formatDate(data.started_at);
     meta.innerHTML = info;
   } else {
-    meta.innerHTML = 'Sellbird wakes every few minutes, does what needs doing, and sleeps.';
+    meta.innerHTML = 'O Sellbird acorda a cada poucos minutos, faz o que precisa ser feito, e volta a dormir.';
   }
 
   document.getElementById('btn-start').style.display = running ? 'none' : '';
@@ -1446,8 +1446,8 @@ async function startSellbird() {
   const btn = document.getElementById('btn-start');
   btn.disabled = true;
   const data = await api('/api/sellbird/start', {method: 'POST'});
-  if (data && data.success) showToast('Sellbird started.', 'success');
-  else showToast((data && data.message) || 'Failed to start.', 'error');
+  if (data && data.success) showToast('Sellbird iniciado.', 'success');
+  else showToast((data && data.message) || 'Falha ao iniciar.', 'error');
   btn.disabled = false;
   loadSellbirdStatus();
 }
@@ -1456,8 +1456,8 @@ async function stopSellbird() {
   const btn = document.getElementById('btn-stop');
   btn.disabled = true;
   const data = await api('/api/sellbird/stop', {method: 'POST'});
-  if (data && data.success) showToast('Sellbird stopped.', 'success');
-  else showToast((data && data.message) || 'Failed to stop.', 'error');
+  if (data && data.success) showToast('Sellbird parado.', 'success');
+  else showToast((data && data.message) || 'Falha ao parar.', 'error');
   btn.disabled = false;
   loadSellbirdStatus();
 }
@@ -1470,7 +1470,7 @@ async function loadLogs() {
     el.textContent = data.lines.join('\n');
     if (stick) el.scrollTop = el.scrollHeight;
   } else {
-    el.textContent = 'No logs yet. Start Sellbird to see activity.';
+    el.textContent = 'Nenhum log ainda. Inicie o Sellbird para ver atividade.';
   }
 }
 
@@ -1478,13 +1478,13 @@ async function loadLogs() {
 
 // Calls today per subscription — each labelled with the provider it ran on.
 function brainCallChips(data) {
-  const chip = (label, n) => '<span class="chip">' + label + ' calls today <b>' + escHtml(String(n || 0)) + '</b></span>';
+  const chip = (label, n) => '<span class="chip">' + label + ' chamadas hoje <b>' + escHtml(String(n || 0)) + '</b></span>';
   const codex = data.codex_calls_today || 0;
   const st = data.brain_status || {};
   // A paused brain must not look healthy: say so, and why.
   const paused = st.status === 'paused'
     ? '<span class="chip" title="' + escHtml(st.reason || '') + '">' +
-      escHtml(st.provider === 'codex' ? 'Codex' : 'Brain') + ' <b>paused</b>: ' +
+      escHtml(st.provider === 'codex' ? 'Codex' : 'Brain') + ' <b>pausado</b>: ' +
       escHtml((st.reason || '').slice(0, 120)) + '</span>'
     : '';
   if (data.brain_provider === 'codex') {
@@ -1518,20 +1518,20 @@ function emailTag(p) {
 function quotaCardHtml(data) {
   const provider = data && data.quota_provider;
   if (!provider) return '';
-  const title = provider === 'codex' ? 'Codex (ChatGPT plan) Quota' : 'Claude Subscription Quota';
+  const title = provider === 'codex' ? 'Cota do Codex (plano ChatGPT)' : 'Cota da assinatura Claude';
   let html = '<h2>' + escHtml(title) + '</h2>';
   if (!data.quota || !Object.keys(data.quota).length) {
     const why = provider === 'codex'
-      ? "Quota unavailable: Sellbird couldn't read your ChatGPT plan's limits (check codex login, the Codex CLI version, and network)."
-      : "Quota unavailable: Sellbird couldn't read your Claude subscription's limits (check claude login and network).";
-    return html + '<p class="muted">' + escHtml(why) + ' Until it can, budgets count Sellbird\'s own calls.</p>';
+      ? "Cota indisponível: o Sellbird não conseguiu ler os limites do seu plano ChatGPT (verifique o codex login, a versão do Codex CLI e a rede)."
+      : "Cota indisponível: o Sellbird não conseguiu ler os limites da sua assinatura Claude (verifique o claude login e a rede).";
+    return html + '<p class="muted">' + escHtml(why) + ' Até que consiga, os orçamentos contam apenas as próprias chamadas do Sellbird.</p>';
   }
-  const labels = {five_hour: '5-hour window', seven_day: 'Weekly', primary: 'Primary window',
-                  secondary: 'Secondary window', limit_reached: 'Usage limit reached'};
+  const labels = {five_hour: 'Janela de 5 horas', seven_day: 'Semanal', primary: 'Janela primária',
+                  secondary: 'Janela secundária', limit_reached: 'Limite de uso atingido'};
   for (const [key, w] of Object.entries(data.quota)) {
     const pct = Math.min(100, Math.max(0, w.utilization || 0));
     const color = pct >= 80 ? 'yellow' : 'green';
-    const resets = w.resets_at ? 'resets ' + formatDate(w.resets_at) : '';
+    const resets = w.resets_at ? 'renova ' + formatDate(w.resets_at) : '';
     html += '<div class="progress-wrap">' +
       '<div class="progress-label">' +
         '<span class="text">' + escHtml(labels[key] || key) + (resets ? ' &middot; ' + escHtml(resets) : '') + '</span>' +
@@ -1561,24 +1561,24 @@ async function loadUsage() {
     return '<div class="stat-card"><div class="label">' + label + '</div>' +
       '<div class="value">' + (p.calls || 0) + '</div>' +
       '<div class="breakdown">' +
-        '<span class="chip">calls</span>' +
-        '<span class="chip">out <b>' + fmtTokens(p.output_tokens) + '</b></span>' +
-        '<span class="chip">in <b>' + fmtTokens(p.input_tokens) + '</b></span>' +
-        '<span class="chip">cached <b>' + fmtTokens(p.cache_read_tokens) + '</b></span>' +
+        '<span class="chip">chamadas</span>' +
+        '<span class="chip">saída <b>' + fmtTokens(p.output_tokens) + '</b></span>' +
+        '<span class="chip">entrada <b>' + fmtTokens(p.input_tokens) + '</b></span>' +
+        '<span class="chip">cache <b>' + fmtTokens(p.cache_read_tokens) + '</b></span>' +
       '</div></div>';
   };
-  statsEl.innerHTML = card('Today', t.today) + card('Last 7 Days', t.week) + card('Last 30 Days', t.month);
+  statsEl.innerHTML = card('Hoje', t.today) + card('Últimos 7 dias', t.week) + card('Últimos 30 dias', t.month);
 
   // Daily columns — output tokens per day (the work done)
   const dailyEl = document.getElementById('usage-daily');
   const days = (data.by_day || []).slice(-30);
   if (days.length) {
     const maxOut = Math.max(...days.map(d => d.output_tokens || 0), 1);
-    dailyEl.innerHTML = '<h2>Output tokens per day <span class="hint muted" style="font-weight:400">last ' +
-      days.length + ' days · peak ' + fmtTokens(maxOut) + '</span></h2>' +
+    dailyEl.innerHTML = '<h2>Tokens de saída por dia <span class="hint muted" style="font-weight:400">últimos ' +
+      days.length + ' dias · pico ' + fmtTokens(maxOut) + '</span></h2>' +
       '<div class="chart-cols" role="img" aria-label="Output tokens per day">' + days.map(d =>
-        '<span class="col" title="' + escHtml(d.day || '') + ': ' + fmtTokens(d.output_tokens) + ' out, ' +
-          (d.calls || 0) + ' calls"><i style="height:' + Math.max(2, (d.output_tokens || 0) / maxOut * 100) + '%"></i></span>'
+        '<span class="col" title="' + escHtml(d.day || '') + ': ' + fmtTokens(d.output_tokens) + ' saída, ' +
+          (d.calls || 0) + ' chamadas"><i style="height:' + Math.max(2, (d.output_tokens || 0) / maxOut * 100) + '%"></i></span>'
       ).join('') + '</div>' +
       '<div class="chart-axis"><span>' + escHtml(days[0].day || '') + '</span><span>' +
         escHtml(days[days.length - 1].day || '') + '</span></div>';
@@ -1593,7 +1593,7 @@ async function loadUsage() {
     if (!rows || !rows.length) return '';
     const max = Math.max(...rows.map(r => r.calls || 0), 1);
     let h = '<div class="card flush"><div class="card-head"><h3>' + title + '</h3></div><table><thead><tr>' +
-      '<th>' + keyName + '</th><th>Calls</th><th class="num">Input</th><th class="num">Output</th><th class="num">Cache read</th>' +
+      '<th>' + keyName + '</th><th>Chamadas</th><th class="num">Entrada</th><th class="num">Saída</th><th class="num">Leitura de cache</th>' +
       '</tr></thead><tbody>';
     for (const r of rows) {
       h += '<tr><td class="cell-main">' + escHtml(String(r[keyName.toLowerCase()] || '')) + '</td>' +
@@ -1608,16 +1608,16 @@ async function loadUsage() {
 
   const anyRows = (data.by_agent || []).length || (data.by_task || []).length;
   if (!anyRows) {
-    tablesEl.innerHTML = emptyState(icon('usage'), 'No usage recorded yet',
-      'Once Sellbird starts making model calls (Claude or Codex), every one is logged here with exact calls and tokens by provider, agent and task.');
+    tablesEl.innerHTML = emptyState(icon('usage'), 'Nenhum uso registrado ainda',
+      'Assim que o Sellbird começar a fazer chamadas de modelo (Claude ou Codex), cada uma será registrada aqui com chamadas e tokens exatos por provedor, agente e tarefa.');
   } else {
     const providers = data.by_provider || [];
     const showProviders = providers.length > 1 || (providers.length === 1 && providers[0].provider !== 'claude');
     tablesEl.innerHTML =
-      (showProviders ? table('By Provider (30 days)', providers, 'Provider') : '') +
-      table('By Agent (30 days)', data.by_agent, 'Agent') +
-      table('By Task (30 days)', data.by_task, 'Task') +
-      table('By Model (30 days)', data.by_model, 'Model');
+      (showProviders ? table('Por provedor (30 dias)', providers, 'Provider') : '') +
+      table('Por agente (30 dias)', data.by_agent, 'Agent') +
+      table('Por tarefa (30 dias)', data.by_task, 'Task') +
+      table('Por modelo (30 dias)', data.by_model, 'Model');
   }
 }
 
@@ -1638,7 +1638,7 @@ async function loadOutbox() {
   if (!data) { desk.innerHTML = offlineState(); list.innerHTML = ''; return; }
   if (data.error) {
     // Never let a failed read pass for "Nothing to review".
-    desk.innerHTML = emptyState(icon('alert'), 'Couldn\'t read the Outbox', escHtml(data.error));
+    desk.innerHTML = emptyState(icon('alert'), 'Não foi possível ler a Caixa de saída', escHtml(data.error));
     list.innerHTML = '';
     return;
   }
@@ -1660,33 +1660,33 @@ async function loadOutbox() {
     (pending.length && !data.paused
       ? (pending.length > pending.filter(p => heldReason(p)).length
         ? '<button class="btn btn-primary btn-sm" onclick="outboxApproveAll()" ' +
-          'title="Emails Sellbird held are left for you to approve one by one">Approve all ' +
-          (pending.length - pending.filter(p => heldReason(p)).length) + '</button>' : '') : '') +
+          'title="E-mails retidos pelo Sellbird ficam para você aprovar um a um">Aprovar todos (' +
+          (pending.length - pending.filter(p => heldReason(p)).length) + ')</button>' : '') : '') +
     (data.paused
       ? '<button class="btn btn-secondary btn-sm" onclick="sendingToggle(\'resume\')">' +
-        'Resume sending</button>'
+        'Retomar envio</button>'
       : '<button class="btn btn-secondary btn-sm" onclick="sendingToggle(\'pause\')">' +
-        'Pause all sending</button>');
+        'Pausar todo o envio</button>');
 
   // The kill switch gets a banner only when it's actually on — a permanent
   // bar for a thing that isn't happening is just noise.
   banner.innerHTML = sendingModeBanner(_sendingMode) + (data.paused
-    ? '<div class="banner bad">' + icon('alert') + '<div><b>Sending is paused</b>' +
-        '<p>' + escHtml(data.paused) + '. Approved mail stays queued until you resume.</p></div></div>'
+    ? '<div class="banner bad">' + icon('alert') + '<div><b>O envio está pausado</b>' +
+        '<p>' + escHtml(data.paused) + '. Os e-mails aprovados ficam na fila até você retomar.</p></div></div>'
     : '');
   // Only once there is mail to warn about: a fresh install sends nothing.
   const anyMail = pending.length || (data.approved || []).length || (data.sent || []).length;
   if (data.compliance_notice && anyMail) {
     banner.innerHTML +=
-      '<div class="banner wait">' + icon('alert') + '<div><b>Add your postal address</b>' +
+      '<div class="banner wait">' + icon('alert') + '<div><b>Adicione seu endereço postal</b>' +
         '<p>' + escHtml(data.compliance_notice) + '</p></div></div>';
   }
 
   desk.innerHTML = pending.length ? renderDesk(pending, _desk.i) :
-    '<div class="card">' + emptyState(icon('check'), 'Nothing to review',
+    '<div class="card">' + emptyState(icon('check'), 'Nada para revisar',
       _sendingMode && _sendingMode.mode === 'autopilot'
-        ? 'Autopilot is on, so Sellbird sends on its own. Anything it holds for you shows up here.'
-        : 'Every draft Sellbird writes lands here first. Approve one and it sends on schedule.') +
+        ? 'O Autopilot está ativo, então o Sellbird envia por conta própria. Qualquer coisa que ele reter para você aparece aqui.'
+        : 'Todo rascunho que o Sellbird escreve chega aqui primeiro. Aprove um e ele é enviado no horário agendado.') +
     '</div>';
 
   const table = (title, rows, cols) => {
@@ -1702,17 +1702,17 @@ async function loadOutbox() {
   };
 
   list.innerHTML =
-    table('Approved &amp; scheduled', data.approved, [
-      ['To', r => r.to_email], ['Step', r => r.step], ['Subject', r => r.subject],
-      ['Sends', r => r.status === 'sending' ? badge(r.status) : escHtml(formatDate(r.send_at)), true, true],
+    table('Aprovados &amp; agendados', data.approved, [
+      ['Para', r => r.to_email], ['Etapa', r => r.step], ['Assunto', r => r.subject],
+      ['Envia', r => r.status === 'sending' ? badge(r.status) : escHtml(formatDate(r.send_at)), true, true],
     ]) +
-    table('Recently sent', data.sent, [
-      ['To', r => r.to_email], ['Step', r => r.step], ['Subject', r => r.subject],
-      ['Sent', r => formatDate(r.sent_at), true],
+    table('Enviados recentemente', data.sent, [
+      ['Para', r => r.to_email], ['Etapa', r => r.step], ['Assunto', r => r.subject],
+      ['Enviado', r => formatDate(r.sent_at), true],
     ]) +
-    table('Didn\'t send', data.failed, [
-      ['To', r => r.to_email], ['Status', r => badge(r.status), false, true],
-      ['Reason', r => r.error, true], ['Updated', r => formatDate(r.updated_at), true],
+    table('Não enviados', data.failed, [
+      ['Para', r => r.to_email], ['Status', r => badge(r.status), false, true],
+      ['Motivo', r => r.error, true], ['Atualizado', r => formatDate(r.updated_at), true],
     ]);
 }
 
@@ -1741,17 +1741,17 @@ function renderDeskContext(ctx) {
   const signals = Object.entries(ctx.signals || {})
     .map(([k, v]) => escHtml(k) + ': <b>' + escHtml(v) + '</b>').join('<br>');
   return '<div class="desk-context">' +
-    row('Company', escHtml(ctx.company)) +
-    row('Website', site) +
-    row('About', escHtml(ctx.description)) +
-    row('Contact', who) +
-    row('Found via', escHtml(Object.prototype.hasOwnProperty.call(CONTACT_SOURCES, ctx.contact_source)
+    row('Empresa', escHtml(ctx.company)) +
+    row('Site', site) +
+    row('Sobre', escHtml(ctx.description)) +
+    row('Contato', who) +
+    row('Encontrado via', escHtml(Object.prototype.hasOwnProperty.call(CONTACT_SOURCES, ctx.contact_source)
       ? CONTACT_SOURCES[ctx.contact_source] : ctx.contact_source)) +
     row('Email', email) +
-    row('Signals', signals) +
-    row('Campaign', ctx.campaign ? escHtml(ctx.campaign) +
-      ' <span class="muted">(how they were found, not a fact about them)</span>' : '') +
-    row('Writer notes', escHtml(ctx.notes)) +
+    row('Sinais', signals) +
+    row('Campanha', ctx.campaign ? escHtml(ctx.campaign) +
+      ' <span class="muted">(como foram encontrados, não um fato sobre eles)</span>' : '') +
+    row('Notas do redator', escHtml(ctx.notes)) +
   '</div>';
 }
 
@@ -1765,52 +1765,52 @@ let _sendingMode = null, _autopilotArmed = false, _modeBusy = false;
 function sendingModeBanner(m) {
   if (!m) return '';
   if (m.mode === 'autopilot') {
-    return '<div class="banner wait mode-banner">' + icon('alert') + '<div><b>Autopilot is on</b>' +
-      '<p>Sellbird sends email on its own. It holds anything that links to a site that isn’t yours or ' +
-      'quotes its own instructions; those wait here' + (m.held ? ' (' + m.held + ' now)' : '') + '.</p></div>' +
+    return '<div class="banner wait mode-banner">' + icon('alert') + '<div><b>O Autopilot está ativo</b>' +
+      '<p>O Sellbird envia e-mails por conta própria. Ele retém qualquer coisa que se ligue a um site que não é seu ou ' +
+      'que cite suas próprias instruções; essas esperam aqui' + (m.held ? ' (' + m.held + ' agora)' : '') + '.</p></div>' +
       '<button class="btn btn-secondary btn-sm" onclick="setSendingMode(\'approval\')"' +
-        (_modeBusy ? ' disabled' : '') + '>Turn off autopilot</button></div>';
+        (_modeBusy ? ' disabled' : '') + '>Desligar Autopilot</button></div>';
   }
   const instantly = m.provider === 'instantly';
-  return '<div class="banner mode-banner">' + icon('check') + '<div><b>Approval mode</b>' +
+  return '<div class="banner mode-banner">' + icon('check') + '<div><b>Modo de aprovação</b>' +
     '<p>' + (instantly
-      ? 'Instantly can’t hold single emails, so campaigns aren’t sent to Instantly until you turn on autopilot.'
-      : 'Every email Sellbird writes waits here until you approve it.') +
-    ' <a href="#" onclick="goTab(\'settings\');return false">About autopilot</a></p></div></div>';
+      ? 'O Instantly não consegue reter e-mails individuais, então campanhas não são enviadas ao Instantly até você ativar o Autopilot.'
+      : 'Todo e-mail que o Sellbird escreve espera aqui até você aprová-lo.') +
+    ' <a href="#" onclick="goTab(\'settings\');return false">Sobre o Autopilot</a></p></div></div>';
 }
 
 function sendingModeCard(m) {
-  if (!m) return '<div class="card muted">Couldn’t read the sending mode.</div>';
+  if (!m) return '<div class="card muted">Não foi possível ler o modo de envio.</div>';
   const auto = m.mode === 'autopilot';
   const instantly = m.provider === 'instantly';
-  const domains = (m.your_domains || []).map(escHtml).join(', ') || 'none yet';
-  let html = '<div class="card mode-card"><h3>Sending mode: ' + (auto ? 'Autopilot' : 'Approval') + '</h3>' +
-    '<p><b>Approval</b> (the default): every email Sellbird writes, first emails, follow-ups and replies, ' +
-      'waits in the Outbox until you approve it.' +
-      (instantly ? ' On Instantly, which can’t hold single emails, that means campaigns aren’t deployed.' : '') + '</p>' +
-    '<p><b>Autopilot</b>: Sellbird sends on its own, on schedule, within your daily limit and quiet hours. ' +
-      'Opt-outs, bounces and Pause all sending work the same. It still holds an email for you when it links ' +
-      'to, or gives an address at, a site that isn’t yours, or quotes Sellbird’s own instructions: text from ' +
-      'websites and replies can try to steer what it writes. The first reply after you undo an opt-out waits too.</p>' +
-    '<p class="muted">Counted as yours: ' + domains + (m.booking_page ? '; your booking page ' + escHtml(m.booking_page) : '') +
-      '. Add others under <code>channels.email.link_domains</code> in <code>' + escHtml(m.file) + '</code>.</p>';
+  const domains = (m.your_domains || []).map(escHtml).join(', ') || 'nenhum ainda';
+  let html = '<div class="card mode-card"><h3>Modo de envio: ' + (auto ? 'Autopilot' : 'Aprovação') + '</h3>' +
+    '<p><b>Aprovação</b> (padrão): todo e-mail que o Sellbird escreve, primeiros e-mails, follow-ups e respostas, ' +
+      'espera na Caixa de saída até você aprová-lo.' +
+      (instantly ? ' No Instantly, que não consegue reter e-mails individuais, isso significa que campanhas não são implantadas.' : '') + '</p>' +
+    '<p><b>Autopilot</b>: o Sellbird envia por conta própria, no horário, dentro do seu limite diário e horários de silêncio. ' +
+      'Descadastros, devoluções e Pausar todo o envio funcionam da mesma forma. Ele ainda retém um e-mail para você quando ele se liga, ' +
+      'ou fornece um endereço em, um site que não é seu, ou cita as próprias instruções do Sellbird: texto de ' +
+      'sites e respostas pode tentar direcionar o que ele escreve. A primeira resposta depois que você desfaz um descadastro também espera.</p>' +
+    '<p class="muted">Contados como seus: ' + domains + (m.booking_page ? '; sua página de agendamento ' + escHtml(m.booking_page) : '') +
+      '. Adicione outros em <code>channels.email.link_domains</code> em <code>' + escHtml(m.file) + '</code>.</p>';
   if (auto) {
-    html += '<div class="convo-actions"><span class="muted">Turning it off works at once: emails autopilot ' +
-      'approved that haven’t gone out come back to the Outbox.' +
-      (instantly ? ' Campaigns already on Instantly keep running until you pause them there.' : '') + '</span>' +
+    html += '<div class="convo-actions"><span class="muted">Desligar funciona imediatamente: e-mails que o Autopilot ' +
+      'aprovou e que ainda não saíram voltam para a Caixa de saída.' +
+      (instantly ? ' Campanhas já no Instantly continuam rodando até você pausá-las lá.' : '') + '</span>' +
       '<button class="btn btn-primary btn-sm" onclick="setSendingMode(\'approval\')"' +
-        (_modeBusy ? ' disabled' : '') + '>Turn off autopilot</button></div>';
+        (_modeBusy ? ' disabled' : '') + '>Desligar Autopilot</button></div>';
   } else if (_autopilotArmed) {
-    html += '<div class="convo-actions mode-confirm"><span class="muted">Approve a batch or two by hand first ' +
-      'and read what Sellbird writes. Type <b>autopilot</b> to turn it on. It starts from Sellbird’s next cycle.</span>' +
-      '<input class="form-input" id="autopilot-confirm" autocomplete="off" aria-label="Type autopilot to confirm" ' +
+    html += '<div class="convo-actions mode-confirm"><span class="muted">Aprove alguns lotes manualmente primeiro ' +
+      'e leia o que o Sellbird escreve. Digite <b>autopilot</b> para ativá-lo. Ele começa no próximo ciclo do Sellbird.</span>' +
+      '<input class="form-input" id="autopilot-confirm" autocomplete="off" aria-label="Digite autopilot para confirmar" ' +
         'oninput="document.getElementById(\'autopilot-go\').disabled = this.value.trim().toLowerCase() !== \'autopilot\'" ' +
         'onkeydown="if (event.key === \'Enter\' && this.value.trim().toLowerCase() === \'autopilot\') setSendingMode(\'autopilot\')">' +
-      '<button class="btn btn-primary btn-sm" id="autopilot-go" disabled onclick="setSendingMode(\'autopilot\')">Turn on autopilot</button>' +
-      '<button class="btn btn-ghost btn-sm" onclick="_autopilotArmed=false;renderSendingModeCard()">Cancel</button></div>';
+      '<button class="btn btn-primary btn-sm" id="autopilot-go" disabled onclick="setSendingMode(\'autopilot\')">Ativar Autopilot</button>' +
+      '<button class="btn btn-ghost btn-sm" onclick="_autopilotArmed=false;renderSendingModeCard()">Cancelar</button></div>';
   } else {
     html += '<div class="convo-actions"><button class="btn btn-secondary btn-sm" ' +
-      'onclick="_autopilotArmed=true;renderSendingModeCard()">Turn on autopilot…</button></div>';
+      'onclick="_autopilotArmed=true;renderSendingModeCard()">Ativar Autopilot…</button></div>';
   }
   return html + '</div>';
 }
@@ -1844,13 +1844,13 @@ async function setSendingMode(mode) {
     if (res && res.success) {
       _autopilotArmed = false;
       showToast(mode === 'autopilot'
-        ? 'Autopilot is on from Sellbird’s next cycle. Held emails still wait for you.'
-        : 'Autopilot is off. Every email waits for you' +
-          (res.requeued ? '; ' + res.requeued + ' queued by autopilot came back to the Outbox.' : '.') +
+        ? 'O Autopilot está ativo a partir do próximo ciclo do Sellbird. E-mails retidos ainda esperam por você.'
+        : 'O Autopilot está desligado. Todo e-mail espera por você' +
+          (res.requeued ? '; ' + res.requeued + ' colocados na fila pelo Autopilot voltaram para a Caixa de saída.' : '.') +
           (_sendingMode && _sendingMode.provider === 'instantly'
-            ? ' Campaigns already on Instantly keep running: pause them in Instantly.' : ''), 'success');
+            ? ' Campanhas já no Instantly continuam rodando: pause-as no Instantly.' : ''), 'success');
     } else {
-      showToast(failMsg(res, 'Couldn’t change the sending mode.'), 'error');
+      showToast(failMsg(res, 'Não foi possível alterar o modo de envio.'), 'error');
     }
   } finally {
     _modeBusy = false;
@@ -1875,7 +1875,7 @@ function renderDesk(items, i) {
     return '<div class="desk-item ' + (n === i ? 'active' : '') + '" onclick="deskGo(' + n + ')">' +
       '<span class="avatar">' + initials(parts[0], parts[1]) + '</span>' +
       '<div class="di-text"><div class="to">' + escHtml(who) +
-        (heldReason(it) ? ' <span class="tag t-bad" title="Sellbird held this instead of sending it">Held</span>' : '') +
+        (heldReason(it) ? ' <span class="tag t-bad" title="O Sellbird reteve este em vez de enviá-lo">Retido</span>' : '') +
         '</div>' +
       '<div class="sub">' + escHtml(it.subject || '(no subject)') + '</div></div>' +
     '</div>';
@@ -1891,41 +1891,41 @@ function renderDesk(items, i) {
         fixedSubject + ' oninput="deskKeep()">' +
       '<textarea id="desk-body" class="desk-edit-body" rows="14" oninput="deskKeep()">' +
         escHtml(unsaved.body) + '</textarea>'
-    : '<div class="subject">' + escHtml(cur.subject || '(no subject)') + '</div>' +
+    : '<div class="subject">' + escHtml(cur.subject || '(sem assunto)') + '</div>' +
       '<div class="body">' + escHtml(cur.body) + '</div>';
   // Cold email leaves with the footer underneath; show it as it will go out.
   // Not added again when the body already ends with it, as in the Sender.
   const added = cur.kind === 'sequence' && !(cur.body || '').trimEnd().endsWith(_desk.footer)
     ? _desk.footer : '';
   const footer = added
-    ? '<div class="desk-footer" title="Added when it sends (compliance in sellbird.yaml)">' +
+    ? '<div class="desk-footer" title="Adicionado quando enviado (compliance em sellbird.yaml)">' +
         escHtml(added) + '</div>' : '';
   const actions = editing
-    ? '<button class="btn btn-primary" onclick="deskSave(' + jsq(cur.id) + ')">Save</button>' +
-      '<button class="btn btn-secondary" onclick="deskEdit(null)">Cancel</button>'
+    ? '<button class="btn btn-primary" onclick="deskSave(' + jsq(cur.id) + ')">Salvar</button>' +
+      '<button class="btn btn-secondary" onclick="deskEdit(null)">Cancelar</button>'
     : '<button class="btn btn-primary" onclick="outboxAct(' + jsq(cur.id) + ',\'approve\')">' +
-        'Approve <kbd>A</kbd></button>' +
+        'Aprovar <kbd>A</kbd></button>' +
       '<button class="btn btn-secondary" onclick="deskEdit(' + jsq(cur.id) + ')">' +
-        'Edit <kbd>E</kbd></button>' +
+        'Editar <kbd>E</kbd></button>' +
       '<button class="btn btn-secondary" onclick="outboxAct(' + jsq(cur.id) + ',\'reject\')">' +
-        'Reject <kbd>R</kbd></button>';
+        'Rejeitar <kbd>R</kbd></button>';
 
   return '<div class="desk">' +
     '<div class="desk-list">' + rail + '</div>' +
     '<div class="desk-pane">' +
-      '<div class="to-line">To <b>' + escHtml(cur.to_email) + '</b>' +
-        '<span class="tag">' + (cur.kind === 'reply' ? 'Reply' : 'Email ' + escHtml(String(cur.step))) + '</span>' +
-        '<span class="muted">sends ' + formatDate(cur.send_at) + '</span></div>' +
+      '<div class="to-line">Para <b>' + escHtml(cur.to_email) + '</b>' +
+        '<span class="tag">' + (cur.kind === 'reply' ? 'Resposta' : 'E-mail ' + escHtml(String(cur.step))) + '</span>' +
+        '<span class="muted">envia ' + formatDate(cur.send_at) + '</span></div>' +
       renderDeskContext(cur.context) +
       (heldReason(cur)
-        ? '<div class="banner wait desk-held">' + icon('alert') + '<div><b>Sellbird held this instead of sending it</b>' +
-          '<div>' + escHtml(heldReason(cur)) + '. Read it before approving: text from a website or an ' +
-          'email can try to steer what Sellbird writes.</div></div></div>'
+        ? '<div class="banner wait desk-held">' + icon('alert') + '<div><b>O Sellbird reteve este e-mail em vez de enviá-lo</b>' +
+          '<div>' + escHtml(heldReason(cur)) + '. Leia antes de aprovar: texto de um site ou ' +
+          'e-mail pode tentar direcionar o que o Sellbird escreve.</div></div></div>'
         : '') +
       draft + footer +
       '<div class="desk-actions">' + actions +
         '<span class="muted" style="font-size:12px;margin-left:auto">' +
-          (i + 1) + ' of ' + items.length + '</span>' +
+          (i + 1) + ' de ' + items.length + '</span>' +
       '</div>' +
     '</div></div>';
 }
@@ -1949,14 +1949,14 @@ function deskKeep() {
 // stored version of it: Save or Cancel first.
 function deskBusy() {
   if (!_desk.editing) return false;
-  showToast('Save or cancel your edit first.', 'error');
+  showToast('Salve ou cancele sua edição primeiro.', 'error');
   return true;
 }
 
 async function deskSave(id) {
   const subject = document.getElementById('desk-subject').value.trim();
   const body = document.getElementById('desk-body').value.trim();
-  if (!subject || !body) { showToast('Subject and body are both required.', 'error'); return; }
+  if (!subject || !body) { showToast('Assunto e corpo são obrigatórios.', 'error'); return; }
   let data = null;
   try {
     const r = await authFetch('/api/outbox/' + encodeURIComponent(id) + '/edit', {
@@ -1969,10 +1969,10 @@ async function deskSave(id) {
   if (data && data.success) {
     _desk.editing = null;
     _desk.unsaved = null;
-    showToast('Saved. Still waiting for your approval.', 'success');
+    showToast('Salvo. Ainda esperando sua aprovação.', 'success');
     loadOutbox();
   } else {
-    showToast((data && data.message) || 'Save failed.', 'error');
+    showToast((data && data.message) || 'Falha ao salvar.', 'error');
   }
 }
 
@@ -2007,25 +2007,25 @@ document.addEventListener('keydown', e => {
 async function outboxAct(id, action) {
   if (deskBusy()) return;
   const data = await api('/api/outbox/' + encodeURIComponent(id) + '/' + action, {method: 'POST'});
-  if (data && data.success) showToast(action === 'approve' ? 'Approved — will send on schedule.' : 'Rejected.', 'success');
-  else showToast(failMsg(data, 'Action failed.'), 'error');
+  if (data && data.success) showToast(action === 'approve' ? 'Aprovado — será enviado no horário agendado.' : 'Rejeitado.', 'success');
+  else showToast(failMsg(data, 'Falha na ação.'), 'error');
   loadOutbox();
 }
 
 async function outboxApproveAll() {
   if (deskBusy()) return;
   const data = await api('/api/outbox/approve-all', {method: 'POST'});
-  if (data && data.success) showToast('Approved ' + data.approved + ' email(s).' + (data.held
-    ? ' ' + data.held + ' Sellbird held ' + (data.held === 1 ? 'is' : 'are') + ' left for you to read and approve one by one.'
+  if (data && data.success) showToast('Aprovado' + (data.approved === 1 ? '' : 's') + ' ' + data.approved + ' e-mail(s).' + (data.held
+    ? ' ' + data.held + ' retido' + (data.held === 1 ? '' : 's') + ' pelo Sellbird ' + (data.held === 1 ? 'é' : 'são') + ' deixado' + (data.held === 1 ? '' : 's') + ' para você ler e aprovar um a um.'
     : ''), 'success');
-  else showToast(failMsg(data, 'Approve-all failed.'), 'error');
+  else showToast(failMsg(data, 'Falha ao aprovar todos.'), 'error');
   loadOutbox();
 }
 
 async function sendingToggle(action) {
   const data = await api('/api/sending/' + action, {method: 'POST'});
-  if (data && data.success) showToast(action === 'pause' ? 'Sending paused.' : 'Sending resumed.', 'success');
-  else showToast(failMsg(data, action === 'pause' ? 'Could not pause sending.' : 'Could not resume sending.'), 'error');
+  if (data && data.success) showToast(action === 'pause' ? 'Envio pausado.' : 'Envio retomado.', 'success');
+  else showToast(failMsg(data, action === 'pause' ? 'Não foi possível pausar o envio.' : 'Não foi possível retomar o envio.'), 'error');
   loadOutbox();
 }
 
@@ -2039,9 +2039,9 @@ async function loadCompanies() {
   if (!data) { el.innerHTML = offlineState(); return; }
   _companies = data;
   if (!data.length) {
-    el.innerHTML = emptyState(icon('companies'), 'No companies yet',
-      'Confirm your <b>Signals</b>, then find businesses on the <b>Discover</b> tab. ' +
-      'OpenStreetMap is free and needs no account.');
+    el.innerHTML = emptyState(icon('companies'), 'Nenhuma empresa ainda',
+      'Confirme seus <b>Sinais</b>, depois encontre empresas na aba <b>Descobrir</b>. ' +
+      'O OpenStreetMap é grátis e não precisa de conta.');
     return;
   }
   renderCompaniesPage(_companiesPage);
@@ -2053,10 +2053,10 @@ function renderCompaniesPage(page) {
   const pages = Math.max(1, Math.ceil(data.length / COMPANIES_PER_PAGE));
   _companiesPage = Math.min(Math.max(0, page), pages - 1);
   const start = _companiesPage * COMPANIES_PER_PAGE;
-  let html = '<div class="table-card"><table class="nowrap"><thead><tr><th>Company</th>' +
-    '<th title="Company fit, 0-100: sector, decision maker, reachability, buying signal. Hover a score for why.">Fit</th>' +
-    '<th title="Hover a status for why the company was or wasn\'t contacted">Status</th>' +
-    '<th>Industry</th><th>Location</th><th class="num">Contacts</th><th>Added</th></tr></thead><tbody>';
+  let html = '<div class="table-card"><table class="nowrap"><thead><tr><th>Empresa</th>' +
+    '<th title="Encaixe da empresa, 0-100: setor, decisor, facilidade de contato, sinal de compra. Passe o mouse sobre um número para ver o motivo.">Encaixe</th>' +
+    '<th title="Passe o mouse sobre um status para ver por que a empresa foi ou não contatada">Status</th>' +
+    '<th>Indústria</th><th>Localização</th><th class="num">Contatos</th><th>Adicionado</th></tr></thead><tbody>';
   data.slice(start, start + COMPANIES_PER_PAGE).forEach((c, j) => {
     const i = start + j;
     const website = c.website || (c.domain ? 'https://' + c.domain : '');
@@ -2077,14 +2077,14 @@ function renderCompaniesPage(page) {
   });
   const pager = pages > 1
     ? ' &nbsp; <button class="btn btn-ghost btn-sm" ' + (_companiesPage === 0 ? 'disabled ' : '') +
-        'onclick="renderCompaniesPage(' + (_companiesPage - 1) + ')">&larr; Prev</button> ' +
-      'Page ' + (_companiesPage + 1) + ' of ' + pages +
+        'onclick="renderCompaniesPage(' + (_companiesPage - 1) + ')">&larr; Anterior</button> ' +
+      'Página ' + (_companiesPage + 1) + ' de ' + pages +
       ' <button class="btn btn-ghost btn-sm" ' + (_companiesPage >= pages - 1 ? 'disabled ' : '') +
-        'onclick="renderCompaniesPage(' + (_companiesPage + 1) + ')">Next &rarr;</button>'
+        'onclick="renderCompaniesPage(' + (_companiesPage + 1) + ')">Próxima &rarr;</button>'
     : '';
   el.innerHTML = html + '</tbody></table></div>' +
     '<div class="table-foot">' + (start + 1) + '–' + Math.min(start + COMPANIES_PER_PAGE, data.length) +
-    ' of ' + data.length + ' compan' + (data.length === 1 ? 'y' : 'ies') + pager + '</div>';
+    ' de ' + data.length + ' empresa' + (data.length === 1 ? '' : 's') + pager + '</div>';
 }
 
 // Basic facts about one company, above its contacts: where it came from,
@@ -2113,22 +2113,22 @@ function companyInfoCard(company, profile) {
   const shown = new Set(['DECISION_MAKER_TITLE', 'CONTACT_FOUND', 'CONTACT_FORM_URL', 'HIRING_ROLE', 'FOUND_IN_SERP', 'TECH_STACK']);
   const other = Object.values(latest).filter(o => !shown.has(o.signal_code));
   let html = '<div class="card" style="margin-bottom:16px"><div class="card-head"><h3>' + escHtml(c.name || c.domain) + '</h3>' +
-    '<span class="meta">' + (typeof company.fit === 'number' ? 'Fit ' + company.fit + ' / 100' : '') + '</span></div>' +
+    '<span class="meta">' + (typeof company.fit === 'number' ? 'Encaixe ' + company.fit + ' / 100' : '') + '</span></div>' +
     '<table><tbody>' +
-    row('Website', link(website, c.domain || website)) +
-    row('Sector', escHtml(c.industry)) +
-    row('Area', escHtml(c.location)) +
-    row('Why selected', escHtml(reg.why_selected || (company.fit_reasons || []).join(' · '))) +
+    row('Site', link(website, c.domain || website)) +
+    row('Setor', escHtml(c.industry)) +
+    row('Região', escHtml(c.location)) +
+    row('Por que foi selecionada', escHtml(reg.why_selected || (company.fit_reasons || []).join(' · '))) +
     row('Status', '<b>' + escHtml(reg.status || company.register_status || '') + '</b>' +
       (reg.why_not_contacted || company.register_why ? ' — ' + escHtml(reg.why_not_contacted || company.register_why) : '')) +
-    row('People named on site', list(people, 8)) +
-    row('Contact form', form ? link(form.value_text, form.value_text) : '') +
-    row('Hiring', list(by('HIRING_ROLE'), 6)) +
-    row('Tech on website', escHtml(by('TECH_STACK').map(o => o.value_text).slice(0, 1).join(''))) +
-    row('Other signals', other.slice(0, 8).map(o => escHtml(o.label) + ': ' +
+    row('Pessoas citadas no site', list(people, 8)) +
+    row('Formulário de contato', form ? link(form.value_text, form.value_text) : '') +
+    row('Contratações', list(by('HIRING_ROLE'), 6)) +
+    row('Tecnologia no site', escHtml(by('TECH_STACK').map(o => o.value_text).slice(0, 1).join(''))) +
+    row('Outros sinais', other.slice(0, 8).map(o => escHtml(o.label) + ': ' +
       escHtml(o.value_text || String(o.value_num))).join('<br>')) +
-    row('Found via', c.source_url ? link(c.source_url, 'search result') + ' · ' + escHtml(c.source || '') : escHtml(c.source || '')) +
-    row('First found', escHtml((c.created_at || '').slice(0, 10))) +
+    row('Encontrado via', c.source_url ? link(c.source_url, 'resultado de busca') + ' · ' + escHtml(c.source || '') : escHtml(c.source || '')) +
+    row('Encontrado primeiro em', escHtml((c.created_at || '').slice(0, 10))) +
     '</tbody></table></div>';
   return html;
 }
@@ -2143,13 +2143,13 @@ async function showCompanyContacts(index) {
     api('/api/companies/' + encodeURIComponent(company.id) + '/profile'),
   ]);
   let html = '<button class="btn btn-ghost btn-sm" onclick="loadCompanies()" style="margin-bottom:12px">' +
-    '&larr; All companies</button>' + companyInfoCard(company, profile) +
-    '<div class="card flush"><div class="card-head"><h3>Contacts</h3>' +
+    '&larr; Todas as empresas</button>' + companyInfoCard(company, profile) +
+    '<div class="card flush"><div class="card-head"><h3>Contatos</h3>' +
     '<span class="meta">' + escHtml([company.industry, company.location].filter(Boolean).join(' · ')) + '</span></div>';
   if (!data || !data.length) {
-    html += '<div class="empty"><div class="copy">No contacts found at this company yet.</div></div></div>';
+    html += '<div class="empty"><div class="copy">Nenhum contato encontrado nesta empresa ainda.</div></div></div>';
   } else {
-    html += '<table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>LinkedIn</th><th>Status</th><th>Source</th></tr></thead><tbody>';
+    html += '<table><thead><tr><th>Nome</th><th>Email</th><th>Telefone</th><th>LinkedIn</th><th>Status</th><th>Origem</th></tr></thead><tbody>';
     for (const p of data) {
       const phoneIcon = p.phone_verified ? ' <span class="muted">&#10003;</span>' : '';
       html += '<tr><td><div class="cell-row"><span class="avatar">' + initials(p.first_name, p.last_name) + '</span>' +
@@ -2157,7 +2157,7 @@ async function showCompanyContacts(index) {
           '<span class="cell-sub">' + escHtml(p.title) + '</span></div></div></td>' +
         '<td>' + escHtml(p.email) + emailTag(p) + '</td>' +
         '<td>' + escHtml(p.phone) + phoneIcon + '</td>' +
-        '<td>' + (safeHref(p.linkedin_url) ? '<a href="' + safeHref(p.linkedin_url) + '" target="_blank" rel="noopener noreferrer">Profile</a>' : '') + '</td>' +
+        '<td>' + (safeHref(p.linkedin_url) ? '<a href="' + safeHref(p.linkedin_url) + '" target="_blank" rel="noopener noreferrer">Perfil</a>' : '') + '</td>' +
         '<td>' + badge(p.status) + '</td><td class="muted">' + sourceLabel(p.source) + '</td></tr>';
     }
     html += '</tbody></table></div>';
@@ -2173,30 +2173,30 @@ async function submitFeedback(entityType, entityId, promptText) {
     body: JSON.stringify({entity_type: entityType, entity_id: entityId, comment: comment})
   });
   if (data && data.success) showToast(entityType === 'campaign'
-    ? 'Saved. Sellbird follows it in the emails it writes from now on.'
-    : 'Saved. Sellbird uses it if it writes this person\'s first email (Gmail, SMTP or Microsoft 365).', 'success');
-  else showToast((data && data.message) || 'Could not save feedback.', 'error');
+    ? 'Salvo. O Sellbird segue isso nos e-mails que escreve a partir de agora.'
+    : 'Salvo. O Sellbird usa isso se escrever o primeiro e-mail desta pessoa (Gmail, SMTP ou Microsoft 365).', 'success');
+  else showToast((data && data.message) || 'Não foi possível salvar o feedback.', 'error');
 }
 
 function fbProspect(i) {
   const p = _prospects[i];
-  if (p) submitFeedback('contact', p.id, 'Anything Sellbird should know before writing to this person?');
+  if (p) submitFeedback('contact', p.id, 'Alguma coisa que o Sellbird deveria saber antes de escrever para esta pessoa?');
 }
 
 function fbCampaign(i) {
   const c = _campaigns[i];
-  if (c) submitFeedback('campaign', c.id, 'What should Sellbird do differently in the emails it writes next? (e.g. "shorter; don\'t mention reviews")');
+  if (c) submitFeedback('campaign', c.id, 'O que o Sellbird deveria fazer diferente nos e-mails que escrever a seguir? (ex.: "mais curto; não mencionar avaliações")');
 }
 
 // Search and status filter live outside the table, so the 15-second refresh
 // re-renders rows without losing what you typed.
 let _contactQuery = '', _contactFilter = 'all';
 const CONTACT_FILTERS = [
-  ['all', 'All', null],
-  ['todo', 'To write', ['new', 'queued']],
-  ['contacted', 'Contacted', ['contacted']],
-  ['replied', 'Replied', ['replied', 'interested', 'meeting']],
-  ['closed', 'Closed out', null],
+  ['all', 'Todos', null],
+  ['todo', 'Para escrever', ['new', 'queued']],
+  ['contacted', 'Contatado', ['contacted']],
+  ['replied', 'Respondeu', ['replied', 'interested', 'meeting']],
+  ['closed', 'Encerrado', null],
 ];
 
 async function loadProspects() {
@@ -2205,16 +2205,16 @@ async function loadProspects() {
   if (!data) { el.innerHTML = offlineState(); return; }
   _prospects = data;
   if (!data.length) {
-    el.innerHTML = emptyState(icon('contacts'), 'No contacts yet',
-      'Sellbird hasn\'t found any prospects. Once it\'s running, the Scout agent searches the web for people matching your ideal customer profile in <b>sellbird.yaml</b>.');
+    el.innerHTML = emptyState(icon('contacts'), 'Nenhum contato ainda',
+      'O Sellbird ainda não encontrou nenhum prospect. Assim que estiver rodando, o agente Scout busca na web por pessoas que correspondem ao seu perfil de cliente ideal em <b>sellbird.yaml</b>.');
     return;
   }
   if (!document.getElementById('contact-rows')) {
     el.innerHTML = '<div class="toolbar">' +
       '<label class="search">' + icon('discover') +
-        '<input class="form-input" id="contact-search" type="search" placeholder="Search name, company, email" ' +
-        'aria-label="Search contacts" oninput="_contactQuery=this.value;renderContacts()"></label>' +
-      '<div class="segmented" id="contact-filters" role="group" aria-label="Filter by status"></div>' +
+        '<input class="form-input" id="contact-search" type="search" placeholder="Buscar nome, empresa, e-mail" ' +
+        'aria-label="Buscar contatos" oninput="_contactQuery=this.value;renderContacts()"></label>' +
+      '<div class="segmented" id="contact-filters" role="group" aria-label="Filtrar por status"></div>' +
       '</div><div id="contact-rows"></div>';
     // A rebuild after an offline blip must show the search still applied.
     document.getElementById('contact-search').value = _contactQuery;
@@ -2245,12 +2245,12 @@ function renderContacts() {
 
   const rows = _prospects.map((p, i) => [p, i]).filter(([p]) => contactMatches(p, _contactFilter) && found(p));
   if (!rows.length) {
-    rowsEl.innerHTML = '<div class="table-card">' + emptyState(icon('discover'), 'No matches',
-      'Nothing matches that search and filter.') + '</div>';
+    rowsEl.innerHTML = '<div class="table-card">' + emptyState(icon('discover'), 'Nenhum resultado',
+      'Nada corresponde a essa busca e filtro.') + '</div>';
     return;
   }
-  let html = '<div class="table-card"><table class="nowrap"><thead><tr><th>Name</th><th>Company</th><th>Email</th>' +
-    '<th>Score</th><th>Status</th><th>Source</th><th>Added</th><th></th></tr></thead><tbody>';
+  let html = '<div class="table-card"><table class="nowrap"><thead><tr><th>Nome</th><th>Empresa</th><th>Email</th>' +
+    '<th>Pontuação</th><th>Status</th><th>Origem</th><th>Adicionado</th><th></th></tr></thead><tbody>';
   for (const [p, i] of rows) {
     html += '<tr><td><div class="cell-row"><span class="avatar">' + initials(p.first_name, p.last_name) + '</span>' +
         '<div class="cell-stack"><span class="cell-main">' + escHtml(p.first_name) + ' ' + escHtml(p.last_name) + '</span>' +
@@ -2258,7 +2258,7 @@ function renderContacts() {
       '<td>' + escHtml(p.company) + '</td>' +
       '<td><div class="cell-stack"><span>' + escHtml(p.email) + '</span>' +
         '<span class="cell-sub">' + [emailTag(p).trim(), p.phone ? escHtml(p.phone) +
-          (p.phone_verified ? ' <span class="verified" title="Phone verified">&#10003;</span>' : '') : '']
+          (p.phone_verified ? ' <span class="verified" title="Telefone verificado">&#10003;</span>' : '') : '']
           .filter(Boolean).join(' · ') + '</span>' +
         '</div></td>' +
       '<td>' + (p.score || p.score === 0 ? meterHtml(p.score) : '') + '</td>' +
@@ -2267,14 +2267,14 @@ function renderContacts() {
       '<td class="muted" style="white-space:nowrap">' + relTime(p.created_at) + '</td>' +
       '<td><div class="cell-row">' + (p.status === 'opted_out' || p.opt_out_undone || _optOut.id === p.id
         ? '<button class="btn btn-ghost btn-sm" onclick="toggleOptOut(' + i + ')" ' +
-          'aria-expanded="' + (_optOut.id === p.id) + '" title="What made Sellbird stop emailing them">' +
-          (p.status === 'opted_out' ? 'Why?' : 'Opt-out history') + '</button>' : '') +
+          'aria-expanded="' + (_optOut.id === p.id) + '" title="O que fez o Sellbird parar de enviar e-mails para esta pessoa">' +
+          (p.status === 'opted_out' ? 'Por quê?' : 'Histórico de descadastro') + '</button>' : '') +
         '<button class="btn btn-ghost btn-sm row-action" onclick="fbProspect(' + i + ')" ' +
-        'title="Leave feedback on this contact">Feedback</button></div></td></tr>';
+        'title="Deixar feedback sobre este contato">Feedback</button></div></td></tr>';
     if (_optOut.id === p.id) html += '<tr class="detail-row"><td colspan="8">' + optOutPanel(p) + '</td></tr>';
   }
   rowsEl.innerHTML = html + '</tbody></table></div>' +
-    '<div class="table-foot">' + rows.length + ' of ' + _prospects.length + ' contacts</div>';
+    '<div class="table-foot">' + rows.length + ' de ' + _prospects.length + ' contatos</div>';
 }
 
 // Why someone is opted out, and undoing it. Sellbird never moves anyone off
@@ -2282,10 +2282,10 @@ function renderContacts() {
 // something else) needs you: see what triggered it, then undo it here.
 let _optOut = {id: null, data: null, armed: false, busy: false};
 const OPT_OUT_RULES = {
-  phrase: 'Matched an opt-out phrase',
-  no_thanks: 'Matched “no thanks”',
-  only_words: 'Their reply was only an opt-out word',
-  model: 'The model’s judgement (no phrase matched)',
+  phrase: 'Correspondeu a uma frase de descadastro',
+  no_thanks: 'Correspondeu a “não, obrigado”',
+  only_words: 'A resposta era apenas uma palavra de descadastro',
+  model: 'Avaliação do modelo (nenhuma frase correspondeu)',
 };
 
 async function toggleOptOut(i) {
@@ -2303,38 +2303,38 @@ async function toggleOptOut(i) {
 function optOutPanel(p) {
   const d = _optOut.data;
   const name = escHtml([p.first_name, p.last_name].filter(Boolean).join(' ') || p.email);
-  if (!d) return '<div class="optout-panel muted">Loading…</div>';
-  if (d.error) return '<div class="optout-panel muted">Couldn’t load the opt-out record. Try again.</div>';
-  let html = '<div class="optout-panel"><h4>' + (d.opted_out ? 'Why Sellbird stopped emailing ' : 'Opt-out history for ') +
+  if (!d) return '<div class="optout-panel muted">Carregando…</div>';
+  if (d.error) return '<div class="optout-panel muted">Não foi possível carregar o registro de descadastro. Tente novamente.</div>';
+  let html = '<div class="optout-panel"><h4>' + (d.opted_out ? 'Por que o Sellbird parou de enviar e-mails para ' : 'Histórico de descadastro de ') +
     name + '</h4>';
   if (d.recorded) {
     html += '<p>' + escHtml(d.why) + '</p><div class="optout-meta">' +
       escHtml(own(OPT_OUT_RULES, d.rule) || d.rule || '') + (d.at ? ' · ' + relTime(d.at) : '') + '</div>';
   } else if (d.opted_out || (d.history || []).length) {
-    html += '<p>They opted out before Sellbird kept a record of why.' +
-      (d.message ? ' The last thing they wrote:' : ' There’s no reply from them on file.') + '</p>';
+    html += '<p>A pessoa se descadastrou antes do Sellbird manter um registro do motivo.' +
+      (d.message ? ' A última coisa que escreveram:' : ' Não há resposta registrada dela.') + '</p>';
   }
   if (d.message) {
-    html += '<div class="thread-msg received"><div class="sender">' + escHtml(p.first_name || 'They') +
+    html += '<div class="thread-msg received"><div class="sender">' + escHtml(p.first_name || 'A pessoa') +
       (d.at ? ' &middot; ' + relTime(d.at) : '') + '</div>' + escHtml(d.message) + '</div>';
   }
   const undone = (d.history || []).filter(h => h.action === 'opt_out_undone');
   if (undone.length) {
-    html += '<div class="optout-meta">' + undone.map(h => 'You undid an opt-out ' + relTime(h.at)).join(' · ') + '</div>';
+    html += '<div class="optout-meta">' + undone.map(h => 'Você desfez um descadastro ' + relTime(h.at)).join(' · ') + '</div>';
   }
   if (!d.opted_out) {
-    html += '<div class="convo-actions"><span class="muted">Not opted out now (' +
+    html += '<div class="convo-actions"><span class="muted">Não está descadastrado agora (' +
       escHtml(statusMeta(d.status).label) + ').</span></div>';
   } else if (_optOut.armed) {
-    html += '<div class="convo-actions"><span class="muted">Sellbird will treat them as having replied. Nothing is ' +
-      'sent automatically, emails the opt-out cancelled stay cancelled, and Sellbird’s answer to their next ' +
-      'reply waits for your approval, even on autopilot. Only undo it if they didn’t mean to opt out.</span>' +
+    html += '<div class="convo-actions"><span class="muted">O Sellbird vai tratar como se a pessoa tivesse respondido. Nada é ' +
+      'enviado automaticamente, os e-mails que o descadastro cancelou permanecem cancelados, e a resposta do Sellbird ao próximo ' +
+      'reply dela espera por sua aprovação, mesmo no Autopilot. Só desfaça se a pessoa não quis se descadastrar.</span>' +
       '<button class="btn btn-primary btn-sm" onclick="undoOptOut()"' + (_optOut.busy ? ' disabled' : '') +
-        '>Confirm undo</button>' +
-      '<button class="btn btn-ghost btn-sm" onclick="_optOut.armed=false;renderContacts()">Cancel</button></div>';
+        '>Confirmar desfazer</button>' +
+      '<button class="btn btn-ghost btn-sm" onclick="_optOut.armed=false;renderContacts()">Cancelar</button></div>';
   } else {
     html += '<div class="convo-actions"><button class="btn btn-secondary btn-sm" ' +
-      'onclick="_optOut.armed=true;renderContacts()">Undo opt-out</button></div>';
+      'onclick="_optOut.armed=true;renderContacts()">Desfazer descadastro</button></div>';
   }
   return html + '</div>';
 }
@@ -2348,8 +2348,8 @@ async function undoOptOut() {
     method: 'POST', headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({confirm: true}),
   });
-  if (res && res.success) showToast('Opt-out undone. They’re marked as replied; Sellbird sends nothing on its own.', 'success');
-  else showToast(failMsg(res, 'Could not undo the opt-out. Try again.'), 'error');
+  if (res && res.success) showToast('Descadastro desfeito. A pessoa foi marcada como tendo respondido; o Sellbird não envia nada por conta própria.', 'success');
+  else showToast(failMsg(res, 'Não foi possível desfazer o descadastro. Tente novamente.'), 'error');
   if (_optOut.id !== id) return;
   _optOut.armed = false;
   _optOut.busy = false;
@@ -2409,7 +2409,7 @@ async function openInGmail(ci, si, ri) {
   // only gets the draft once the send is recorded.
   const w = window.open('', '_blank');
   if (!w) {
-    showToast('Your browser blocked the Gmail tab. Allow pop-ups for this page and click again.', 'error');
+    showToast('Seu navegador bloqueou a aba do Gmail. Permita pop-ups para esta página e clique novamente.', 'error');
     return;
   }
   w.opener = null;
@@ -2420,7 +2420,7 @@ async function openInGmail(ci, si, ri) {
   try { if (!claimed) claimed = await markSent(ci, ri, true); } finally { _gmailBusy = false; }
   if (!claimed) { w.close(); return; }
   w.location.href = url;
-  if (left) showToast('This draft still has a {{placeholder}} in it. Fix it in Gmail before sending.', 'error');
+  if (left) showToast('Este rascunho ainda tem um {{placeholder}} nele. Corrija no Gmail antes de enviar.', 'error');
 }
 
 async function markSent(ci, ri, sent) {
@@ -2436,9 +2436,9 @@ async function markSent(ci, ri, sent) {
     res = await resp.json();
   } catch {}
   const ok = !!(res && res.success);
-  if (!ok) showToast((res && res.message) || 'Could not save that. Try again.', 'error');
-  else if (!sent && res.sent) showToast('They already replied, so this stays marked as sent.');
-  else showToast(sent ? 'Marked as sent by you.' : 'Unmarked.', 'success');
+  if (!ok) showToast((res && res.message) || 'Não foi possível salvar isso. Tente novamente.', 'error');
+  else if (!sent && res.sent) showToast('A pessoa já respondeu, então isso permanece marcado como enviado.');
+  else showToast(sent ? 'Marcado como enviado por você.' : 'Desmarcado.', 'success');
   loadCampaigns();
   // True only when this call changed it: a status means they replied or
   // opted out, 'already' means another click or tab got there first.
@@ -2451,14 +2451,14 @@ function campaignProgress(c) {
   if (!rs.length) return '';
   const count = st => rs.filter(r => st.includes(r.status)).length;
   const parts = [
-    ['Contacted', count(['contacted']), 'c-accent'],
-    ['Replied', count(['replied']), 'c-active'],
-    ['Interested', count(['interested', 'meeting']), 'c-good'],
-    ['Waiting', count(['new', 'queued']), 'c-accent-soft'],
+    ['Contatado', count(['contacted']), 'c-accent'],
+    ['Respondeu', count(['replied']), 'c-active'],
+    ['Interessado', count(['interested', 'meeting']), 'c-good'],
+    ['Esperando', count(['new', 'queued']), 'c-accent-soft'],
   ];
   const closed = rs.length - parts.reduce((x, p) => x + p[1], 0);
-  if (closed > 0) parts.push(['Closed out', closed, 'c-idle']);
-  return '<div class="campaign-progress"><div class="bar" role="img" aria-label="Where this campaign\'s people stand">' +
+  if (closed > 0) parts.push(['Encerrado', closed, 'c-idle']);
+  return '<div class="campaign-progress"><div class="bar" role="img" aria-label="Onde as pessoas desta campanha estão">' +
     parts.filter(p => p[1]).map(p => '<span class="' + p[2] + '" style="width:' + (100 * p[1] / rs.length) +
       '%" title="' + p[0] + ': ' + p[1] + '"></span>').join('') + '</div>' +
     '<div class="campaign-legend">' + parts.filter(p => p[1]).map(p =>
@@ -2471,8 +2471,8 @@ async function loadCampaigns() {
   if (!data) { el.innerHTML = offlineState(); return; }
   _campaigns = data;
   if (!data.length) {
-    el.innerHTML = emptyState(icon('campaigns'), 'No campaigns yet',
-      'The Writer agent hasn\'t drafted any sequences. It kicks in automatically once Sellbird has scored prospects to write for.');
+    el.innerHTML = emptyState(icon('campaigns'), 'Nenhuma campanha ainda',
+      'O agente Writer ainda não escreveu nenhuma sequência. Ele entra em ação automaticamente assim que o Sellbird tiver pontuado prospects para escrever.');
     return;
   }
   let html = '';
@@ -2485,13 +2485,13 @@ async function loadCampaigns() {
         if (r.sent_by_hand) {
           const tick = '<label style="display:inline-flex;align-items:center;gap:4px;font-size:13px;cursor:pointer">' +
             '<input type="checkbox" checked onchange="markSent(' + i + ',' + ri + ',this.checked)"> ' +
-            '&#10003; Sent by you</label>';
+            '&#10003; Enviado por você</label>';
           if (s === 0) return '<span class="rcpt-who">' + escHtml(r.email) + '</span>' + tick;
           // Follow-ups are the user's too: Sellbird never emails someone they emailed.
           return '<span class="rcpt-who">' + escHtml(r.email) + '</span>' +
             '<button class="btn btn-secondary btn-sm" onclick="openInGmail(' + i + ',' + s + ',' + ri + ')">' +
-            'Open in Gmail</button>' +
-            '<span class="muted" style="font-size:12px">Sellbird won\'t send follow-ups to people you emailed yourself.</span>';
+            'Abrir no Gmail</button>' +
+            '<span class="muted" style="font-size:12px">O Sellbird não vai enviar follow-ups para pessoas que você já contatou por conta própria.</span>';
         }
         if (s !== 0) return '';
         if (!r.can_send_by_hand) {
@@ -2499,19 +2499,19 @@ async function loadCampaigns() {
           return r.can_mark_sent
             ? '<label class="muted" style="display:inline-flex;align-items:center;gap:4px;font-size:12px;cursor:pointer">' +
               '<input type="checkbox" onchange="markSent(' + i + ',' + ri + ',this.checked)"> ' +
-              'I already emailed ' + escHtml(r.email) + ' myself</label>'
+              'Já enviei e-mail para ' + escHtml(r.email) + ' eu mesmo</label>'
             : '';
         }
         const risky = r.email_status === 'risky'
-          ? ' <span class="mini t-waiting">Catch-all, may bounce</span>' : '';
+          ? ' <span class="mini t-waiting">Catch-all, pode ser devolvido</span>' : '';
         return '<span class="rcpt-who">' + escHtml(r.email) + risky + '</span>' +
           '<button class="btn btn-secondary btn-sm" onclick="openInGmail(' + i + ',' + s + ',' + ri + ')">' +
-          'Open in Gmail</button>' +
-          '<label><input type="checkbox" onchange="markSent(' + i + ',' + ri + ',this.checked)"> Mark as sent</label>'
+          'Abrir no Gmail</button>' +
+          '<label><input type="checkbox" onchange="markSent(' + i + ',' + ri + ',this.checked)"> Marcar como enviado</label>'
       }).filter(Boolean).map(x => '<div class="rcpt">' + x + '</div>').join('');
       stepsHtml += '<div class="email-step"><span class="step-dot">' + escHtml(String(step.step || '?')) + '</span>' +
-        '<div><div class="step-num">' + (s === 0 ? 'First email' : 'Follow-up') +
-        (step.delay_days ? ' &middot; ' + escHtml(String(step.delay_days)) + ' days after the last' : '') + '</div>' +
+        '<div><div class="step-num">' + (s === 0 ? 'Primeiro e-mail' : 'Follow-up') +
+        (step.delay_days ? ' &middot; ' + escHtml(String(step.delay_days)) + ' dias após o anterior' : '') + '</div>' +
         '<div class="subject">' + escHtml(step.subject) + '</div>' +
         '<div class="body">' + escHtml(step.body) + '</div>' +
         (sendBtns ? '<div class="step-actions">' + sendBtns + '</div>' : '') +
@@ -2519,13 +2519,13 @@ async function loadCampaigns() {
     });
     const pc = (c.prospect_ids || []).length;
     html += '<div class="campaign-card"><div class="campaign-top">' +
-      '<div class="campaign-title"><h3>' + escHtml(c.name || 'Untitled Campaign') + '</h3>' +
+      '<div class="campaign-title"><h3>' + escHtml(c.name || 'Campanha sem título') + '</h3>' +
         '<button class="btn btn-ghost btn-sm" onclick="fbCampaign(' + i + ')">Feedback</button></div>' +
       '<div class="meta">' + badge(c.status) + '<span>' + pc + ' prospect' + (pc !== 1 ? 's' : '') + '</span>' +
-        '<span>' + (c.sequence || []).length + ' emails</span><span>Created ' + relTime(c.created_at) + '</span></div>' +
+        '<span>' + (c.sequence || []).length + ' e-mails</span><span>Criada ' + relTime(c.created_at) + '</span></div>' +
       campaignProgress(c) + '</div>' +
       '<div class="sequence">' +
-      (stepsHtml || '<p class="muted" style="font-size:13px;padding-top:16px">No email steps in this campaign.</p>') + '</div></div>';
+      (stepsHtml || '<p class="muted" style="font-size:13px;padding-top:16px">Nenhuma etapa de e-mail nesta campanha.</p>') + '</div></div>';
   });
   el.innerHTML = html;
 }
@@ -2534,15 +2534,15 @@ async function loadCampaigns() {
 // replies, Sellbird's answers, and any answer still waiting for approval.
 let _convos = [], _convoFilter = 'needs';
 const STAGE_LABELS = {
-  initial_outreach: 'Outreach', engaged: 'Engaged', qualifying: 'Qualifying', presenting: 'Presenting',
-  negotiating: 'Negotiating', closing: 'Closing', closed_won: 'Won', closed_lost: 'Lost',
+  initial_outreach: 'Prospecção', engaged: 'Engajado', qualifying: 'Qualificando', presenting: 'Apresentando',
+  negotiating: 'Negociando', closing: 'Fechando', closed_won: 'Ganha', closed_lost: 'Perdida',
 };
 const CONVO_FILTERS = [
-  ['needs', 'Needs you', c => !!c.draft || c.status === 'needs_human'],
-  ['open', 'Open', c => c.status !== 'closed' && c.status !== 'awaiting_reply'],
-  ['awaiting', 'Awaiting reply', c => c.status === 'awaiting_reply'],
-  ['closed', 'Closed', c => c.status === 'closed'],
-  ['all', 'All', () => true],
+  ['needs', 'Precisa de você', c => !!c.draft || c.status === 'needs_human'],
+  ['open', 'Aberta', c => c.status !== 'closed' && c.status !== 'awaiting_reply'],
+  ['awaiting', 'Aguardando resposta', c => c.status === 'awaiting_reply'],
+  ['closed', 'Fechada', c => c.status === 'closed'],
+  ['all', 'Todas', () => true],
 ];
 
 async function loadConversations() {
@@ -2551,8 +2551,8 @@ async function loadConversations() {
   if (!data) { el.innerHTML = offlineState(); return; }
   _convos = data;
   if (!data.length) {
-    el.innerHTML = emptyState(icon('conversations'), 'No conversations yet',
-      'No prospects have replied so far. When they do, the Handler agent classifies each reply and responds — every thread shows up here.');
+    el.innerHTML = emptyState(icon('conversations'), 'Nenhuma conversa ainda',
+      'Nenhum prospect respondeu até agora. Quando responderem, o agente Handler classifica cada resposta e responde — cada conversa aparece aqui.');
     return;
   }
   // Open on "Needs you" only when something needs you.
@@ -2566,7 +2566,7 @@ function setConvoFilter(f) { _convoFilter = f; renderConversations(); }
 function renderConversations() {
   const el = document.getElementById('conversations-list');
   const filter = CONVO_FILTERS.find(f => f[0] === _convoFilter) || CONVO_FILTERS[CONVO_FILTERS.length - 1];
-  const bar = '<div class="toolbar"><div class="segmented" role="group" aria-label="Filter conversations">' +
+  const bar = '<div class="toolbar"><div class="segmented" role="group" aria-label="Filtrar conversas">' +
     CONVO_FILTERS.map(f => '<button class="' + (f[0] === filter[0] ? 'on' : '') + '" aria-pressed="' + (f[0] === filter[0]) +
       '" onclick="setConvoFilter(\'' + f[0] + '\')">' + f[1] + ' <span class="n">' +
       _convos.filter(f[2]).length + '</span></button>').join('') + '</div></div>';
@@ -2575,8 +2575,8 @@ function renderConversations() {
   const shown = _convos.filter(filter[2]).map((c, i) => [c, i])
     .sort((a, b) => rank(a[0]) - rank(b[0]) || a[1] - b[1]).map(x => x[0]);
   if (!shown.length) {
-    el.innerHTML = bar + '<div class="card">' + emptyState(icon('check'), 'Nothing here',
-      'No conversation matches this filter.') + '</div>';
+    el.innerHTML = bar + '<div class="card">' + emptyState(icon('check'), 'Nada aqui',
+      'Nenhuma conversa corresponde a este filtro.') + '</div>';
     return;
   }
   el.innerHTML = bar + shown.map(convoCard).join('');
@@ -2588,7 +2588,7 @@ function convoCard(c) {
     .map(it => ({...it, key: +parseTs(it.ts)}))
     // An item with no time goes last instead of scrambling the order.
     .sort((a, b) => (isNaN(a.key) ? Infinity : a.key) - (isNaN(b.key) ? Infinity : b.key) || 0);
-  const first = c.first_name || 'Them';
+  const first = c.first_name || 'A pessoa';
   const thread = items.map(it => {
     if (it.email) {
       return '<div class="thread-email"><div class="te-head">' + icon('campaigns') +
@@ -2602,11 +2602,11 @@ function convoCard(c) {
       escHtml(m.content) + '</div>';
   }).join('');
   const draft = c.draft
-    ? '<div class="thread-draft"><div class="sender">' + icon('pen') + 'Sellbird drafted a reply · waiting for you</div>' +
+    ? '<div class="thread-draft"><div class="sender">' + icon('pen') + 'O Sellbird rascunhou uma resposta · esperando por você</div>' +
       '<div class="td-body">' + escHtml(c.draft.body) + '</div>' +
-      '<button class="btn btn-primary btn-sm" onclick="goTab(\'outbox\')">Review in Outbox' + icon('arrow') + '</button></div>'
+      '<button class="btn btn-primary btn-sm" onclick="goTab(\'outbox\')">Revisar na Caixa de saída' + icon('arrow') + '</button></div>'
     : '';
-  const name = [c.first_name, c.last_name].filter(Boolean).join(' ') || c.company || 'Unknown';
+  const name = [c.first_name, c.last_name].filter(Boolean).join(' ') || c.company || 'Desconhecido';
   const stage = own(STAGE_LABELS, c.stage) ? '<span class="tag">' + STAGE_LABELS[c.stage] + '</span>' : '';
   return '<div class="convo-card"><div class="convo-head">' +
     '<span class="avatar">' + initials(c.first_name, c.last_name) + '</span>' +
@@ -2615,7 +2615,7 @@ function convoCard(c) {
     // An escalation's intent badge says the same as its status: show one.
     '<div class="tags">' + (c.intent && !(c.status === 'needs_human' && c.intent === 'escalate') ? badge(c.intent) : '') +
       stage + badge(c.status) + '</div></div>' +
-    '<div class="thread">' + (thread || '<p class="muted" style="font-size:13px">No messages in this thread yet.</p>') +
+    '<div class="thread">' + (thread || '<p class="muted" style="font-size:13px">Nenhuma mensagem nesta conversa ainda.</p>') +
     draft + '</div>' + convoActions(c) + '</div>';
 }
 
@@ -2626,30 +2626,30 @@ function convoActions(c) {
     // A complaint or legal threat from someone who opted out: handing it
     // back wouldn't help, Sellbird never answers them.
     return '<div class="convo-actions"><span class="muted">' + icon('alert') +
-      'Opted out, and Sellbird handed this to you. Reply from your inbox if you need to, then:</span>' +
-      '<button class="btn btn-secondary btn-sm" onclick="setConvoStatus(' + jsq(c.id) + ',\'closed\')">Close</button>' +
+      'Descadastrado, e o Sellbird passou isso para você. Responda pela sua caixa de entrada se precisar, depois:</span>' +
+      '<button class="btn btn-secondary btn-sm" onclick="setConvoStatus(' + jsq(c.id) + ',\'closed\')">Fechar</button>' +
       '<button class="btn btn-secondary btn-sm" onclick="showOptOut(' + jsq(c.prospect_id) + ',' + jsq(c.prospect_email) +
-      ')">Why opted out?</button></div>';
+      ')">Por que se descadastrou?</button></div>';
   }
   if (c.status === 'needs_human') {
     return '<div class="convo-actions"><span class="muted">' + icon('alert') +
-      'Sellbird handed this to you. Reply from your inbox, then:</span>' +
-      '<button class="btn btn-secondary btn-sm" onclick="setConvoStatus(' + jsq(c.id) + ',\'open\')">Hand back to Sellbird</button>' +
-      '<button class="btn btn-secondary btn-sm" onclick="setConvoStatus(' + jsq(c.id) + ',\'closed\')">Close</button></div>';
+      'O Sellbird passou isso para você. Responda pela sua caixa de entrada, depois:</span>' +
+      '<button class="btn btn-secondary btn-sm" onclick="setConvoStatus(' + jsq(c.id) + ',\'open\')">Devolver ao Sellbird</button>' +
+      '<button class="btn btn-secondary btn-sm" onclick="setConvoStatus(' + jsq(c.id) + ',\'closed\')">Fechar</button></div>';
   }
   if (c.status === 'open') {
     return '<div class="convo-actions"><button class="btn btn-ghost btn-sm" onclick="setConvoStatus(' +
-      jsq(c.id) + ',\'closed\')">Close conversation</button></div>';
+      jsq(c.id) + ',\'closed\')">Fechar conversa</button></div>';
   }
   if (c.status === 'closed' && c.prospect_status === 'opted_out') {
     // Reopening wouldn't help: Sellbird never answers someone who opted out.
-    return '<div class="convo-actions"><span class="muted">' + icon('alert') + 'Opted out. Sellbird won’t write to them.</span>' +
+    return '<div class="convo-actions"><span class="muted">' + icon('alert') + 'Descadastrado. O Sellbird não vai escrever para esta pessoa.</span>' +
       '<button class="btn btn-secondary btn-sm" onclick="showOptOut(' + jsq(c.prospect_id) + ',' + jsq(c.prospect_email) +
-      ')">Why opted out?</button></div>';
+      ')">Por que se descadastrou?</button></div>';
   }
   if (c.status === 'closed') {
     return '<div class="convo-actions"><button class="btn btn-ghost btn-sm" onclick="setConvoStatus(' +
-      jsq(c.id) + ',\'open\')">Reopen</button></div>';
+      jsq(c.id) + ',\'open\')">Reabrir</button></div>';
   }
   return '';
 }
@@ -2659,8 +2659,8 @@ async function setConvoStatus(id, status) {
     method: 'POST', headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({status: status}),
   });
-  if (data && data.success) showToast(status === 'open' ? 'Open again. Sellbird will answer the next reply.' : 'Closed. A new reply starts a new conversation.', 'success');
-  else showToast(failMsg(data, 'Could not update that conversation.'), 'error');
+  if (data && data.success) showToast(status === 'open' ? 'Reaberta. O Sellbird vai responder a próxima mensagem.' : 'Fechada. Uma nova resposta inicia uma nova conversa.', 'success');
+  else showToast(failMsg(data, 'Não foi possível atualizar essa conversa.'), 'error');
   loadConversations();
   loadToday();
 }
@@ -2668,14 +2668,14 @@ async function setConvoStatus(id, status) {
 // ── Inboxes: the main mailbox and the extra ones you connected ──
 
 const INBOX_STATE = {
-  sending: ['Sending', 't-good'],
-  paused: ['Paused', 't-waiting'],
-  not_connected: ['Not connected', 't-bad'],
+  sending: ['Enviando', 't-good'],
+  paused: ['Pausado', 't-waiting'],
+  not_connected: ['Não conectado', 't-bad'],
 };
 const INBOX_KINDS = {
-  gmail: ['Gmail', 'Google Workspace or Gmail. Sign in with Google in your browser.'],
-  microsoft: ['Microsoft 365', 'Outlook or Microsoft 365. Sign in with Microsoft in your browser.'],
-  smtp: ['Other (SMTP)', 'Any other email host, with its SMTP server and password.'],
+  gmail: ['Gmail', 'Google Workspace ou Gmail. Entre com o Google no seu navegador.'],
+  microsoft: ['Microsoft 365', 'Outlook ou Microsoft 365. Entre com a Microsoft no seu navegador.'],
+  smtp: ['Outro (SMTP)', 'Qualquer outro provedor de e-mail, com servidor SMTP e senha.'],
 };
 let _inboxes = null;
 let _inboxPoll = null;
@@ -2689,7 +2689,7 @@ function inboxMeter(ib) {
   const cap = Math.max(1, Number(ib.cold_cap) || 0);
   const sent = Number(ib.cold_sent_today) || 0;
   const pct = Math.min(100, Math.round(sent / cap * 100));
-  return '<div class="inbox-meter"><div class="line"><span>Cold emails today</span><span>' +
+  return '<div class="inbox-meter"><div class="line"><span>E-mails frios hoje</span><span>' +
     sent + ' / ' + Number(ib.cold_cap) + '</span></div>' +
     '<div class="progress-bar"><div class="progress-fill ' + (pct >= 100 ? 'yellow' : 'green') +
     '" style="width:' + pct + '%"></div></div></div>';
@@ -2709,18 +2709,18 @@ async function loadInboxes() {
   _inboxes = data;
   if (!data.native) {
     actions.innerHTML = '';
-    el.innerHTML = emptyState(icon('inboxes'), 'Instantly sends for you',
-      'Sending through several of your own inboxes works with Gmail, Microsoft 365 or SMTP. ' +
-      'Set channels.email.provider in sellbird.yaml to one of those to use it.');
+    el.innerHTML = emptyState(icon('inboxes'), 'O Instantly envia por você',
+      'Enviar por várias das suas próprias caixas de entrada funciona com Gmail, Microsoft 365 ou SMTP. ' +
+      'Defina channels.email.provider em sellbird.yaml como um desses para usar.');
     return;
   }
   actions.innerHTML = '<button class="btn btn-primary" onclick="openAddInbox()">' + icon('plus') +
-    'Add inbox</button>';
+    'Adicionar caixa de entrada</button>';
 
   let html = '';
   if (data.sending_paused) {
-    html += '<div class="notice wait"><b>All sending is paused:</b> ' + escHtml(data.sending_paused) +
-      '. Resume it on the Outbox tab.</div>';
+    html += '<div class="notice wait"><b>Todo o envio está pausado:</b> ' + escHtml(data.sending_paused) +
+      '. Retome na aba Caixa de saída.</div>';
   }
   const list = data.inboxes || [];
   const sending = list.filter(i => i.state === 'sending');
@@ -2728,32 +2728,32 @@ async function loadInboxes() {
   const sentToday = list.reduce((n, i) => n + (Number(i.cold_sent_today) || 0), 0);
   const waiting = list.reduce((n, i) => n + (Number(i.first_emails_waiting) || 0), 0);
   html += '<div class="inbox-summary">' +
-    '<span><b>' + list.length + '</b> ' + (list.length === 1 ? 'inbox' : 'inboxes') + ', <b>' + sending.length + '</b> sending</span>' +
-    '<span><b>' + sentToday + '</b>' + (capToday ? ' of <b>' + Math.min(capToday, Number(data.max_daily_sends)) + '</b>' : '') + ' cold emails sent today</span>' +
-    '<span><b>' + waiting + '</b> first emails waiting to go</span></div>';
+    '<span><b>' + list.length + '</b> ' + (list.length === 1 ? 'caixa de entrada' : 'caixas de entrada') + ', <b>' + sending.length + '</b> enviando</span>' +
+    '<span><b>' + sentToday + '</b>' + (capToday ? ' de <b>' + Math.min(capToday, Number(data.max_daily_sends)) + '</b>' : '') + ' e-mails frios enviados hoje</span>' +
+    '<span><b>' + waiting + '</b> primeiros e-mails esperando para sair</span></div>';
 
   html += '<div class="inbox-list">';
   list.forEach((ib, i) => {
     const letter = (ib.address || '?').charAt(0).toUpperCase();
-    const sub = [ib.name, ib.main ? 'Main mailbox' : (INBOX_KINDS[ib.provider === 'google' ? 'gmail' : ib.provider] || [ib.provider])[0]]
+    const sub = [ib.name, ib.main ? 'Caixa principal' : (INBOX_KINDS[ib.provider === 'google' ? 'gmail' : ib.provider] || [ib.provider])[0]]
       .filter(Boolean).join(' · ');
-    html += '<button class="inbox-row" onclick="openInbox(' + i + ')" aria-label="Open ' + escHtml(ib.address || 'main mailbox') + '">' +
+    html += '<button class="inbox-row" onclick="openInbox(' + i + ')" aria-label="Abrir ' + escHtml(ib.address || 'caixa principal') + '">' +
       '<span class="inbox-avatar" aria-hidden="true">' + escHtml(letter) + '</span>' +
-      '<span class="inbox-who"><div class="addr">' + escHtml(ib.address || '(main mailbox)') + '</div>' +
+      '<span class="inbox-who"><div class="addr">' + escHtml(ib.address || '(caixa principal)') + '</div>' +
       '<div class="sub">' + escHtml(sub) + '</div></span>' +
       inboxBadge(ib) + inboxMeter(ib) +
-      '<span class="inbox-waiting"><b>' + Number(ib.first_emails_waiting) + '</b>waiting</span>' +
+      '<span class="inbox-waiting"><b>' + Number(ib.first_emails_waiting) + '</b>esperando</span>' +
       icon('chevron', 'chev') + '</button>';
   });
   html += '</div>';
 
   if (!data.several) {
-    html += '<div class="card"><div class="card-title">Why add another inbox?</div><div class="inbox-help">' +
-      '<div class="inset"><h4>Send more each day</h4><p>Each inbox sends up to ' + Number(data.per_inbox_daily_cap) +
-      ' cold emails a day. Two inboxes, twice as many, all under your daily total of ' + Number(data.max_daily_sends) + '.</p></div>' +
-      '<div class="inset"><h4>Protect your main address</h4><p>Send cold email from a second domain, so a bad week never touches your everyday mail.</p></div>' +
-      '<div class="inset"><h4>Pick per campaign</h4><p>Choose which inboxes each campaign sends from. Replies always come back to the inbox that started the thread.</p></div>' +
-      '</div><div class="btn-group"><button class="btn btn-secondary" onclick="openAddInbox()">' + icon('plus') + 'Add inbox</button></div></div>';
+    html += '<div class="card"><div class="card-title">Por que adicionar outra caixa de entrada?</div><div class="inbox-help">' +
+      '<div class="inset"><h4>Envie mais por dia</h4><p>Cada caixa de entrada envia até ' + Number(data.per_inbox_daily_cap) +
+      ' e-mails frios por dia. Duas caixas, o dobro, tudo dentro do seu total diário de ' + Number(data.max_daily_sends) + '.</p></div>' +
+      '<div class="inset"><h4>Proteja seu endereço principal</h4><p>Envie e-mails frios de um segundo domínio, para que uma semana ruim nunca afete seu e-mail do dia a dia.</p></div>' +
+      '<div class="inset"><h4>Escolha por campanha</h4><p>Escolha quais caixas de entrada cada campanha usa para enviar. Respostas sempre voltam para a caixa que iniciou a conversa.</p></div>' +
+      '</div><div class="btn-group"><button class="btn btn-secondary" onclick="openAddInbox()">' + icon('plus') + 'Adicionar caixa de entrada</button></div></div>';
   }
   el.innerHTML = html;
 }
@@ -2776,7 +2776,7 @@ function closeInboxDialog() {
 function inboxDialogHead(title, sub, extra) {
   return '<div class="modal-head"><div><h3 id="inbox-dialog-title">' + title + '</h3>' +
     (sub ? '<div class="sub">' + sub + '</div>' : '') + '</div>' + (extra || '') +
-    '<button class="btn btn-ghost btn-sm btn-icon" onclick="closeInboxDialog()" aria-label="Close">' + icon('close') + '</button></div>';
+    '<button class="btn btn-ghost btn-sm btn-icon" onclick="closeInboxDialog()" aria-label="Fechar">' + icon('close') + '</button></div>';
 }
 
 function openInbox(i) {
@@ -2788,24 +2788,24 @@ function openInbox(i) {
   const everyInbox = campaigns.filter(c => !pools[c.id]);
   let body = '';
   if (ib.state === 'not_connected') {
-    body += '<div class="notice bad"><b>Not connected.</b> ' +
-      escHtml(ib.connect_hint || 'Sellbird can\'t sign in to it from this computer. Check the connection to see why, or remove it and add it again.') + '</div>';
+    body += '<div class="notice bad"><b>Não conectado.</b> ' +
+      escHtml(ib.connect_hint || 'O Sellbird não consegue entrar nesta caixa a partir deste computador. Verifique a conexão para ver o motivo, ou remova e adicione novamente.') + '</div>';
   }
   if (ib.paused_reason) {
-    body += '<div class="notice wait"><b>Paused:</b> ' + escHtml(ib.paused_reason) + '</div>';
+    body += '<div class="notice wait"><b>Pausado:</b> ' + escHtml(ib.paused_reason) + '</div>';
   }
   body += '<div class="modal-stats">' +
-    '<div class="inset"><div class="k">Cold today</div><div class="v">' + Number(ib.cold_sent_today) + ' / ' + Number(ib.cold_cap) + '</div></div>' +
-    '<div class="inset"><div class="k">First emails waiting</div><div class="v">' + Number(ib.first_emails_waiting) + '</div></div>' +
-    '<div class="inset"><div class="k">Warming up since</div><div class="v">' + (ib.warmup_started_at ? escHtml(inboxDate(ib.warmup_started_at)) : '<span class="muted">Established</span>') + '</div></div>' +
+    '<div class="inset"><div class="k">Frios hoje</div><div class="v">' + Number(ib.cold_sent_today) + ' / ' + Number(ib.cold_cap) + '</div></div>' +
+    '<div class="inset"><div class="k">Primeiros e-mails esperando</div><div class="v">' + Number(ib.first_emails_waiting) + '</div></div>' +
+    '<div class="inset"><div class="k">Aquecendo desde</div><div class="v">' + (ib.warmup_started_at ? escHtml(inboxDate(ib.warmup_started_at)) : '<span class="muted">Estabelecida</span>') + '</div></div>' +
     '</div>';
-  body += '<div class="modal-section"><h4>Campaigns sending from it</h4>';
-  if (!campaigns.length) body += '<p>No campaigns yet.</p>';
+  body += '<div class="modal-section"><h4>Campanhas enviando a partir dela</h4>';
+  if (!campaigns.length) body += '<p>Nenhuma campanha ainda.</p>';
   else {
-    const names = using.concat(everyInbox).map(c => escHtml(c.name || 'Untitled'));
-    const shown = names.slice(0, 6).join(', ') + (names.length > 6 ? ', and ' + (names.length - 6) + ' more' : '');
-    body += names.length ? '<p>' + shown + '</p>' : '<p>None. Every campaign has chosen other inboxes.</p>';
-    if (everyInbox.length) body += '<p class="form-hint">Campaigns that haven\'t chosen inboxes send from all of them.</p>';
+    const names = using.concat(everyInbox).map(c => escHtml(c.name || 'Sem título'));
+    const shown = names.slice(0, 6).join(', ') + (names.length > 6 ? ', e mais ' + (names.length - 6) : '');
+    body += names.length ? '<p>' + shown + '</p>' : '<p>Nenhuma. Todas as campanhas escolheram outras caixas de entrada.</p>';
+    if (everyInbox.length) body += '<p class="form-hint">Campanhas que não escolheram caixas de entrada enviam de todas elas.</p>';
   }
   body += '</div>';
 
@@ -2814,38 +2814,38 @@ function openInbox(i) {
     if (ib.state === 'not_connected' && kind) {
       const can = (_inboxes.can_connect || {})[kind];
       body = '<div id="main-status"></div>' + (can
-        ? '<div class="notice bad"><b>Not connected.</b> Sign in to the mailbox Sellbird sends from.</div>' +
-          '<button class="btn btn-primary" id="main-go" onclick="connectMainMailbox(\'' + kind + '\')">Sign in with ' +
+        ? '<div class="notice bad"><b>Não conectado.</b> Entre na caixa de e-mail de onde o Sellbird envia.</div>' +
+          '<button class="btn btn-primary" id="main-go" onclick="connectMainMailbox(\'' + kind + '\')">Entrar com ' +
           (kind === 'gmail' ? 'Google' : 'Microsoft') + '</button><div style="height:16px"></div>'
         : connectSetupNotice(kind)) + body.replace(/<div class="notice bad"><b>Not connected.<\/b>[\s\S]*?<\/div>/, '');
     }
-    body += '<div class="modal-section"><h4>Settings</h4><p>Your main mailbox comes from sellbird.yaml: ' +
-      'its address is persona.email, its daily cap is channels.email.per_inbox_daily_cap, and pausing it pauses ' +
-      'all sending, on the Outbox tab.</p></div>';
-    inboxDialog(inboxDialogHead(escHtml(ib.address || 'Main mailbox'), inboxBadge(ib) + ' Main mailbox') +
+    body += '<div class="modal-section"><h4>Configurações</h4><p>Sua caixa principal vem do sellbird.yaml: ' +
+      'o endereço dela é persona.email, o limite diário é channels.email.per_inbox_daily_cap, e pausá-la pausa ' +
+      'todo o envio, na aba Caixa de saída.</p></div>';
+    inboxDialog(inboxDialogHead(escHtml(ib.address || 'Caixa principal'), inboxBadge(ib) + ' Caixa principal') +
       '<div class="modal-body">' + body + '</div>');
     return;
   }
   const id = jsq(ib.id);
-  body += '<div class="modal-section"><h4>Daily cold-email cap</h4>' +
-    '<div class="inline-edit"><input class="form-input" id="ib-cap" type="number" min="1" max="500" inputmode="numeric" placeholder="Default (' +
+  body += '<div class="modal-section"><h4>Limite diário de e-mails frios</h4>' +
+    '<div class="inline-edit"><input class="form-input" id="ib-cap" type="number" min="1" max="500" inputmode="numeric" placeholder="Padrão (' +
     Number(_inboxes.per_inbox_daily_cap) + ')" value="' + (ib.cap_is_yours ? Number(ib.cold_cap) : '') + '">' +
-    '<button class="btn btn-secondary" onclick="saveInboxCap(' + id + ')">Save</button></div>' +
-    '<div class="form-hint">Leave empty for the default. Warming inboxes start lower on their own.</div></div>';
-  body += '<div class="modal-section"><h4>Sender name</h4>' +
-    '<div class="inline-edit"><input class="form-input" id="ib-name" maxlength="100" placeholder="Your persona name" value="' + escHtml(ib.name || '') + '">' +
-    '<button class="btn btn-secondary" onclick="saveInboxName(' + id + ')">Save</button></div>' +
-    '<div class="form-hint">The name people see in From.</div></div>';
-  body += '<div class="modal-section"><h4>Remove this inbox</h4><p>Sellbird stops sending from it, and threads it started end. Its sign-in stays in your keychain.</p>' +
-    '<div class="inline-edit" style="margin-top:8px"><input class="form-input" id="ib-confirm" placeholder="Type ' + escHtml(ib.address) + ' to confirm">' +
-    '<button class="btn btn-danger" onclick="removeInbox(' + id + ')">Remove</button></div></div>';
+    '<button class="btn btn-secondary" onclick="saveInboxCap(' + id + ')">Salvar</button></div>' +
+    '<div class="form-hint">Deixe vazio para o padrão. Caixas em aquecimento começam mais baixas por conta própria.</div></div>';
+  body += '<div class="modal-section"><h4>Nome do remetente</h4>' +
+    '<div class="inline-edit"><input class="form-input" id="ib-name" maxlength="100" placeholder="Nome da sua persona" value="' + escHtml(ib.name || '') + '">' +
+    '<button class="btn btn-secondary" onclick="saveInboxName(' + id + ')">Salvar</button></div>' +
+    '<div class="form-hint">O nome que as pessoas veem no campo De.</div></div>';
+  body += '<div class="modal-section"><h4>Remover esta caixa de entrada</h4><p>O Sellbird para de enviar a partir dela, e as conversas que ela iniciou terminam. O login dela permanece no seu chaveiro.</p>' +
+    '<div class="inline-edit" style="margin-top:8px"><input class="form-input" id="ib-confirm" placeholder="Digite ' + escHtml(ib.address) + ' para confirmar">' +
+    '<button class="btn btn-danger" onclick="removeInbox(' + id + ')">Remover</button></div></div>';
 
   const pauseBtn = ib.paused_reason
-    ? '<button class="btn btn-primary" onclick="inboxAction(' + id + ',\'resume\')">Resume sending</button>'
-    : '<button class="btn btn-secondary" onclick="inboxAction(' + id + ',\'pause\')"' + (ib.state === 'not_connected' ? ' disabled' : '') + '>Pause</button>';
+    ? '<button class="btn btn-primary" onclick="inboxAction(' + id + ',\'resume\')">Retomar envio</button>'
+    : '<button class="btn btn-secondary" onclick="inboxAction(' + id + ',\'pause\')"' + (ib.state === 'not_connected' ? ' disabled' : '') + '>Pausar</button>';
   inboxDialog(inboxDialogHead(escHtml(ib.address), inboxBadge(ib) + ' ' + escHtml(ib.name || '')) +
     '<div class="modal-body">' + body + '</div>' +
-    '<div class="modal-foot"><button class="btn btn-ghost" onclick="testInbox(' + id + ')">Check connection</button>' + pauseBtn + '</div>');
+    '<div class="modal-foot"><button class="btn btn-ghost" onclick="testInbox(' + id + ')">Verificar conexão</button>' + pauseBtn + '</div>');
 }
 
 async function inboxPost(path, body, done, keepOpen) {
@@ -2855,35 +2855,35 @@ async function inboxPost(path, body, done, keepOpen) {
     if (done) showToast(done, 'success');
     if (!keepOpen) closeInboxDialog();
     loadInboxes();
-  } else showToast((r && r.message) || 'That didn\'t work.', 'error');
+  } else showToast((r && r.message) || 'Isso não funcionou.', 'error');
   return r;
 }
 
 function inboxAction(id, action) {
   inboxPost('/api/inboxes/' + encodeURIComponent(id) + '/' + action, {},
-            action === 'pause' ? 'Inbox paused' : 'Inbox sends again');
+            action === 'pause' ? 'Caixa de entrada pausada' : 'Caixa de entrada voltou a enviar');
 }
 
 function saveInboxCap(id) {
   const v = document.getElementById('ib-cap').value.trim();
-  inboxPost('/api/inboxes/' + encodeURIComponent(id) + '/cap', {cap: v === '' ? null : Number(v)}, 'Cap saved');
+  inboxPost('/api/inboxes/' + encodeURIComponent(id) + '/cap', {cap: v === '' ? null : Number(v)}, 'Limite salvo');
 }
 
 function saveInboxName(id) {
   inboxPost('/api/inboxes/' + encodeURIComponent(id) + '/name',
-            {name: document.getElementById('ib-name').value.trim()}, 'Name saved');
+            {name: document.getElementById('ib-name').value.trim()}, 'Nome salvo');
 }
 
 function removeInbox(id) {
   inboxPost('/api/inboxes/' + encodeURIComponent(id) + '/remove',
-            {confirm: document.getElementById('ib-confirm').value.trim().toLowerCase()}, 'Inbox removed');
+            {confirm: document.getElementById('ib-confirm').value.trim().toLowerCase()}, 'Caixa de entrada removida');
 }
 
 async function testInbox(id) {
-  showToast('Checking the connection...', 'info');
+  showToast('Verificando a conexão...', 'info');
   const r = await api('/api/inboxes/' + encodeURIComponent(id) + '/test', {method: 'POST'});
-  if (r && r.success) showToast(r.detail || (r.ok ? 'Connected' : 'Not connected'), r.ok ? 'success' : 'error');
-  else showToast((r && r.message) || 'Couldn\'t check it.', 'error');
+  if (r && r.success) showToast(r.detail || (r.ok ? 'Conectado' : 'Não conectado'), r.ok ? 'success' : 'error');
+  else showToast((r && r.message) || 'Não foi possível verificar.', 'error');
 }
 
 // Adding an inbox
@@ -2896,40 +2896,40 @@ function openAddInbox(kind) {
   const picks = Object.keys(INBOX_KINDS).map(k =>
     '<button class="provider-pick' + (k === _addKind ? ' on' : '') + '" onclick="openAddInbox(\'' + k + '\')" aria-pressed="' + (k === _addKind) + '">' +
     '<b>' + INBOX_KINDS[k][0] + '</b><span>' + INBOX_KINDS[k][1] + '</span></button>').join('');
-  let form = '<div class="form-group"><label class="form-label" for="add-address">Email address</label>' +
-    '<input class="form-input" id="add-address" type="email" autocomplete="off" placeholder="you@yourdomain.com" oninput="updateAddCommand()"></div>' +
-    '<div class="form-row"><div class="form-group"><label class="form-label" for="add-name">Sender name <span class="optional-tag">optional</span></label>' +
-    '<input class="form-input" id="add-name" maxlength="100" placeholder="Your persona name"></div>' +
-    '<div class="form-group"><label class="form-label" for="add-warmup">Warming up since <span class="optional-tag">optional</span></label>' +
+  let form = '<div class="form-group"><label class="form-label" for="add-address">Endereço de e-mail</label>' +
+    '<input class="form-input" id="add-address" type="email" autocomplete="off" placeholder="voce@seudominio.com" oninput="updateAddCommand()"></div>' +
+    '<div class="form-row"><div class="form-group"><label class="form-label" for="add-name">Nome do remetente <span class="optional-tag">opcional</span></label>' +
+    '<input class="form-input" id="add-name" maxlength="100" placeholder="Nome da sua persona"></div>' +
+    '<div class="form-group"><label class="form-label" for="add-warmup">Aquecendo desde <span class="optional-tag">opcional</span></label>' +
     '<input class="form-input" id="add-warmup" type="date"></div></div>' +
-    '<div class="form-hint" style="margin:-8px 0 16px">Leave the date empty if this inbox has been sending normally for a while.</div>';
+    '<div class="form-hint" style="margin:-8px 0 16px">Deixe a data vazia se esta caixa já está enviando normalmente há um tempo.</div>';
   let note = '';
   if (_addKind === 'smtp') {
-    form += '<div class="form-row"><div class="form-group"><label class="form-label" for="add-host">SMTP server</label>' +
-      '<input class="form-input" id="add-host" placeholder="smtp.yourhost.com"></div>' +
-      '<div class="form-group" style="max-width:110px"><label class="form-label" for="add-port">Port</label>' +
+    form += '<div class="form-row"><div class="form-group"><label class="form-label" for="add-host">Servidor SMTP</label>' +
+      '<input class="form-input" id="add-host" placeholder="smtp.seuhost.com"></div>' +
+      '<div class="form-group" style="max-width:110px"><label class="form-label" for="add-port">Porta</label>' +
       '<input class="form-input" id="add-port" type="number" value="587"></div></div>' +
-      '<div class="form-group"><label class="form-label" for="add-password">Password or app password</label>' +
+      '<div class="form-group"><label class="form-label" for="add-password">Senha ou senha de app</label>' +
       '<input class="form-input" id="add-password" type="password" autocomplete="new-password"></div>' +
-      '<details class="more-fields"><summary>Username and IMAP (for reading replies)</summary>' +
-      '<div class="form-group"><label class="form-label" for="add-user">Username</label><input class="form-input" id="add-user" placeholder="Same as the address"></div>' +
-      '<div class="form-row"><div class="form-group"><label class="form-label" for="add-imap">IMAP server</label><input class="form-input" id="add-imap" placeholder="Same as the SMTP server"></div>' +
-      '<div class="form-group" style="max-width:110px"><label class="form-label" for="add-imap-port">Port</label><input class="form-input" id="add-imap-port" type="number" value="993"></div></div></details>';
-    note = '<p class="form-hint">The password goes straight to your system keychain. Sellbird never shows it again.</p>';
+      '<details class="more-fields"><summary>Usuário e IMAP (para ler respostas)</summary>' +
+      '<div class="form-group"><label class="form-label" for="add-user">Usuário</label><input class="form-input" id="add-user" placeholder="Mesmo do endereço"></div>' +
+      '<div class="form-row"><div class="form-group"><label class="form-label" for="add-imap">Servidor IMAP</label><input class="form-input" id="add-imap" placeholder="Mesmo do servidor SMTP"></div>' +
+      '<div class="form-group" style="max-width:110px"><label class="form-label" for="add-imap-port">Porta</label><input class="form-input" id="add-imap-port" type="number" value="993"></div></div></details>';
+    note = '<p class="form-hint">A senha vai direto para o chaveiro do seu sistema. O Sellbird nunca a mostra novamente.</p>';
   } else if (!can[_addKind]) {
     note = connectSetupNotice(_addKind);
   } else {
-    note = '<p class="form-hint">A ' + INBOX_KINDS[_addKind][0] + ' sign-in opens in the browser on the computer running Sellbird. Sign in as the address above.</p>';
+    note = '<p class="form-hint">Um login do ' + INBOX_KINDS[_addKind][0] + ' abre no navegador no computador que roda o Sellbird. Entre com o endereço acima.</p>';
   }
-  note += '<div class="modal-section"><h4>Or from your terminal</h4><div class="cmd-copy"><code id="add-cmd"></code>' +
-    '<button class="btn btn-secondary btn-sm" onclick="copyAddCommand()">Copy</button></div></div>';
+  note += '<div class="modal-section"><h4>Ou pelo seu terminal</h4><div class="cmd-copy"><code id="add-cmd"></code>' +
+    '<button class="btn btn-secondary btn-sm" onclick="copyAddCommand()">Copiar</button></div></div>';
   const disabled = _addKind !== 'smtp' && !can[_addKind];
-  inboxDialog(inboxDialogHead('Add an inbox', 'Connect an inbox you already own. Sellbird sends from it and reads its replies.') +
+  inboxDialog(inboxDialogHead('Adicionar uma caixa de entrada', 'Conecte uma caixa de entrada que você já possui. O Sellbird envia a partir dela e lê suas respostas.') +
     '<div class="modal-body"><div class="provider-picks">' + picks + '</div><div style="height:16px"></div>' +
     '<div id="add-status"></div>' + form + note + '</div>' +
-    '<div class="modal-foot"><button class="btn btn-ghost" onclick="closeInboxDialog()">Cancel</button>' +
+    '<div class="modal-foot"><button class="btn btn-ghost" onclick="closeInboxDialog()">Cancelar</button>' +
     '<button class="btn btn-primary" id="add-go" onclick="submitAddInbox()"' + (disabled ? ' disabled' : '') + '>' +
-    (_addKind === 'smtp' ? 'Connect' : 'Sign in with ' + (_addKind === 'gmail' ? 'Google' : 'Microsoft')) + '</button></div>');
+    (_addKind === 'smtp' ? 'Conectar' : 'Entrar com ' + (_addKind === 'gmail' ? 'Google' : 'Microsoft')) + '</button></div>');
   updateAddCommand();
 }
 
@@ -2938,13 +2938,13 @@ function updateAddCommand() {
   if (!el) return;
   const addr = (document.getElementById('add-address').value || '').trim() || 'you@yourdomain.com';
   el.textContent = 'sellbird inboxes connect ' + _addKind + ' --address ' + addr +
-    (_addKind === 'smtp' ? ' --smtp-host smtp.yourhost.com' : '');
+    (_addKind === 'smtp' ? ' --smtp-host smtp.seuhost.com' : '');
 }
 
 function copyAddCommand() {
   const text = document.getElementById('add-cmd').textContent;
-  navigator.clipboard.writeText(text).then(() => showToast('Copied', 'success'),
-    () => showToast('Couldn\'t copy. Select the command instead.', 'error'));
+  navigator.clipboard.writeText(text).then(() => showToast('Copiado', 'success'),
+    () => showToast('Não foi possível copiar. Selecione o comando manualmente.', 'error'));
 }
 
 function addStatus(cls, html) {
@@ -2958,19 +2958,19 @@ const CONNECT_SETUP = {
   gmail: {
     field: 'gmail-id',
     steps: [
-      'In <a href="https://console.cloud.google.com/apis/library/gmail.googleapis.com" target="_blank" rel="noopener noreferrer">Google Cloud Console</a>, pick or create a project and enable the Gmail API.',
-      'Under <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener noreferrer">Credentials</a>, create an OAuth client ID of type <b>Desktop app</b>.',
-      'Paste its Client ID and Client secret in Settings, under Gmail, and save.',
-      'Come back here and sign in.',
+      'No <a href="https://console.cloud.google.com/apis/library/gmail.googleapis.com" target="_blank" rel="noopener noreferrer">Google Cloud Console</a>, escolha ou crie um projeto e ative a Gmail API.',
+      'Em <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener noreferrer">Credentials</a>, crie um OAuth client ID do tipo <b>Desktop app</b>.',
+      'Cole o Client ID e o Client secret em Configurações, na seção Gmail, e salve.',
+      'Volte aqui e entre.',
     ],
   },
   microsoft: {
     field: 'm365-client',
     steps: [
-      'In <a href="https://entra.microsoft.com" target="_blank" rel="noopener noreferrer">Entra</a>, go to App registrations and register an app for your organization only.',
-      'Add the redirect URI <code>http://localhost:8766</code> as "Public client/native".',
-      'Paste the Application (client) ID and tenant ID in Settings, under Microsoft 365, and save.',
-      'Come back here and sign in.',
+      'No <a href="https://entra.microsoft.com" target="_blank" rel="noopener noreferrer">Entra</a>, vá em App registrations e registre um app apenas para sua organização.',
+      'Adicione o URI de redirecionamento <code>http://localhost:8766</code> como "Public client/native".',
+      'Cole o ID do aplicativo (cliente) e o ID do tenant em Configurações, na seção Microsoft 365, e salve.',
+      'Volte aqui e entre.',
     ],
   },
 };
@@ -2980,7 +2980,7 @@ function connectSetupNotice(kind) {
   const problem = ((_inboxes && _inboxes.connect_problems) || {})[kind] || '';
   return '<div class="notice info"><b>' + escHtml(problem) + '</b>' +
     '<ol class="setup-steps">' + setup.steps.map(t => '<li>' + t + '</li>').join('') + '</ol>' +
-    '<button class="btn btn-secondary btn-sm" onclick="openSettingsAt(\'' + setup.field + '\')">Open Settings</button></div>';
+    '<button class="btn btn-secondary btn-sm" onclick="openSettingsAt(\'' + setup.field + '\')">Abrir Configurações</button></div>';
 }
 
 function openSettingsAt(fieldId) {
@@ -3001,26 +3001,26 @@ async function connectMainMailbox(kind) {
   if (go) go.disabled = true;
   const status = document.getElementById('main-status');
   const say = (cls, html) => { if (status) status.innerHTML = '<div class="notice ' + cls + '">' + html + '</div>'; };
-  say('info', 'Opening the sign-in...');
+  say('info', 'Abrindo o login...');
   const r = await api('/api/inboxes/main/connect', {method: 'POST'});
   if (!r || !r.success) {
     if (go) go.disabled = false;
-    say('bad', escHtml((r && r.message) || 'That didn\'t work.'));
+    say('bad', escHtml((r && r.message) || 'Isso não funcionou.'));
     return;
   }
-  say('wait', 'A ' + (kind === 'gmail' ? 'Google' : 'Microsoft') + ' sign-in opened in your browser. ' +
-    'Sign in as your sending address and allow access. This page updates when you\'re done.');
+  say('wait', 'Um login do ' + (kind === 'gmail' ? 'Google' : 'Microsoft') + ' abriu no seu navegador. ' +
+    'Entre com seu endereço de envio e permita o acesso. Esta página atualiza quando terminar.');
   if (_inboxPoll) clearInterval(_inboxPoll);
   _inboxPoll = setInterval(async () => {
     const s = await api('/api/inboxes/connect/status');
     if (!s || s.state === 'waiting') return;
     clearInterval(_inboxPoll); _inboxPoll = null;
     if (s.state === 'connected') {
-      showToast('Main mailbox connected', 'success');
+      showToast('Caixa principal conectada', 'success');
       closeInboxDialog(); loadInboxes();
     } else {
       if (go) go.disabled = false;
-      say('bad', escHtml(s.message || 'The sign-in didn\'t finish.'));
+      say('bad', escHtml(s.message || 'O login não terminou.'));
     }
   }, 1500);
 }
@@ -3035,33 +3035,33 @@ async function submitAddInbox() {
       imap_host: v('add-imap'), imap_port: Number(v('add-imap-port') || 993)});
   }
   go.disabled = true;
-  addStatus('info', _addKind === 'smtp' ? 'Connecting and checking the sign-in...' : 'Opening the sign-in...');
+  addStatus('info', _addKind === 'smtp' ? 'Conectando e verificando o login...' : 'Abrindo o login...');
   const r = await api('/api/inboxes/connect/' + _addKind, {method: 'POST',
     headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
   if (!r || !r.success) {
     go.disabled = false;
-    addStatus('bad', escHtml((r && r.message) || 'That didn\'t work.'));
+    addStatus('bad', escHtml((r && r.message) || 'Isso não funcionou.'));
     return;
   }
   if (_addKind === 'smtp') {
-    showToast('Connected ' + r.address, 'success');
-    if (!r.test_ok) showToast('It\'s connected, but the check failed: ' + (r.test_detail || ''), 'error');
+    showToast('Conectado ' + r.address, 'success');
+    if (!r.test_ok) showToast('Está conectado, mas a verificação falhou: ' + (r.test_detail || ''), 'error');
     closeInboxDialog(); loadInboxes();
     return;
   }
-  addStatus('wait', 'A ' + (_addKind === 'gmail' ? 'Google' : 'Microsoft') + ' sign-in opened in your browser. ' +
-    'Sign in as <b>' + escHtml(body.address.toLowerCase()) + '</b> and allow access. This page updates when you\'re done.');
+  addStatus('wait', 'Um login do ' + (_addKind === 'gmail' ? 'Google' : 'Microsoft') + ' abriu no seu navegador. ' +
+    'Entre como <b>' + escHtml(body.address.toLowerCase()) + '</b> e permita o acesso. Esta página atualiza quando terminar.');
   _inboxPoll = setInterval(async () => {
     const s = await api('/api/inboxes/connect/status');
     if (!s || s.state === 'waiting') return;
     clearInterval(_inboxPoll); _inboxPoll = null;
     if (s.state === 'connected') {
-      showToast('Connected ' + s.address, 'success');
-      if (s.message) showToast('It\'s connected, but the check failed: ' + s.message, 'error');
+      showToast('Conectado ' + s.address, 'success');
+      if (s.message) showToast('Está conectado, mas a verificação falhou: ' + s.message, 'error');
       closeInboxDialog(); loadInboxes();
     } else {
       go.disabled = false;
-      addStatus('bad', escHtml(s.message || 'The sign-in didn\'t finish.'));
+      addStatus('bad', escHtml(s.message || 'O login não terminou.'));
     }
   }, 1500);
 }
@@ -3071,8 +3071,8 @@ async function loadActivity() {
   const data = await api('/api/activity');
   if (!data) { el.innerHTML = offlineState(); return; }
   if (!data.length) {
-    el.innerHTML = emptyState(icon('activity'), 'No activity yet',
-      'Sellbird hasn\'t taken any actions. Every prospect found, email written, and reply handled will appear here the moment it happens.');
+    el.innerHTML = emptyState(icon('activity'), 'Nenhuma atividade ainda',
+      'O Sellbird ainda não realizou nenhuma ação. Cada prospect encontrado, e-mail escrito e resposta tratada aparecerão aqui assim que acontecerem.');
     return;
   }
   let html = '<div class="card"><div class="timeline">';
@@ -3167,87 +3167,87 @@ async function loadCompany() {
       <span class="hint">What every first email ends by offering</span>
     </div>
     ${o.proposed ? `<div class="offer-proposed">
-      <div><span class="tag accent">Your agent proposed</span></div>
+      <div><span class="tag accent">Seu agente propôs</span></div>
       <p class="offer-proposed-text">${ce(o.proposed.entry)}</p>
       ${o.proposed.why ? `<p class="desc">${ce(o.proposed.why)}</p>` : ''}
       <div class="offer-actions">
-        <button class="btn btn-primary btn-sm" onclick="useProposedOffer()">Use this offer</button>
-        <button class="btn btn-secondary btn-sm" onclick="dismissProposedOffer()">Dismiss</button>
+        <button class="btn btn-primary btn-sm" onclick="useProposedOffer()">Usar esta oferta</button>
+        <button class="btn btn-secondary btn-sm" onclick="dismissProposedOffer()">Descartar</button>
       </div>
     </div>` : ''}
-    <p class="desc">Each first email names something Sellbird found about the prospect, says what it costs them, and offers this as the fix. Make it free, specific, and something you can deliver this week. ${o.entry ? '' : '<b>No offer yet</b>, so first emails end with a question instead. '}The easiest way to work it out is to ask your coding agent: <i>"Help me work out my Sellbird offer."</i></p>
-    <div class="form-group"><label class="form-label" for="offer-entry">Offer</label>
-      <textarea class="form-input" id="offer-entry" rows="2" maxlength="300" placeholder="e.g. a written plan for getting you onto page one of Google">${ce(o.entry || '')}</textarea></div>
+    <p class="desc">Cada primeiro e-mail cita algo que o Sellbird encontrou sobre o prospect, diz o que isso custa a ele, e oferece isto como a solução. Torne isso gratuito, específico, e algo que você possa entregar nesta semana. ${o.entry ? '' : '<b>Ainda não há oferta</b>, então os primeiros e-mails terminam com uma pergunta em vez disso. '}A forma mais fácil de definir isso é perguntar ao seu agente de código: <i>"Me ajude a definir minha oferta do Sellbird."</i></p>
+    <div class="form-group"><label class="form-label" for="offer-entry">Oferta</label>
+      <textarea class="form-input" id="offer-entry" rows="2" maxlength="300" placeholder="ex.: um plano escrito para colocar você na primeira página do Google">${ce(o.entry || '')}</textarea></div>
     <div class="offer-actions">
-      <button class="btn btn-primary btn-sm" onclick="saveOffer()">Save offer</button>
-      <button class="btn btn-secondary btn-sm" id="offer-preview-btn" onclick="previewOffer()">Preview an email</button>
-      <button class="btn btn-secondary btn-sm" id="offer-suggest-btn" onclick="suggestOffers()">Suggest ideas</button>
+      <button class="btn btn-primary btn-sm" onclick="saveOffer()">Salvar oferta</button>
+      <button class="btn btn-secondary btn-sm" id="offer-preview-btn" onclick="previewOffer()">Pré-visualizar um e-mail</button>
+      <button class="btn btn-secondary btn-sm" id="offer-suggest-btn" onclick="suggestOffers()">Sugerir ideias</button>
     </div>
     <div id="offer-preview" class="offer-preview" hidden></div>
     <div id="offer-ideas" class="offer-ideas"></div>
   </section>
 
   <section class="card company-card" aria-labelledby="co-product-h">
-    <div class="company-card-head"><h3 id="co-product-h">What you sell</h3></div>
+    <div class="company-card-head"><h3 id="co-product-h">O que você vende</h3></div>
     <div class="company-grid">
-      <div class="form-group"><label class="form-label" for="co-p-name">Product or service</label>
+      <div class="form-group"><label class="form-label" for="co-p-name">Produto ou serviço</label>
         <input class="form-input" id="co-p-name" value="${ce(p.name)}"></div>
-      <div class="form-group"><label class="form-label" for="co-p-pricing">Pricing</label>
+      <div class="form-group"><label class="form-label" for="co-p-pricing">Preço</label>
         <input class="form-input" id="co-p-pricing" value="${ce(p.pricing)}"></div>
     </div>
-    <div class="form-group"><label class="form-label" for="co-p-desc">What it is and who it's for</label>
+    <div class="form-group"><label class="form-label" for="co-p-desc">O que é e para quem é</label>
       <textarea class="form-input" id="co-p-desc" rows="3">${ce(p.description)}</textarea></div>
-    <div class="form-group"><label class="form-label" for="co-p-benefits">Key benefits <span class="hint">one per line</span></label>
+    <div class="form-group"><label class="form-label" for="co-p-benefits">Principais benefícios <span class="hint">um por linha</span></label>
       <textarea class="form-input" id="co-p-benefits" rows="4">${ce(lines(p.key_benefits))}</textarea></div>
-    <div class="offer-actions"><button class="btn btn-primary btn-sm" onclick="saveCompanySection('product')">Save</button></div>
+    <div class="offer-actions"><button class="btn btn-primary btn-sm" onclick="saveCompanySection('product')">Salvar</button></div>
   </section>
 
   <section class="card company-card" aria-labelledby="co-icp-h">
-    <div class="company-card-head"><h3 id="co-icp-h">Who you sell to</h3></div>
+    <div class="company-card-head"><h3 id="co-icp-h">Para quem você vende</h3></div>
     <div class="company-grid">
-      <div class="form-group"><label class="form-label" for="co-i-industries">Industries <span class="hint">one per line</span></label>
+      <div class="form-group"><label class="form-label" for="co-i-industries">Indústrias <span class="hint">uma por linha</span></label>
         <textarea class="form-input" id="co-i-industries" rows="4">${ce(lines(icp.industries))}</textarea></div>
-      <div class="form-group"><label class="form-label" for="co-i-titles">Job titles <span class="hint">one per line</span></label>
+      <div class="form-group"><label class="form-label" for="co-i-titles">Cargos <span class="hint">um por linha</span></label>
         <textarea class="form-input" id="co-i-titles" rows="4">${ce(lines(icp.titles))}</textarea></div>
-      <div class="form-group"><label class="form-label" for="co-i-size">Company size</label>
+      <div class="form-group"><label class="form-label" for="co-i-size">Tamanho da empresa</label>
         <input class="form-input" id="co-i-size" value="${ce(icp.company_size)}"></div>
-      <div class="form-group"><label class="form-label" for="co-i-geo">Where <span class="hint">one per line</span></label>
+      <div class="form-group"><label class="form-label" for="co-i-geo">Onde <span class="hint">uma por linha</span></label>
         <textarea class="form-input" id="co-i-geo" rows="2">${ce(lines(icp.geography))}</textarea></div>
     </div>
-    <div class="offer-actions"><button class="btn btn-primary btn-sm" onclick="saveCompanySection('icp')">Save</button></div>
+    <div class="offer-actions"><button class="btn btn-primary btn-sm" onclick="saveCompanySection('icp')">Salvar</button></div>
   </section>
 
   <section class="card company-card" aria-labelledby="co-sender-h">
-    <div class="company-card-head"><h3 id="co-sender-h">Who it's from</h3>
+    <div class="company-card-head"><h3 id="co-sender-h">De quem é</h3>
       <span class="hint">${ce(s.company)}${s.email ? ' · ' + ce(s.email) : ''}</span></div>
     <div class="company-grid">
-      <div class="form-group"><label class="form-label" for="co-s-name">Sender name <span class="hint">signed under every email</span></label>
+      <div class="form-group"><label class="form-label" for="co-s-name">Nome do remetente <span class="hint">assinado ao final de cada e-mail</span></label>
         <input class="form-input" id="co-s-name" value="${ce(s.name)}"></div>
-      <div class="form-group"><label class="form-label" for="co-s-role">Role</label>
+      <div class="form-group"><label class="form-label" for="co-s-role">Cargo</label>
         <input class="form-input" id="co-s-role" value="${ce(s.role)}"></div>
     </div>
-    <div class="form-group"><label class="form-label" for="co-s-tone">Tone</label>
+    <div class="form-group"><label class="form-label" for="co-s-tone">Tom</label>
       <input class="form-input" id="co-s-tone" value="${ce(s.tone)}"></div>
-    <div class="offer-actions"><button class="btn btn-primary btn-sm" onclick="saveCompanySection('persona')">Save</button></div>
+    <div class="offer-actions"><button class="btn btn-primary btn-sm" onclick="saveCompanySection('persona')">Salvar</button></div>
   </section>
 
   <section class="card company-card" aria-labelledby="co-obj-h">
-    <div class="company-card-head"><h3 id="co-obj-h">Objections and answers</h3>
-      <span class="hint">How replies handle pushback</span></div>
+    <div class="company-card-head"><h3 id="co-obj-h">Objeções e respostas</h3>
+      <span class="hint">Como as respostas lidam com resistência</span></div>
     <div id="co-objections" class="company-objections">
       ${(objections.length ? objections : [['', '']]).map(([k, v], i) => objectionRow(k, v, i)).join('')}
     </div>
     <div class="offer-actions">
-      <button class="btn btn-secondary btn-sm" onclick="addObjection()">Add an objection</button>
-      <button class="btn btn-primary btn-sm" onclick="saveCompanySection('product', true)">Save</button>
+      <button class="btn btn-secondary btn-sm" onclick="addObjection()">Adicionar uma objeção</button>
+      <button class="btn btn-primary btn-sm" onclick="saveCompanySection('product', true)">Salvar</button>
     </div>
   </section>
 
   ${data.knowledge || data.competitors ? `<section class="card company-card" aria-labelledby="co-learned-h">
-    <div class="company-card-head"><h3 id="co-learned-h">What Sellbird learned from your site</h3>
-      <span class="hint">From training. Retrain with <code>sellbird train &lt;url&gt;</code></span></div>
-    ${data.knowledge ? `<details class="company-learned"><summary>Product knowledge</summary><pre>${ce(data.knowledge)}</pre></details>` : ''}
-    ${data.competitors ? `<details class="company-learned"><summary>Competitors</summary><pre>${ce(data.competitors)}</pre></details>` : ''}
+    <div class="company-card-head"><h3 id="co-learned-h">O que o Sellbird aprendeu com seu site</h3>
+      <span class="hint">Do treinamento. Retreine com <code>sellbird train &lt;url&gt;</code></span></div>
+    ${data.knowledge ? `<details class="company-learned"><summary>Conhecimento do produto</summary><pre>${ce(data.knowledge)}</pre></details>` : ''}
+    ${data.competitors ? `<details class="company-learned"><summary>Concorrentes</summary><pre>${ce(data.competitors)}</pre></details>` : ''}
   </section>` : ''}`;
   _offerIdeas = (o.entry_ideas || []).map(x => ({offer: x}));
   renderOfferIdeas();
@@ -3257,9 +3257,9 @@ async function loadCompany() {
 
 function objectionRow(k, v, i) {
   return `<div class="company-objection">
-    <div class="form-group"><label class="form-label" for="co-ok-${i}">When they say</label>
+    <div class="form-group"><label class="form-label" for="co-ok-${i}">Quando dizem</label>
       <input class="form-input co-ok" id="co-ok-${i}" value="${ce(k)}"></div>
-    <div class="form-group"><label class="form-label" for="co-ov-${i}">Answer with</label>
+    <div class="form-group"><label class="form-label" for="co-ov-${i}">Responda com</label>
       <textarea class="form-input co-ov" id="co-ov-${i}" rows="2">${ce(v)}</textarea></div>
   </div>`;
 }
@@ -3291,17 +3291,17 @@ async function saveCompanySection(section, objectionsOnly) {
   const r = await api('/api/company', {method: 'POST', headers: {'Content-Type': 'application/json'},
                                        body: JSON.stringify({section, fields})});
   if (r && r.success) showToast(r.message, 'success');
-  else showToast((r && r.message) || 'Couldn\'t save.', 'error');
+  else showToast((r && r.message) || 'Não foi possível salvar.', 'error');
 }
 
 function renderOfferIdeas() {
   const box = document.getElementById('offer-ideas');
   if (!box) return;
   if (!_offerIdeas.length) { box.innerHTML = ''; return; }
-  box.innerHTML = '<div class="form-label">Ideas to start from (click one to put it in the box, then make it yours)</div>' +
+  box.innerHTML = '<div class="form-label">Ideias para começar (clique em uma para colocar na caixa, depois a torne sua)</div>' +
     _offerIdeas.map((idea, i) => `<button type="button" class="offer-idea" onclick="useOfferIdea(${i})">
       <span class="offer-idea-text">${ce(idea.offer)}</span>
-      ${idea.finding ? `<span class="offer-idea-meta">Pairs with: ${ce(idea.finding)}</span>` : ''}
+      ${idea.finding ? `<span class="offer-idea-meta">Combina com: ${ce(idea.finding)}</span>` : ''}
       ${idea.why ? `<span class="offer-idea-meta">${ce(idea.why)}</span>` : ''}
     </button>`).join('');
 }
@@ -3314,30 +3314,30 @@ function useOfferIdea(i) {
 
 async function suggestOffers() {
   const btn = document.getElementById('offer-suggest-btn');
-  btn.disabled = true; btn.textContent = 'Thinking...';
+  btn.disabled = true; btn.textContent = 'Pensando...';
   document.getElementById('offer-ideas').innerHTML =
-    '<p class="desc">Sellbird is reading your product and coming up with offers that fit it...</p>';
+    '<p class="desc">O Sellbird está lendo seu produto e pensando em ofertas que combinem com ele...</p>';
   const r = await api('/api/offer/suggest', {method: 'POST'});
-  btn.disabled = false; btn.textContent = 'Suggest ideas';
-  if (!r || r.error || !r.ideas) { renderOfferIdeas(); showToast((r && r.error) || 'Sellbird couldn\'t come up with offers just now. Try again.', 'error'); return; }
+  btn.disabled = false; btn.textContent = 'Sugerir ideias';
+  if (!r || r.error || !r.ideas) { renderOfferIdeas(); showToast((r && r.error) || 'O Sellbird não conseguiu pensar em ofertas agora. Tente novamente.', 'error'); return; }
   _offerIdeas = r.ideas;
   renderOfferIdeas();
 }
 
 async function previewOffer() {
   const entry = document.getElementById('offer-entry').value.trim();
-  if (!entry) { showToast('Write an offer first.', 'error'); return; }
+  if (!entry) { showToast('Escreva uma oferta primeiro.', 'error'); return; }
   const btn = document.getElementById('offer-preview-btn');
   const box = document.getElementById('offer-preview');
-  btn.disabled = true; btn.textContent = 'Writing...';
+  btn.disabled = true; btn.textContent = 'Escrevendo...';
   box.hidden = false;
-  box.innerHTML = '<p class="desc">Writing a sample first email for one of your prospects. Nothing is saved or sent.</p>';
+  box.innerHTML = '<p class="desc">Escrevendo um e-mail de exemplo para um dos seus prospects. Nada é salvo ou enviado.</p>';
   box.scrollIntoView({block: 'nearest', behavior: 'smooth'});
   const r = await api('/api/offer/preview', {method: 'POST', headers: {'Content-Type': 'application/json'},
                                             body: JSON.stringify({entry})});
-  btn.disabled = false; btn.textContent = 'Preview an email';
-  if (!r || !r.ok) { box.innerHTML = `<p class="desc">${ce((r && r.message) || 'The preview failed. Try again.')}</p>`; return; }
-  box.innerHTML = `<div class="form-label">Sample for ${ce(r.to)} (not saved, not sent)</div>
+  btn.disabled = false; btn.textContent = 'Pré-visualizar um e-mail';
+  if (!r || !r.ok) { box.innerHTML = `<p class="desc">${ce((r && r.message) || 'A pré-visualização falhou. Tente novamente.')}</p>`; return; }
+  box.innerHTML = `<div class="form-label">Exemplo para ${ce(r.to)} (não salvo, não enviado)</div>
     <div class="offer-mail"><div class="offer-mail-subject">${ce(r.subject)}</div><pre>${ce(r.body)}</pre></div>`;
   box.scrollIntoView({block: 'nearest', behavior: 'smooth'});
 }
@@ -3347,7 +3347,7 @@ async function saveOffer(entryOverride) {
   const r = await api('/api/offer', {method: 'POST', headers: {'Content-Type': 'application/json'},
                                      body: JSON.stringify({entry})});
   if (r && r.success) { showToast(r.message, 'success'); loadCompany(); }
-  else showToast((r && r.message) || 'Couldn\'t save the offer.', 'error');
+  else showToast((r && r.message) || 'Não foi possível salvar a oferta.', 'error');
 }
 
 async function useProposedOffer() {

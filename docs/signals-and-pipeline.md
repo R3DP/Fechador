@@ -1,156 +1,155 @@
-# Signals and the prospecting pipeline
+# Sinais e o pipeline de prospecção
 
-## You confirm what it looks for
+## Você confirma o que ele procura
 
-This is the part that makes Sellbird different from a black box, and it is deliberately not skippable.
+Esta é a parte que faz o Sellbird diferente de uma caixa-preta, e ela é deliberadamente impossível de pular.
 
-Sellbird knows how to collect **29 signals** about a business. It does not collect any of them until you say so. On first run it *proposes* the catalog; you confirm, skip, or reject each one in the dashboard or from the terminal:
+O Sellbird sabe coletar **29 sinais** sobre uma empresa. Ele não coleta nenhum deles até você dizer. Na primeira execução ele *propõe* o catálogo; você confirma, pula ou rejeita cada um no dashboard ou pelo terminal:
 
 ```bash
-sellbird signals                       # review the catalog
-sellbird signals --confirm free        # everything that costs nothing (26 of them)
-sellbird signals --confirm SERP_RANK   # a paid one, opted into explicitly
+sellbird signals                       # revisar o catálogo
+sellbird signals --confirm free        # tudo que não custa nada (26 deles)
+sellbird signals --confirm SERP_RANK   # um pago, adotado explicitamente
 ```
 
-Every signal shows what it is in plain language, **what it costs**, and how many companies already carry it.
+Todo sinal mostra o que é em linguagem simples, **quanto custa** e quantas empresas já o possuem.
 
-| | Signal | What it tells you |
+| | Sinal | O que ele te diz |
 |---|---|---|
-| **Discovery** | `SERP_RANK` | Where they rank for their own core search, stored with the search phrase. Positions 11–30 are the sweet spot: visible enough to be trying, and losing. |
-| | `IN_LOCAL_PACK` / `MAPS_RANK` | Whether they hold one of the three map slots above the results, and where they sit in Google Maps. |
-| | `NO_WEBSITE` | They have a listing and a phone and no site. If you sell websites, the highest-intent signal that exists. |
-| | `UNCLAIMED_LISTING` | Nobody has claimed their Google Business Profile. |
-| | `REVIEW_RATING` / `REVIEW_COUNT` | Good but invisible, or visible but struggling. |
-| **Profile** | `INCUMBENT_AGENCY` | Who currently has the account, credited in their own footer. Every detection builds a roster you can target as a whole book of business. |
-| | `RUNNING_GOOGLE_ADS` / `RUNNING_META_ADS` | They are spending on acquisition *today*. The strongest budget signal available for free. |
-| | `NO_ONLINE_BOOKING` | Leads have to phone in, so after-hours demand is lost. |
-| | `NO_SCHEMA_MARKUP` | A concrete, checkable SEO gap you can name in an email. |
-| | `BLOG_STALE` | Content marketing started and abandoned. |
-| | `SITE_PAGE_COUNT`, `TECH_STACK`, `BLOCKS_AI_CRAWLERS` | Size, platform, AI-search visibility. |
-| | `HIRING_ROLE` / `OPEN_ROLES` | What they're hiring for, and how many roles are open. When their site links a Greenhouse, Lever, Ashby or Workable board, Sellbird reads that board's public feed (one request): roles matching `icp.hiring_signals` (else `icp.titles`), with department, location, posting date and the posting's URL; when the board lists none, it records "not hiring" so a closed role stops counting. Otherwise it reads the careers page. Set `hiring_signals` to the roles that mean they're buying: the `titles` fallback names who you email, so "CEO" only matches a CEO opening (never "Assistant to the CEO"), which is rarely the signal you want. |
-| | `YC_BACKED`, `ACCELERATOR`, `FUNDING_ROUND` | A startup, as its own site says: YC or another accelerator (with the batch or cohort), or a raise it announced (round, amount, date). |
-| **People** | `CONTACT_FOUND`, `DECISION_MAKER_TITLE`, `LIKELY_OWNER`, `REGISTRY_VERIFIED` | Who decides, and whether they own the place. |
-| **Contact** | `EMAIL_PATTERN`, `EMAIL_STATUS`, `CONTACT_FORM_URL` | Whether you can actually reach them. |
+| **Discovery** | `SERP_RANK` | Onde eles ranqueiam para sua própria busca principal, guardado com a frase de busca. As posições 11–30 são o ponto ideal: visíveis o bastante para estarem tentando, e perdendo. |
+| | `IN_LOCAL_PACK` / `MAPS_RANK` | Se eles ocupam um dos três slots de mapa acima dos resultados, e onde ficam no Google Maps. |
+| | `NO_WEBSITE` | Eles têm uma listagem e um telefone, e não têm site. Se você vende sites, é o sinal de maior intenção que existe. |
+| | `UNCLAIMED_LISTING` | Ninguém reivindicou o Google Business Profile deles. |
+| | `REVIEW_RATING` / `REVIEW_COUNT` | Bons mas invisíveis, ou visíveis mas sofrendo. |
+| **Profile** | `INCUMBENT_AGENCY` | Quem tem a conta hoje, creditado no próprio rodapé deles. Cada detecção monta um cadastro que você pode trabalhar como um portfólio inteiro de clientes. |
+| | `RUNNING_GOOGLE_ADS` / `RUNNING_META_ADS` | Eles estão gastando em aquisição *hoje*. O sinal de orçamento mais forte disponível de graça. |
+| | `NO_ONLINE_BOOKING` | Os leads têm que ligar, então a demanda fora do horário se perde. |
+| | `NO_SCHEMA_MARKUP` | Uma lacuna de SEO concreta e verificável que você pode citar num e-mail. |
+| | `BLOG_STALE` | Marketing de conteúdo começou e foi abandonado. |
+| | `SITE_PAGE_COUNT`, `TECH_STACK`, `BLOCKS_AI_CRAWLERS` | Tamanho, plataforma, visibilidade em busca por IA. |
+| | `HIRING_ROLE` / `OPEN_ROLES` | Para que estão contratando, e quantas vagas estão abertas. Quando o site deles linka um board do Greenhouse, Lever, Ashby ou Workable, o Sellbird lê o feed público desse board (uma requisição): vagas que correspondem a `icp.hiring_signals` (senão `icp.titles`), com departamento, local, data de publicação e a URL da vaga; quando o board não lista nenhuma, ele registra "não contratando" para que uma vaga fechada deixe de contar. Caso contrário, ele lê a página de carreiras. Defina `hiring_signals` como os cargos que significam que estão comprando: o fallback `titles` nomeia quem você contata por e-mail, então "CEO" só casa com uma vaga de CEO (nunca "Assistant to the CEO"), que raramente é o sinal que você quer. |
+| | `YC_BACKED`, `ACCELERATOR`, `FUNDING_ROUND` | Uma startup, como o próprio site deles diz: YC ou outro acelerador (com a turma ou coorte), ou uma rodada que anunciaram (série, valor, data). |
+| **People** | `CONTACT_FOUND`, `DECISION_MAKER_TITLE`, `LIKELY_OWNER`, `REGISTRY_VERIFIED` | Quem decide, e se é dono do negócio. |
+| **Contact** | `EMAIL_PATTERN`, `EMAIL_STATUS`, `CONTACT_FORM_URL` | Se você realmente consegue chegar a eles. |
 
-### Then a cohort is a query, not a list
+### Então uma coorte é uma consulta, não uma lista
 
-Once signals are confirmed, the dashboard's cohort builder turns them into a target set — pick what a good prospect **must have**, what **disqualifies** them, and a **range** for numeric signals (organic rank 11 to 30), and it counts the matches live:
+Depois que os sinais são confirmados, o construtor de coortes do dashboard os transforma num conjunto-alvo — escolha o que um bom prospect **precisa ter**, o que o **desqualifica**, e uma **faixa** para sinais numéricos (rank orgânico 11 a 30), e ele conta as correspondências ao vivo:
 
 ```
-Has a marketing agency  AND  running Google Ads  AND NOT  already has online booking
-→ 23 companies
+Tem uma agência de marketing  AND  roda Google Ads  AND NOT  já tem agendamento online
+→ 23 empresas
 ```
 
-That is a campaign with a reason behind it. You know exactly why each of those 23 is on the list, and so does the email Sellbird writes them.
+Isso é uma campanha com um motivo por trás. Você sabe exatamente por que cada uma dessas 23 está na lista, e o e-mail que o Sellbird escreve para elas também.
 
 ---
 
-## The prospecting pipeline
+## O pipeline de prospecção
 
-Four stages. Each one runs independently, re-runs safely, and states its cost.
+Quatro estágios. Cada um roda de forma independente, roda de novo com segurança e declara seu custo.
 
-### 1. DISCOVER — who exists
+### 1. DISCOVER — quem existe
 
-The only stage that spends money, so it always estimates first and never calls anything until you press go.
+O único estágio que gasta dinheiro, então ele sempre estima primeiro e nunca chama nada até você mandar.
 
 ```bash
-sellbird discover --providers   # the menu, with real prices
-sellbird discover --estimate    # projected spend, then exits
-sellbird discover               # go
+sellbird discover --providers   # o menu, com preços reais
+sellbird discover --estimate    # gasto projetado, depois sai
+sellbird discover               # vá
 ```
 
-| Source | Cost | Free tier | Best for |
+| Fonte | Custo | Plano gratuito | Melhor para |
 |---|---|---|---|
-| **OpenStreetMap** *(default)* | free | unlimited, no account | Trying the whole pipeline before paying anyone. Coverage is thin for businesses without a storefront: OSM maps premises, so whole trades are barely present (under 2,000 roofers and under 2,300 plumbers in the entire US). Sellbird says so in the UI rather than quietly under-delivering. |
-| **TinyFish** | free | 30 searches a minute, 500 an hour, no card | Finding businesses by phrase (including the startup and hiring presets) at no cost. Records no search rank: its ordering isn't Google's and it takes no location, so use Serper or DataForSEO SERP for rank signals. |
-| **DataForSEO Business Listings** | $0.372 / 1,000 | $1 credit | Local trades, clinics, contractors. Phone, domain, rating, claimed status — and it can filter for businesses with **no website at all**. |
-| **DataForSEO SERP** | $0.006 / search at depth 30 (Live, $0.002 per 10 results) | $1 credit + free sandbox | Organic rank as the buying signal, plus who holds the local 3-pack, searched from the city centre. |
-| **DataForSEO Google Maps** | $0.002 / search (up to 100 results) | $1 credit + free sandbox | Map rank, rating, category and claimed status, including businesses with no website. |
-| **Serper** | ~$0.30–1.00 / 1,000 | 2,500 free, no card | The easiest paid one to try. |
-| **Scavio Google Maps** | $0.01 / page (up to 20 listings) | 50 credits, no card | Google Maps listings around each city: phone, website, category, rating and reviews, including businesses with no website. |
-| **Scavio Google Search** | ~$0.03 / depth-30 search | same 50 credits | Rank as the signal, on the same key as Scavio Google Maps. |
+| **OpenStreetMap** *(padrão)* | grátis | ilimitado, sem conta | Testar o pipeline inteiro antes de pagar a alguém. A cobertura é rasa para negócios sem ponto físico: o OSM mapeia imóveis, então setores inteiros quase não estão presentes (menos de 2.000 telhadores e menos de 2.300 encanadores em todos os EUA). O Sellbird diz isso na interface em vez de entregar de menos em silêncio. |
+| **TinyFish** | grátis | 30 buscas por minuto, 500 por hora, sem cartão | Encontrar negócios por frase (incluindo os presets de startup e de contratação) sem custo. Não registra rank de busca: a ordenação dele não é a do Google e ele não aceita localização, então use Serper ou DataForSEO SERP para sinais de rank. |
+| **DataForSEO Business Listings** | US$ 0,372 / 1.000 | US$ 1 de crédito | Setores locais, clínicas, prestadores. Telefone, domínio, avaliação, status de reivindicação — e ele pode filtrar por negócios **sem site nenhum**. |
+| **DataForSEO SERP** | US$ 0,006 / busca com profundidade 30 (Live, US$ 0,002 por 10 resultados) | US$ 1 de crédito + sandbox grátis | Rank orgânico como sinal de compra, mais quem ocupa o 3-pack local, buscado do centro da cidade. |
+| **DataForSEO Google Maps** | US$ 0,002 / busca (até 100 resultados) | US$ 1 de crédito + sandbox grátis | Rank no mapa, avaliação, categoria e status de reivindicação, incluindo negócios sem site. |
+| **Serper** | ~US$ 0,30–1,00 / 1.000 | 2.500 grátis, sem cartão | O pago mais fácil de testar. |
+| **Scavio Google Maps** | US$ 0,01 / página (até 20 listagens) | 50 créditos, sem cartão | Listagens do Google Maps em torno de cada cidade: telefone, site, categoria, avaliação e reviews, incluindo negócios sem site. |
+| **Scavio Google Search** | ~US$ 0,03 / busca com profundidade 30 | os mesmos 50 créditos | Rank como sinal, com a mesma chave do Scavio Google Maps. |
 
-**Selling to startups?** Sellbird has a built-in startup skill, made of three
-parts:
+**Vendendo para startups?** O Sellbird tem uma skill de startup embutida, feita de três
+partes:
 
-- **The searches** (each a web search, so Serper or DataForSEO SERP):
+- **As buscas** (cada uma uma busca na web, então Serper ou DataForSEO SERP):
 
-  | Preset | Finds | Signal |
+  | Preset | Encontra | Sinal |
   |---|---|---|
-  | `yc` (*YC startups*) | Companies whose own site says they're backed by Y Combinator | `YC_BACKED`, with the batch (W24, S23) |
-  | `accelerator` (*Accelerator startups*) | Ones backed by Techstars, 500 Global, Antler, Entrepreneur First, South Park Commons, Neo, AI Grant, a16z speedrun or Plug and Play (two searches per industry; the signal also reads Pioneer) | `ACCELERATOR`, with the program and cohort ("Techstars 2024") |
-  | `funding` (*Recently funded*) | Companies announcing their own raise ("we raised", "announces $X Series A") in the last 18 months, news sites and funding databases excluded | `FUNDING_ROUND`: round, amount and date |
+  | `yc` (*YC startups*) | Empresas cujo próprio site diz que são apoiadas pela Y Combinator | `YC_BACKED`, com a turma (W24, S23) |
+  | `accelerator` (*Accelerator startups*) | As apoiadas pela Techstars, 500 Global, Antler, Entrepreneur First, South Park Commons, Neo, AI Grant, a16z speedrun ou Plug and Play (duas buscas por setor; o sinal também lê a Pioneer) | `ACCELERATOR`, com o programa e a coorte ("Techstars 2024") |
+  | `funding` (*Recently funded*) | Empresas anunciando a própria rodada ("we raised", "announces $X Series A") nos últimos 18 meses, excluindo sites de notícias e bases de dados de funding | `FUNDING_ROUND`: série, valor e data |
 
-  `sellbird discover --preset accelerator --provider serper`, or the *Look for*
-  menu on the Discover tab.
-- **The signals:** turn them on in the Signals tab. They read the homepage and
-  About page (and for a raise, the page the search found on their own site and
-  their press or news page) for a line where the company says it about itself
+  `sellbird discover --preset accelerator --provider serper`, ou o menu *Procurar por*
+  na aba Descobrir.
+- **Os sinais:** ligue-os na aba Sinais. Eles leem a homepage e a
+  página About (e, no caso de uma rodada, a página que a busca encontrou no próprio site
+  e a página de imprensa ou notícias) em busca de uma linha em que a empresa diz isso sobre si
   ("we went through Y Combinator", "Acme (Techstars '24)", "we raised a $4M
-  seed round"), a "Backed by" logo wall, or a link to its own YC page. Customer
-  and audience lines ("trusted by YC-backed startups", "we help founders raise
-  their seed round") don't count. Many startups never say it on their site, so
-  these find the ones that do; a YC or accelerator preset hit counts as a yes too.
-  A raise's date comes from its own clause, or from the publish date of a
-  press, news or blog post. Money that isn't a raise (loans closed, verdicts
-  won, money raised for a charity, an investor's round in another company)
-  doesn't count.
-- **The writing:** the writer and reply handler use
-  `skills/selling_to_startups.md`, a playbook for writing to founders with a
-  section on companies that just raised, for YC- and accelerator-backed
-  companies and for raises dated within the last 18 months. An older or
-  undated raise alone doesn't bring the playbook, and is never written to as
-  news.
+  seed round"), uma parede de logos "Backed by", ou um link para a própria página YC
+  dela. Menções de cliente e audiência ("trusted by YC-backed startups", "we help founders raise
+  their seed round") não contam. Muitas startups nunca dizem isso no site, então
+  estes encontram as que dizem; um acerto de preset YC ou de acelerador também conta como sim.
+  A data de uma rodada vem da própria cláusula, ou da data de publicação de um
+  post de imprensa, notícia ou blog. Dinheiro que não é uma rodada (empréstimos fechados, veredictos
+  ganhos, dinheiro arrecadado para uma caridade, a rodada de um investidor em outra empresa)
+  não conta.
+- **A redação:** o writer e o handler de respostas usam
+  `skills/selling_to_startups.md`, um playbook para escrever a fundadores com uma
+  seção sobre empresas que acabaram de captar, para empresas apoiadas por YC e aceleradoras
+  e para rodadas datadas nos últimos 18 meses. Uma rodada mais antiga ou sem
+  data sozinha não traz o playbook, e nunca é escrita como notícia.
 
-Sellbird never reads ycombinator.com, the accelerators' directories, Crunchbase,
-PitchBook or LinkedIn, whose terms forbid scraping them; everything comes from
-the companies' own sites and your search provider.
+O Sellbird nunca lê ycombinator.com, os diretórios das aceleradoras, Crunchbase,
+PitchBook ou LinkedIn, cujos termos proíbem raspar; tudo vem dos
+próprios sites das empresas e do seu provedor de busca.
 
-**Looking for companies hiring a role?** `sellbird discover --preset hiring
---provider serper` (or *Look for: Companies hiring for your roles*) searches
-your industries for companies whose own careers pages list one of your
-`icp.hiring_signals` roles (else `icp.titles`). Hosted boards and job sites
-are left out of the search, since a board page names a board, not a website
-to profile. Confirm `HIRING_ROLE` and profiling reads the board their site links
-to and records the role; the search hit alone records nothing.
+**Procurando empresas contratando um cargo?** `sellbird discover --preset hiring
+--provider serper` (ou *Procurar por: Empresas contratando para suas vagas*) busca
+nos seus setores por empresas cujas próprias páginas de carreiras listam um dos seus
+cargos `icp.hiring_signals` (senão `icp.titles`). Boards hospedados e sites de emprego
+ficam de fora da busca, já que a página de um board nomeia um board, não um site
+para perfilar. Confirme `HIRING_ROLE` e o profiling lê o board para o qual o site deles
+leva e registra a vaga; o acerto da busca sozinho não registra nada.
 
-Cities geocode themselves (cached forever, one lookup each). Directories, aggregators and institutions are filtered by pattern, not a blocklist — `en.wikipedia.org` and `biz.yelp.com` never make it in.
+As cidades se geocodificam sozinhas (em cache para sempre, uma consulta cada). Diretórios, agregadores e instituições são filtrados por padrão, não por blocklist — `en.wikipedia.org` e `biz.yelp.com` nunca entram.
 
-> **Depth 20–30, not 100.** Google removed 100-results-per-page in September 2025, so depth 100 is now billed as ten pages nearly everywhere. Below rank 30 it is mostly directories anyway.
+> **Profundidade 20–30, não 100.** O Google removeu os 100 resultados por página em setembro de 2025, então profundidade 100 agora é cobrada como dez páginas em quase todo lugar. Abaixo do rank 30 é quase tudo diretório de qualquer forma.
 
-### 2. PROFILE — what they are
+### 2. PROFILE — o que eles são
 
-**Free.** Three HTTP requests per business. No browser, no model call. This is the highest value-per-effort stage in the whole system, because it produces the facts that make an email specific.
+**Grátis.** Três requisições HTTP por empresa. Sem navegador, sem chamada ao modelo. Este é o estágio de maior valor por esforço de todo o sistema, porque produz os fatos que tornam um e-mail específico.
 
-Website requests from Scout, Profile, and the local training crawler are limited
-to public HTTP(S) destinations. Every DNS answer and redirect is checked; local,
-private, link-local, and metadata addresses are rejected. Connections use a
-validated IP while preserving the website's TLS identity. These website clients
-ignore environment proxies, so proxy routing cannot bypass that boundary.
+Requisições de site do Scout, do Profile e do crawler de treinamento local são limitadas
+a destinos HTTP(S) públicos. Toda resposta DNS e redirecionamento é conferido; endereços
+locais, privados, link-local e de metadados são rejeitados. As conexões usam um
+IP validado, preservando a identidade TLS do site. Esses clientes de site
+ignoram proxies de ambiente, então o roteamento por proxy não consegue contornar essa fronteira.
 
-Homepage, `robots.txt`, `sitemap.xml`, plus the team and careers pages when they exist — then regex over HTML already in hand. Out comes the incumbent agency, the ad pixels, the missing schema, the abandoned blog, the open roles, the named humans.
+Homepage, `robots.txt`, `sitemap.xml`, mais as páginas de equipe e de carreiras quando existem — depois regex sobre o HTML já em mãos. Sai a agência incumbente, os pixels de anúncio, o schema ausente, o blog abandonado, as vagas abertas, os humanos nomeados.
 
-Agency detection is the compounding one. Almost every agency credits itself in the footer, and Sellbird scores the wording: *"Powered by"* / *"Website by"* → 0.9 confidence; a bare descriptive link → 0.75; an unlabelled link → 0.35 and **not recorded**. A wrong incumbent in an email is worse than saying nothing.
+A detecção de agência é a que se acumula. Quase toda agência se credita no rodapé, e o Sellbird pontua o texto: *"Powered by"* / *"Website by"* → 0,9 de confiança; Um link descritivo sem rótulo → 0,75; um link sem rótulo → 0,35 — mas um link sem rótulo é **não registrado**. Uma incumbente errada num e-mail é pior que dizer nada.
 
-### 3. ENRICH — who decides
+### 3. ENRICH — quem decide
 
-The owner, from the company's own site. Sellbird reads the homepage and follows the site's own menu to the pages where people are named — team, about, our story, meet the dentists, attorneys, contact — six pages at most, skipping links that land back on the homepage. On those pages it reads:
+O dono, a partir do próprio site da empresa. O Sellbird lê a homepage e segue o menu do próprio site até as páginas onde as pessoas são nomeadas — equipe, sobre, nossa história, conheça os dentistas, advogados, contato — no máximo seis páginas, pulando links que voltam para a homepage. Nessas páginas ele lê:
 
-- **cards and lists**: a name with a title under it, even when the title is only a `<br>` away inside a span;
-- **sentences**: "owned and operated by Gary Pruitt", "led today by President Ilan Brooks", "Ines Varga started Countwise";
-- **schema.org**: the business's own `founder` and `employee` entries (a blog post's author is not staff);
-- **the name on the door**: when two people both have owner titles, the one whose surname is in the business name comes first. A surname alone never makes anyone the owner: Linda Smith, Office Manager, at Smith & Sons isn't one.
+- **cards e listas**: um nome com um cargo abaixo, mesmo quando o cargo está só a um `<br>` de distância dentro de um span;
+- **frases**: "owned and operated by Gary Pruitt", "led today by President Ilan Brooks", "Ines Varga started Countwise";
+- **schema.org**: as próprias entradas `founder` e `employee` da empresa (o autor de um post de blog não é funcionário);
+- **o nome na porta**: quando duas pessoas têm cargos de dono, vem primeiro quem tem o sobrenome no nome do negócio. Um sobrenome sozinho nunca faz de ninguém o dono: Linda Smith, Office Manager, na Smith & Sons não é uma.
 
-Owners rank first, and at most two people per company become prospects. Headings made of ordinary words ("Team of Experts"), customers quoted in testimonials or tweets ("Founder at Quillnest"), other organisations' officers ("KTR President Vic Hale"), former or late owners ("Past President", "the late Harold Smith"), and taglines are not people. Titles match your ICP by whole word: "Vice President" doesn't count as "President" unless you list it, and Proprietor, Principal, Managing Partner, Founder and CEO all count as an owner. With `LIKELY_OWNER` confirmed, each owner is recorded as an observation with the evidence that says so.
+Donos vêm primeiro, e no máximo duas pessoas por empresa se tornam prospects. Títulos feitos de palavras comuns ("Team of Experts"), clientes citados em depoimentos ou tweets ("Founder at Quillnest"), diretores de outras organizações ("KTR President Vic Hale"), donos antigos ou falecidos ("Past President", "the late Harold Smith") e slogans não são pessoas. Os cargos casam com seu ICP por palavra inteira: "Vice President" não conta como "President" a menos que você o liste, e Proprietor, Principal, Managing Partner, Founder e CEO contam como dono. Com `LIKELY_OWNER` confirmado, cada dono é registrado como uma observação com a evidência que o indica.
 
-When a company's site names nobody, or names an owner whose address is only a guess, and Sellbird has no contact there yet — common for small trades — it also uses a general address the company prints on its own pages (only general mailboxes such as `owner@`, `office@`, `info@` or `hello@`, never a person's own address). Sellbird reads whole pages for it, including schema.org and addresses hidden from scrapers, and accepts an address on another domain only when that domain leads to the company's own site. It is never guessed, it is verified like any other address, and those emails greet the company's team instead of a first name.
+Quando o site de uma empresa não nomeia ninguém, ou nomeia um dono cujo endereço é só um palpite, e o Sellbird ainda não tem contato ali — comum em setores pequenos —, ele também usa um endereço geral que a empresa imprime nas próprias páginas (apenas caixas gerais como `owner@`, `office@`, `info@` ou `hello@`, nunca o endereço pessoal de alguém). O Sellbird lê páginas inteiras em busca dele, incluindo schema.org e endereços escondidos de scrapers, e aceita um endereço em outro domínio apenas quando aquele domínio leva ao site da própria empresa. Ele nunca é adivinhado, é verificado como qualquer outro endereço, e esses e-mails saúdam a equipe da empresa em vez de um primeiro nome.
 
-A site behind a bot challenge (SiteGround's "sgcaptcha", Cloudflare's "Just a moment…") is reported as challenged, not unreachable, and isn't retried.
+Um site atrás de um desafio de bot (o "sgcaptcha" da SiteGround, o "Just a moment…" da Cloudflare) é relatado como desafiado, não inacessível, e não é tentado de novo.
 
-### 4. VERIFY — can you reach them
+### 4. VERIFY — você consegue chegar a eles
 
-Sellbird learns each company's **address pattern** and verifies one candidate, rather than brute-forcing name variations. Any address the site publishes can teach it: `nvale@` next to Nora Vale is `{first initial}{last}`, and `j.smith@` is an initial and surname. A lone dotless address no named person owns (`kmorrow@`: Kmorrow, or K. Morrow?) is ambiguous and teaches nothing. An address two named people could own (`jsmith@` when John and Jane Smith both work there) is format evidence only, and Sellbird never guesses or verifies an address another named person could own: a verifier would confirm *their* mailbox. It decodes the usual hiding tricks (Cloudflare email protection, a mail link's `data-user`/`data-domain` attributes, `name [at] domain [dot] com`) and never invents an address from ordinary text. A person's own published address is used as is. With no evidence at all, it guesses `first.last@`, or `first@` when something besides the website says the company is small (your ICP's company size, or a local-business listing as its source). A cached guess never stops a real address or a Hunter lookup from replacing it, and Hunter is asked once per domain (a timeout or rate limit doesn't count). Raw SMTP probing is not viable from a laptop — outbound port 25 is usually blocked, and Google Workspace and Microsoft 365 accept everything from an unknown IP.
+O Sellbird aprende o **padrão de endereço** de cada empresa e verifica um candidato, em vez de tentar por força bruta variações de nome. Qualquer endereço que o site publique pode ensiná-lo: `nvale@` ao lado de Nora Vale é `{first initial}{last}`, e `j.smith@` é uma inicial e um sobrenome. Um endereço solto sem ponto que nenhuma pessoa nomeada tem (`kmorrow@`: Kmorrow, ou K. Morrow?) é ambíguo e não ensina nada. Um endereço que duas pessoas nomeadas poderiam ter (`jsmith@` quando John e Jane Smith trabalham ali) é só evidência de formato, e o Sellbird nunca adivinha ou verifica um endereço que outra pessoa nomeada poderia ter: um verificador confirmaria a caixa *dela*. Ele decodifica os truques usuais de ocultação (Cloudflare email protection, os atributos `data-user`/`data-domain` de um link de e-mail, `name [at] domain [dot] com`) e nunca inventa um endereço a partir de texto comum. O endereço publicado pela própria pessoa é usado como está. Sem nenhuma evidência, ele chuta `first.last@`, ou `first@` quando algo além do site diz que a empresa é pequena (o tamanho de empresa do seu ICP, ou uma listagem de negócio local como fonte). Um palpite em cache nunca impede que um endereço real ou uma consulta ao Hunter o substitua, e o Hunter é consultado uma vez por domínio (um timeout ou limite de taxa não conta). O probing SMTP bruto não é viável a partir de um laptop — a porta 25 de saída costuma estar bloqueada, e o Google Workspace e o Microsoft 365 aceitam tudo de um IP desconhecido.
 
-Every address is tagged honestly: `verified` / `risky` (catch-all) / `guess` / `invalid`. **Only deliverable ones are ever sent to.** A guess is never treated as a win.
+Todo endereço é marcado com honestidade: `verified` / `risky` (catch-all) / `guess` / `invalid`. **Só os entregáveis são enviados.** Um palpite nunca é tratado como acerto.
 
-> Sellbird is worth running even if you never let it send. `sellbird export` writes a sequencer-ready CSV of everything it found.
+> O Sellbird vale a pena rodar mesmo que você nunca o deixe enviar. `sellbird export` grava um CSV pronto para sequenciador de tudo o que ele encontrou.

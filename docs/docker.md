@@ -1,10 +1,10 @@
-# Running Sellbird with Docker (Linux)
+# Rodando o Sellbird com Docker (Linux)
 
-Docker Compose runs the dashboard; start and stop the heartbeat from its
-Actions card. Host networking preserves the dashboard's loopback-only bind at
-`127.0.0.1:5555`. This Compose setup supports native Linux; use the pip install
-above on macOS or Windows. On a remote Linux host, reach the dashboard through
-an SSH tunnel rather than exposing its port to the network.
+O Docker Compose roda o dashboard; inicie e pare o heartbeat pelo card de Ações
+(Actions). A rede do host preserva a vinculação somente-loopback do dashboard em
+`127.0.0.1:5555`. Esta configuração do Compose suporta Linux nativo; use a instalação
+via pip acima no macOS ou Windows. Em um host Linux remoto, acesse o dashboard por um
+túnel SSH em vez de expor sua porta à rede.
 
 ```bash
 git clone https://github.com/ethanplusai/sellbird.git
@@ -26,20 +26,22 @@ docker compose logs sellbird
 # Open the private unlock link printed in the logs.
 ```
 
-Compose mounts the checkout directory at `/app`. Setup credentials, both YAML
-config files, training output, knowledge files, and `data/` remain in that
-checkout when containers are recreated. Directory mounting also permits atomic
-configuration saves; do not replace it with individual config-file mounts.
-Sellbird loads `.env` directly. Restart the container after editing credentials.
-The checkout and Claude auth directory must be writable by the selected user.
+O Compose monta o diretório do checkout em `/app`. Credenciais de configuração, os dois
+arquivos YAML de configuração, a saída do treinamento, os arquivos de conhecimento e
+`data/` permanecem nesse checkout quando os contêineres são recriados. A montagem de
+diretório também permite gravações atômicas de configuração; não a substitua por
+montagens de arquivos de configuração individuais.
+O Sellbird carrega o `.env` diretamente. Reinicie o contêiner após editar as credenciais.
+O checkout e o diretório de autenticação do Claude precisam ser graváveis pelo usuário
+selecionado.
 
-To train later, use `docker compose run --rm sellbird train <product-url>`;
-`sellbird.local.yaml` is saved directly to the checkout. Back up this file, `.env`,
-`skills/`, and `data/` before moving installations. The running code also comes
-from the checkout: restart after updating it, and rebuild when dependencies or
-the Dockerfile change. The build context excludes local data and credentials.
+Para treinar depois, use `docker compose run --rm sellbird train <product-url>`;
+o `sellbird.local.yaml` é salvo direto no checkout. Faça backup deste arquivo, do `.env`,
+de `skills/` e de `data/` antes de mover instalações. O código em execução também vem
+do checkout: reinicie após atualizá-lo e reconstrua quando as dependências ou o
+Dockerfile mudarem. O contexto de build exclui dados locais e credenciais.
 
-The dashboard listens on 5555. If you change the port in the Compose `command`,
-change the Dockerfile health-check port too and rebuild. Stop the service with
-`docker compose down`; its files remain in the checkout. Use a host install if
-you need the Codex provider.
+O dashboard escuta na 5555. Se você mudar a porta no `command` do Compose,
+mude também a porta do health-check do Dockerfile e reconstrua. Pare o serviço com
+`docker compose down`; os arquivos permanecem no checkout. Use uma instalação no host se
+precisar do provedor Codex.

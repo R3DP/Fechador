@@ -402,7 +402,7 @@ def test_cli_install_status_uninstall(tmp_path, capsys):
     assert "Sellbird starts at login, and is starting now." in capsys.readouterr().out
     _cli(tmp_path, "status", runner)
     out = capsys.readouterr().out
-    assert "on" in out.lower() and f"{LABEL}.plist" in out
+    assert "ligado" in out.lower() and f"{LABEL}.plist" in out
     _cli(tmp_path, "uninstall", runner)
     assert "Start at login is off." in capsys.readouterr().out
 

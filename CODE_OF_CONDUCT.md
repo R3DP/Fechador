@@ -1,16 +1,17 @@
-# Code of conduct
+# Código de conduta
 
-Sellbird follows the [Contributor Covenant, version 2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct/).
+O Sellbird segue o [Contributor Covenant, versão 2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct/).
 
-In short: be welcoming and respectful, assume good faith, give and take
-feedback on the work rather than the person, and don't harass anyone, in
-issues, pull requests, discussions or anywhere else you represent the project.
+Em resumo: seja acolhedor e respeitoso, presuma boa-fé, dê e receba
+feedback sobre o trabalho e não sobre a pessoa, e não assedie ninguém, em
+issues, pull requests, discussões ou em qualquer outro lugar onde você
+represente o projeto.
 
-## Reporting
+## Como relatar
 
-If someone's behaviour is a problem, report it privately to the maintainers
-through the email address on the
-[maintainer's GitHub profile](https://github.com/ethanplusai). Reports are kept
-confidential. Maintainers may remove comments, commits and issues, and may
-block anyone whose behaviour doesn't fit this code, as the Contributor
-Covenant's enforcement guidelines describe.
+Se o comportamento de alguém for um problema, relate em particular aos
+mantenedores pelo endereço de e-mail no
+[perfil do mantenedor no GitHub](https://github.com/ethanplusai). Os relatos são
+mantidos em sigilo. Os mantenedores podem remover comentários, commits e issues e
+podem bloquear quem não se encaixar neste código, conforme descrevem as
+diretrizes de aplicação do Contributor Covenant.

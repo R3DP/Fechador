@@ -27,7 +27,7 @@ def _seed(db, status="opted_out"):
 
 def _record_opt_out(db, **details):
     d = {"prospect_id": "p1", "prospect_email": "i@x.test", "rule": "only_words",
-         "matched": "stop", "why": 'Their reply was only "stop".', "message": "STOP",
+         "matched": "stop", "why": 'A resposta continha apenas "stop".', "message": "STOP",
          "conversation_id": "c1", **details}
     _sql(db, "INSERT INTO actions (id, action_type, agent, details_json, created_at) "
              "VALUES ('a1', 'opt_out', 'handler', ?, '2026-10-20T09:00:00')", (json.dumps(d),))
@@ -39,7 +39,7 @@ def test_shows_what_triggered_the_opt_out(client):
     data = client.get("/api/prospects/p1/opt-out").json()
     assert data["opted_out"] is True and data["recorded"] is True
     assert (data["rule"], data["matched"], data["message"]) == ("only_words", "stop", "STOP")
-    assert data["why"] == 'Their reply was only "stop".'
+    assert data["why"] == 'A resposta continha apenas "stop".'
     assert data["at"].startswith("2026-10-20")
     assert [h["action"] for h in data["history"]] == ["opt_out"]
 
@@ -89,7 +89,7 @@ def test_undo_puts_them_back_as_replied_and_keeps_the_record(client):
     assert [h["action"] for h in data["history"]] == ["opt_out", "opt_out_undone"]
     [undone] = [json.loads(d) for (d,) in _sql(
         client.db_path, "SELECT details_json FROM actions WHERE action_type = 'opt_out_undone'")]
-    assert undone["prospect_id"] == "p1" and undone["previous_why"] == 'Their reply was only "stop".'
+    assert undone["prospect_id"] == "p1" and undone["previous_why"] == 'A resposta continha apenas "stop".'
 
 
 def test_undo_refuses_someone_who_is_not_opted_out(client):
@@ -127,20 +127,20 @@ def _render_panel(prospect, data, armed=False):
 def test_the_panel_shows_the_reason_and_escapes_their_message():
     html = _render_panel(
         {"first_name": "Iris", "last_name": "<b>X</b>", "email": "i@x.test"},
-        {"opted_out": True, "recorded": True, "rule": "only_words", "why": 'Their reply was only "stop".',
+        {"opted_out": True, "recorded": True, "rule": "only_words", "why": 'A resposta continha apenas "stop".',
          "message": "<img src=x onerror=alert(1)>STOP", "at": "2026-10-20", "history": []})
-    assert "Their reply was only &quot;stop&quot;." in html
-    assert "Their reply was only an opt-out word" in html
+    assert "A resposta continha apenas &quot;stop&quot;." in html
+    assert "A resposta era apenas uma palavra de descadastro" in html
     assert "<img" not in html and "&lt;img src=x onerror=alert(1)&gt;STOP" in html
     assert "<b>X</b>" not in html
-    assert "Undo opt-out" in html and "Confirm undo" not in html
+    assert "Desfazer descadastro" in html and "Confirmar desfazer" not in html
 
 
 def test_the_panel_asks_before_undoing_and_says_what_happens():
     html = _render_panel({"first_name": "Iris", "email": "i@x.test"},
                          {"opted_out": True, "recorded": False, "message": "", "history": []}, armed=True)
-    assert "before Sellbird kept a record" in html
-    assert "Confirm undo" in html and "Nothing is sent automatically" in html
+    assert "antes do Sellbird manter um registro" in html
+    assert "Confirmar desfazer" in html and "Nada é enviado automaticamente" in html
 
 
 def test_the_panel_after_an_undo():
@@ -148,9 +148,9 @@ def test_the_panel_after_an_undo():
                          {"opted_out": False, "recorded": True, "status": "replied", "rule": "phrase",
                           "why": "w", "message": "m",
                           "history": [{"action": "opt_out", "at": "a"}, {"action": "opt_out_undone", "at": "b"}]})
-    assert "You undid an opt-out" in html and "Not opted out now (Replied)" in html
-    assert "Opt-out history for Iris" in html
-    assert "Undo opt-out" not in html
+    assert "Você desfez um descadastro" in html and "Não está descadastrado agora (Replied)" in html
+    assert "Histórico de descadastro de Iris" in html
+    assert "Desfazer descadastro" not in html
 
 
 def test_an_undone_opt_out_without_a_reason_still_shows_their_message(client):

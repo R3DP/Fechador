@@ -1,37 +1,39 @@
-# Security policy
+# Política de segurança
 
-## Reporting a vulnerability
+## Relatando uma vulnerabilidade
 
-Please don't open a public issue for a security problem. Report it privately
-through GitHub instead: on this repository, open **Security → Report a
-vulnerability**. Only the maintainers can see the report.
+Não abra uma issue pública para um problema de segurança. Relate em particular
+pelo GitHub: neste repositório, abra **Security → Report a vulnerability**
+(Segurança → Relatar uma vulnerabilidade). Só os mantenedores veem o relato.
 
-Include what you found, how to reproduce it, and what an attacker could do
-with it. Use fictional data in your report, as in [CONTRIBUTING.md](CONTRIBUTING.md):
-never a real person's contact details or anything from a real Sellbird database.
+Inclua o que você encontrou, como reproduzir e o que um atacante poderia fazer
+com isso. Use dados fictícios no relato, como em [CONTRIBUTING.md](CONTRIBUTING.md):
+nunca os dados de contato de uma pessoa real nem nada de um banco de dados
+real do Sellbird.
 
-We'll acknowledge the report within a few days, keep you updated while we work
-on a fix, and credit you in the release notes unless you'd rather we didn't.
+Vamos confirmar o recebimento do relato em alguns dias, manter você informado
+enquanto trabalhamos em uma correção e dar o crédito a você nas notas de
+versão, a menos que prefira o contrário.
 
-## Supported versions
+## Versões com suporte
 
-Security fixes go into the latest release on `main`. Sellbird is updated with
-`git pull`, so please check the problem still happens there.
+As correções de segurança entram na versão mais recente em `main`. O Sellbird é
+atualizado com `git pull`, então confira se o problema ainda acontece ali.
 
-## What's in scope
+## O que está no escopo
 
-Sellbird runs on your own machine with your own credentials. The most
-important boundaries are:
+O Sellbird roda na sua própria máquina, com suas próprias credenciais. As
+fronteiras mais importantes são:
 
-- the dashboard's sign-in token and its loopback-only listener
+- o token de login do dashboard e seu listener restrito ao loopback
   ([docs/dashboard.md](docs/dashboard.md));
-- the isolation of model calls, which run with no tools
+- o isolamento das chamadas de modelo, que rodam sem ferramentas
   ([docs/how-it-works.md](docs/how-it-works.md));
-- the Outbox holds that stop planted instructions in websites or replies from
-  sending email nobody approved ([docs/approval-and-sending.md](docs/approval-and-sending.md)).
+- as travas da Caixa de saída que impedem que instruções plantadas em sites ou
+  respostas enviem e-mails que ninguém aprovou ([docs/approval-and-sending.md](docs/approval-and-sending.md)).
 
-A problem that needs code already running as your own user account is out of
-scope: that code can read `.env` and the database directly.
+Um problema que exige código já rodando com a sua própria conta de usuário está
+fora do escopo: esse código consegue ler o `.env` e o banco de dados diretamente.
 
-The hosted service at [sellbird.ai](https://sellbird.ai) is a separate product;
-report problems with it the same way and say it's about the hosted service.
+O serviço hospedado em [sellbird.ai](https://sellbird.ai) é um produto separado;
+relate problemas nele da mesma forma e diga que é sobre o serviço hospedado.

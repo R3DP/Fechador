@@ -446,6 +446,6 @@ async def test_the_cli_pauses_caps_and_lists(store, boxes, capsys):
     capsys.readouterr()
     assert await inbox_cli.run(Namespace(inboxes_action="list"), store, secrets, cfg, Env()) == 0
     out = capsys.readouterr().out
-    assert "two@side.co" in out and "paused" in out and "0/12" in out and "holiday" in out
+    assert "two@side.co" in out and "pausada" in out and "0/12" in out and "holiday" in out
     assert await inbox_cli.run(Namespace(inboxes_action="test", address="nobody@x.co"),
                                store, secrets, cfg, Env()) == 1

@@ -99,7 +99,7 @@ def test_check_stays_off_unless_the_user_says_yes(files, monkeypatch):
     wizard._setup_compliance()
     finish(wizard)
 
-    assert asked.yes_no == [("Turn on the cold-email check?", False)]
+    assert asked.yes_no == [("Ativar a verificação de e-mail frio?", False)]
     assert asked.questions == []  # no country or key questions after a no
     assert wizard.precleared is None
     assert saved(files.config)["enabled"] is False
@@ -114,7 +114,7 @@ def test_yes_saves_the_settings_and_a_free_key(files, monkeypatch, capsys):
 
     key_question = asked.questions[-1]
     assert key_question.secret is True
-    assert "Enter to skip" in key_question.prompt
+    assert "Enter para pular" in key_question.prompt
     assert saved(files.config) == {
         "enabled": True,
         "sender_country": "GB",
@@ -140,8 +140,8 @@ def test_rerunning_setup_keeps_a_check_that_is_on(files, monkeypatch):
 
     assert asked.yes_no[0][1] is True
     assert [q.default for q in asked.questions[:2]] == ["GB", "US"]
-    assert "blank to skip" not in asked.questions[0].prompt  # Enter keeps GB
-    assert "Enter keeps your current key" in asked.questions[2].prompt
+    assert "deixe em branco para pular" not in asked.questions[0].prompt  # Enter keeps GB
+    assert "Enter mantém sua chave atual" in asked.questions[2].prompt
     assert len(asked.yes_no) == 1  # no free key offered over a saved one
     assert saved(files.config)["enabled"] is True
     assert saved(files.config)["prospect_country"] == "US"
@@ -167,8 +167,8 @@ def test_sender_country_must_be_one_precleared_covers_and_blank_skips(files, mon
 
     assert len(asked.questions) == 2  # asked again after BR, then skipped: no key question
     out = capsys.readouterr().out
-    assert "type one of GB, US, CA, DE, FR, AU, IE, NL, ES, IT, LV, AE, EG, QA" in out
-    assert "I'll leave the check off for now" in out
+    assert "digite um de GB, US, CA, DE, FR, AU, IE, NL, ES, IT, LV, AE, EG, QA" in out
+    assert "Vou deixar a verificação desligada por enquanto" in out
     assert wizard.precleared is None
     assert saved(files.config)["enabled"] is False
 
@@ -183,7 +183,7 @@ def test_any_of_precleared_s_fourteen_sender_countries_is_accepted(files, monkey
     finish(wizard)
 
     assert len(asked.questions) == 3  # country, prospects, key: no re-ask
-    assert "two-letter code" in asked.questions[0].prompt
+    assert "código de duas letras" in asked.questions[0].prompt
     assert saved(files.config)["enabled"] is True
     assert saved(files.config)["sender_country"] == code
     # The saved config loads: the config model takes the same fourteen.
@@ -201,7 +201,7 @@ def test_a_saved_country_precleared_no_longer_takes_is_asked_again(files, monkey
     finish(wizard)
 
     assert asked.questions[0].default == ""
-    assert "blank to skip" in asked.questions[0].prompt
+    assert "deixe em branco para pular" in asked.questions[0].prompt
     assert saved(files.config)["sender_country"] == "NL"
 
 
@@ -213,8 +213,8 @@ def test_uk_timezone_recommends_the_check_and_offers_gb(files, monkeypatch, caps
     finish(wizard)
 
     out = capsys.readouterr().out
-    assert "Recommended for a UK sender like you" in out
-    assert asked.yes_no[0] == ("Turn on the cold-email check?", False)  # still their call
+    assert "Recomendado para um remetente do Reino Unido como você" in out
+    assert asked.yes_no[0] == ("Ativar a verificação de e-mail frio?", False)  # still their call
     assert asked.questions[0].default == "GB"  # Enter takes GB
     assert saved(files.config)["sender_country"] == "GB"
 
@@ -227,7 +227,7 @@ def test_uk_timezone_is_also_read_from_the_saved_config(files, monkeypatch, caps
     wizard = setup.SetupWizard()
     wizard._setup_compliance()
 
-    assert "Recommended for a UK sender like you" in capsys.readouterr().out
+    assert "Recomendado para um remetente do Reino Unido como você" in capsys.readouterr().out
     assert asked.questions == []
 
 
@@ -238,7 +238,7 @@ def test_other_timezones_get_no_recommendation_and_no_default_country(files, mon
     wizard._setup_compliance()
     finish(wizard)
 
-    assert "Recommended for a UK sender" not in capsys.readouterr().out
+    assert "Recomendado para um remetente do Reino Unido" not in capsys.readouterr().out
     assert asked.questions[0].default == ""
     assert saved(files.config)["sender_country"] == "US"
 
@@ -276,7 +276,7 @@ def test_none_clears_a_saved_prospect_country(files, monkeypatch):
     wizard._setup_compliance()
     finish(wizard)
 
-    assert "type none" in asked.questions[1].prompt
+    assert "digite none" in asked.questions[1].prompt
     assert saved(files.config)["prospect_country"] == ""
     assert saved(files.config)["enabled"] is True
 
@@ -289,10 +289,10 @@ def test_turning_it_on_without_a_key_leaves_a_placeholder(files, monkeypatch, ca
     wizard._setup_compliance()
     finish(wizard)
 
-    assert "Enter to skip" in asked.questions[-1].prompt  # an empty value is no key
+    assert "Enter para pular" in asked.questions[-1].prompt  # an empty value is no key
     assert any(line in ("PRECLEARED_API_KEY=", 'PRECLEARED_API_KEY=""')
                for line in files.env.read_text().splitlines())
-    assert "10 checks a day" in capsys.readouterr().out
+    assert "10 verificações por dia" in capsys.readouterr().out
     assert saved(files.config)["enabled"] is True
 
 
@@ -333,7 +333,7 @@ async def test_setup_asks_about_the_check_before_writing_anything(monkeypatch, c
     await wizard.run()
 
     assert calls.index("_setup_behavior") < calls.index("_setup_compliance") < calls.index("_write_env")
-    assert "Step 7/7: Cold-Email Check (Optional)" in capsys.readouterr().out
+    assert "Passo 7/7: Verificação de E-mail Frio (Opcional)" in capsys.readouterr().out
 
 
 def test_saving_the_key_keeps_other_env_lines_and_stays_private(files, monkeypatch, capsys, caplog):
@@ -360,7 +360,7 @@ def test_saving_the_key_keeps_other_env_lines_and_stays_private(files, monkeypat
 
 # ── a free key for an email address ──
 
-OFFER = "Get a free Precleared key now? It only needs your email address"
+OFFER = "Obter uma chave grátis do Precleared agora? Só precisa do seu endereço de e-mail"
 
 
 def test_setup_gets_a_free_key_for_an_email_address(files, monkeypatch, capsys, caplog):
@@ -373,14 +373,14 @@ def test_setup_gets_a_free_key_for_an_email_address(files, monkeypatch, capsys, 
 
     assert asked.yes_no[1] == (OFFER, True)  # Enter means yes
     email_question = asked.questions[-1]
-    assert "Email address" in email_question.prompt and email_question.secret is False
+    assert "Endereço de e-mail" in email_question.prompt and email_question.secret is False
     assert len(asked.questions) == 3  # no paste question once the key came back
     assert calls == [("jo@example.com", "GB")]
     assert f"PRECLEARED_API_KEY={FAKE_KEY}" in files.env.read_text().splitlines()
     out = capsys.readouterr().out
-    assert "100 a day for its first 14 days" in out
+    assert "100 por dia nos primeiros 14 dias" in out
     assert "precleared.dev/privacy" in out
-    assert "Got your free key and saved it to .env." in out
+    assert "Sua chave grátis foi obtida e salva no .env." in out
     assert FAKE_KEY not in out
     assert FAKE_KEY not in caplog.text
 
@@ -394,10 +394,10 @@ def test_a_key_precleared_cannot_make_falls_back_to_pasting_one(files, monkeypat
 
     assert len(calls) == 1
     out = capsys.readouterr().out
-    assert "Couldn't get a key: This email address already has three keys." in out
-    assert "paste one from https://precleared.dev/get-key" in out
+    assert "Não foi possível obter uma chave: This email address already has three keys." in out
+    assert "colar uma de https://precleared.dev/get-key" in out
     paste = asked.questions[-1]
-    assert paste.secret is True and "Enter to skip" in paste.prompt
+    assert paste.secret is True and "Enter para pular" in paste.prompt
     assert f"PRECLEARED_API_KEY={FAKE_KEY}" in files.env.read_text().splitlines()
 
 
@@ -498,8 +498,8 @@ async def test_summary_shows_whether_the_check_was_saved_on(files, monkeypatch, 
     finish(wizard)
 
     out = await summary(wizard, monkeypatch, capsys)
-    assert ("✓ Cold-email check (Precleared)" in out) is turn_on
-    assert ("– Cold-email check (Precleared)" in out) is not turn_on
+    assert ("✓ Verificação de e-mail frio (Precleared)" in out) is turn_on
+    assert ("– Verificação de e-mail frio (Precleared)" in out) is not turn_on
 
 
 @pytest.mark.asyncio
@@ -513,7 +513,7 @@ async def test_a_config_that_cannot_be_saved_is_reported_not_ticked(files, monke
     wizard._write_env()
     wizard._write_config()  # must not crash setup
 
-    assert "Couldn't save" in capsys.readouterr().out
+    assert "Não foi possível salvar" in capsys.readouterr().out
     assert files.config.read_text() == "channels:\n"
     out = await summary(wizard, monkeypatch, capsys)
-    assert "– Cold-email check (Precleared)" in out
+    assert "– Verificação de e-mail frio (Precleared)" in out

@@ -92,11 +92,11 @@ def save_if_signed_in_as(record: dict, expected_address: str | None,
         try:
             got = read_address()
         except Exception as e:  # network or a malformed response
-            print(f"  Could not read which account signed in: {type(e).__name__}")
+            print(f"  Não foi possível identificar qual conta fez login: {type(e).__name__}")
             return False
         if got != expected:
-            print(f"  Signed in as {got}, but this inbox is {expected}. "
-                  f"Run it again and sign in as {expected}.")
+            print(f"  Login feito como {got}, mas esta caixa de entrada é {expected}. "
+                  f"Execute novamente e faça login como {expected}.")
             return False
     save(record)
     return True

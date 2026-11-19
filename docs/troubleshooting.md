@@ -1,29 +1,29 @@
-# Troubleshooting
+# Solução de problemas
 
-## Troubleshooting
+## Solução de problemas
 
-**`command not found: sellbird`** — `source .venv/bin/activate` first.
+**`command not found: sellbird`** — Rode `source .venv/bin/activate` primeiro.
 
-**`ModuleNotFoundError: No module named 'sellbird'` after install (macOS)** — Python 3.13 silently ignores `.pth` files carrying the macOS hidden flag, and some Macs propagate that flag into `.venv`. Run `sellbird install` again (it auto-fixes), or: `ln -s "$(pwd)/sellbird" .venv/lib/python3.13/site-packages/sellbird`
+**`ModuleNotFoundError: No module named 'sellbird'` após instalar (macOS)** — O Python 3.13 ignora silenciosamente arquivos `.pth` com a flag de arquivo oculto do macOS, e alguns Macs propagam essa flag para o `.venv`. Rode `sellbird install` de novo (ele corrige automaticamente), ou: `ln -s "$(pwd)/sellbird" .venv/lib/python3.13/site-packages/sellbird`
 
-**`externally-managed-environment`** — Use a venv, not system Python.
+**`externally-managed-environment`** — Use um venv, não o Python do sistema.
 
-**`SyntaxError` or odd `ImportError`s right after install (macOS)** — Your venv is Python 3.9. `python3 -m venv` builds from `/usr/bin/python3`, which macOS keeps at 3.9. Check with `.venv/bin/python -V`, then rebuild: `rm -rf .venv && python3.13 -m venv .venv && source .venv/bin/activate && pip install -e .`
+**`SyntaxError` ou `ImportError` estranhos logo após instalar (macOS)** — Seu venv está em Python 3.9. `python3 -m venv` cria a partir de `/usr/bin/python3` (a versão que o macOS mantém em 3.9). Confira com `.venv/bin/python -V` e recrie: `rm -rf .venv && python3.13 -m venv .venv && source .venv/bin/activate && pip install -e .`
 
-**Claude headless mode fails** — `claude login`, and confirm the subscription is active. Test with `claude -p "say hi"`. In Docker, mount `~/.claude` into the container (writable: the CLI refreshes its login there). If the log says the Claude CLI "lacks --safe-mode" (or another flag), run `claude update` (in Docker, rebuild the image); Sellbird resumes on its own. If your Claude login depends on `env` or `apiKeyHelper` entries in your Claude settings files, set those variables in Sellbird's environment instead: Sellbird's calls don't read settings files. `sellbird status --check` confirms the CLI without sending a prompt.
+**O modo headless do Claude falha** — Rode `claude login` e confirme que a assinatura está ativa. Teste com `claude -p "say hi"`. No Docker, monte `~/.claude` no contêiner (gravável: a CLI renova o login ali). Se o log disser que a CLI do Claude "lacks --safe-mode" (ou outra flag), rode `claude update` (no Docker, reconstrua a imagem); o Sellbird retoma sozinho. Se o seu login do Claude depende de entradas `env` ou `apiKeyHelper` nos seus arquivos de configuração do Claude, defina essas variáveis no ambiente do Sellbird: as chamadas do Sellbird não leem arquivos de configuração. `sellbird status --check` confirma a CLI sem enviar um prompt.
 
-**Dashboard says "locked"** — Open the link `sellbird dashboard` printed (or `sellbird dashboard --url`). If it says the token file can't be used, follow the message: usually delete `data/dashboard-token` and restart the dashboard. Visit it as `127.0.0.1` or `localhost`; other host names are refused.
+**O dashboard diz "locked"** — Abra o link que `sellbird dashboard` imprimiu (ou `sellbird dashboard --url`). Se a mensagem disser que o arquivo de token não pode ser usado, siga a instrução: normalmente, apague `data/dashboard-token` e reinicie o dashboard. Acesse como `127.0.0.1` ou `localhost`; outros nomes de host são recusados.
 
-**Codex calls fail** — Read the log line; every Codex error says what to do. "Not logged in" or "expired or is due for renewal" → use Codex once or run `codex login` with ChatGPT. "Hasn't been verified with Sellbird" → install the supported Codex version named in the message. "Isolation could not be verified" → a Codex config layer outside your `~/.codex` (for example a managed or `/etc/codex` config) forces a tool, hook, MCP server, instructions or custom endpoint back on; Sellbird refuses to send prompts until it's gone. Model catalog errors → choose an available model ID from the catalog shown in the message, or leave `brain.model` blank to select a listed model. Sellbird never switches to Claude on its own.
+**As chamadas do Codex falham** — Leia a linha do log; todo erro do Codex diz o que fazer. "Not logged in" ou "expired or is due for renewal" → use o Codex uma vez ou rode `codex login` com o ChatGPT. "Hasn't been verified with Sellbird" → instale a versão do Codex suportada indicada na mensagem. "Isolation could not be verified" → uma camada de configuração do Codex fora do seu `~/.codex` (por exemplo, uma configuração gerenciada ou em `/etc/codex`) força de volta uma ferramenta, hook, servidor MCP, instrução ou endpoint personalizado; o Sellbird se recusa a enviar prompts até que ela seja removida. Erros de catálogo de modelos → escolha um ID de modelo disponível do catálogo mostrado na mensagem, ou deixe `brain.model` em branco para selecionar um modelo listado. O Sellbird nunca muda para o Claude por conta própria.
 
-**Discovery finds nothing** — Confirm signals first (`sellbird signals --confirm free`); nothing is collected until you do. If you're on the free OpenStreetMap source, it only covers mapped trades and is thin for service-area businesses — `sellbird discover --providers` shows the alternatives.
+**A descoberta não encontra nada** — Confirme os sinais primeiro (`sellbird signals --confirm free`); nada é coletado até você fazer isso. Se você está na fonte gratuita OpenStreetMap, ela cobre apenas atividades mapeadas e é fraca para negócios de área de atendimento — `sellbird discover --providers` mostra as alternativas.
 
-**Overpass is throttling** — It's free volunteer infrastructure. Sellbird walks three mirrors before giving up. Wait a few minutes, or use a paid provider for bulk work.
+**O Overpass está limitando as requisições** — É infraestrutura voluntária e gratuita. O Sellbird percorre três espelhos antes de desistir. Espere alguns minutos ou use um provedor pago para trabalho em volume.
 
-**Emails land in spam** — Almost always the domain, not the copy. Check SPF/DKIM/DMARC, confirm warmup ran ([TrulyInbox](https://trulyinbox.com/?via=sellbird) shows the inbox rate; `sellbird warmup` reads it once connected), halve your volume.
+**Os e-mails caem em spam** — Quase sempre é o domínio, não o texto. Verifique SPF/DKIM/DMARC, confirme que o warmup rodou ([TrulyInbox](https://trulyinbox.com/?via=sellbird) mostra a taxa de caixa de entrada; `sellbird warmup` a lê depois que conectado), reduza o volume pela metade.
 
-**Sellbird does nothing during the day** — Check `quiet_hours` and whether it hit `max_daily_claude_percent`. `sellbird status` shows current state; the `actions` table logs every decision.
+**O Sellbird não faz nada durante o dia** — Verifique `quiet_hours` e se ele atingiu `max_daily_claude_percent`. `sellbird status` mostra o estado atual; a tabela `actions` registra cada decisão.
 
-**How do I stop it right now?** — `Ctrl+C`, or `sellbird sending pause` to stop outbound while leaving the loop running. State is in SQLite, so it resumes cleanly.
+**Como paro agora mesmo?** — `Ctrl+C`, ou `sellbird sending pause` para parar o envio sem parar o laço. O estado fica no SQLite, então ele retoma limpo.
 
-**Where does my data live?** — All local: `data/sellbird.db`, `.env`, `sellbird.yaml`. Nothing goes anywhere except the APIs you configured.
+**Onde ficam meus dados?** — Tudo local: `data/sellbird.db`, `.env`, `sellbird.yaml`. Nada vai a lugar algum exceto pelas APIs que você configurou.

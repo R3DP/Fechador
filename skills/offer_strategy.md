@@ -1,144 +1,150 @@
-# Offer Strategy & Closing Mechanics
+# Estratégia de oferta e mecânica de fechamento
 
-## Core Rule: Earn the Right to Ask
+## Regra central: Conquiste o direito de pedir
 
-Never lead with an offer. Never pitch in a cold email. The first outreach exists to start a conversation — not to close a deal.
+Nunca lidere com uma oferta. Nunca faça pitch em um cold email. O primeiro
+contato existe para começar uma conversa, não para fechar um negócio.
 
-Offers are only presented after a prospect has shown genuine interest:
-- They replied positively
-- They asked a question about the product
-- They expressed a pain point you can solve
-- They asked about pricing or next steps
+Ofertas só são apresentadas depois que um prospect mostrou interesse genuíno:
+- Respondeu positivamente
+- Fez uma pergunta sobre o produto
+- Expressou uma dor que você consegue resolver
+- Perguntou sobre preço ou próximos passos
 
-If none of these have happened, you are still in the "earn attention" phase. Stay there.
+Se nenhuma dessas coisas aconteceu, você ainda está na fase de "conquistar
+atenção". Fique lá.
 
-## The Offer Ladder
+## A escada de ofertas
 
-Not every interested prospect gets the same offer. Match the offer to their level of engagement:
+Nem todo prospect interessado recebe a mesma oferta. Case a oferta com o nível
+de engajamento dele:
 
-| Engagement Level | Signal | Offer |
-|-----------------|--------|-------|
-| **Curious** | Asked a question, clicked a link | Answer their question + soft CTA ("Happy to walk you through it if useful") |
-| **Interested** | Expressed a pain point, asked about features | Share a relevant resource or case study + suggest a quick call |
-| **Ready** | Asked about pricing, timeline, or next steps | Present the specific offer with clear next step |
-| **Urgent** | Has a deadline, lost their current vendor, hiring | Move fast — present the offer immediately with urgency framing |
+| Nível de engajamento | Sinal | Oferta |
+|----------------------|-------|--------|
+| **Curioso** | Fez uma pergunta, clicou num link | Responda a pergunta + CTA suave ("Happy to walk you through it if useful") |
+| **Interessado** | Expressou uma dor, perguntou sobre recursos | Compartilhe um recurso ou case relevante + sugira uma call rápida |
+| **Pronto** | Perguntou sobre preço, prazo ou próximos passos | Apresente a oferta específica com próximo passo claro |
+| **Urgente** | Tem prazo, perdeu o fornecedor atual, está contratando | Vá rápido — apresente a oferta já, com tom de urgência |
 
-## Crafting Offers from Product Knowledge
+## Construindo ofertas a partir do conhecimento do produto
 
-When Sellbird learns about a product (via website crawl or manual training), it should identify:
+Quando o Sellbird aprende sobre um produto (via crawl do site ou treino
+manual), ele identifica:
 
-1. **Primary offer**: What's the main thing we're selling? (e.g., software subscription, service engagement, audit/assessment)
-2. **Entry offers**: Lower-commitment ways to start (e.g., free trial, pilot program, free audit, strategy session)
-3. **Proof offers**: Ways to demonstrate value before asking for money (e.g., sample report, free assessment, ROI calculator)
+1. **Oferta principal**: O que estamos vendendo, afinal? (p. ex. assinatura de software, contrato de serviço, auditoria/avaliação)
+2. **Ofertas de entrada**: Formas de começar com menos compromisso (p. ex. trial grátis, piloto, auditoria grátis, sessão de estratégia)
+3. **Ofertas de prova**: Formas de demonstrar valor antes de pedir dinheiro (p. ex. relatório de amostra, avaliação grátis, calculadora de ROI)
 
-### Offer Construction Framework
+### Framework de construção de oferta
 
-For each product, determine:
-- **What they get**: Specific deliverable or access (not vague "value")
-- **What it costs**: Price, time commitment, or "free"
-- **What they risk**: Nothing (free trial), money-back guarantee, or month-to-month
-- **What happens next**: The exact mechanic — click a link, reply with times, fill out a form
+Para cada produto, determine:
+- **O que recebem**: Entregável ou acesso específico (nada de "valor" vago)
+- **Quanto custa**: Preço, compromisso de tempo ou "grátis"
+- **O que arriscam**: Nada (trial grátis), garantia de devolução do dinheiro ou mês a mês
+- **O que acontece depois**: A mecânica exata — clicar num link, responder com horários, preencher um formulário
 
-### Example Offer Structures
+### Exemplos de estrutura de oferta
 
-**SaaS Product:**
-- Entry: "We have a 14-day free trial — no credit card needed. Want me to set one up for you?"
-- Primary: "Plans start at $X/mo. Want me to walk you through which tier makes sense for your team?"
+**Produto SaaS:**
+- Entrada: "We have a 14-day free trial — no credit card needed. Want me to set one up for you?"
+- Principal: "Plans start at $X/mo. Want me to walk you through which tier makes sense for your team?"
 
-**Service/Agency:**
-- Entry: "We usually start with a free 30-minute audit of your current setup. Worth doing?"
-- Primary: "Our typical engagement starts at $X/mo. I can put together a custom scope if you share more about what you're working with."
+**Serviço/Agência:**
+- Entrada: "We usually start with a free 30-minute audit of your current setup. Worth doing?"
+- Principal: "Our typical engagement starts at $X/mo. I can put together a custom scope if you share more about what you're working with."
 
-**Consulting:**
-- Entry: "I put together a quick analysis of [their specific situation]. Want me to send it over?"
-- Primary: "We do this as a [fixed/retainer] engagement. Want to jump on a 20-minute call to see if it makes sense?"
+**Consultoria:**
+- Entrada: "I put together a quick analysis of [their specific situation]. Want me to send it over?"
+- Principal: "We do this as a [fixed/retainer] engagement. Want to jump on a 20-minute call to see if it makes sense?"
 
-## Closing Mechanics: How to Book
+## Mecânica de fechamento: como agendar
 
-The way you ask someone to take the next step matters. Always confirm with the user which mechanic to use:
+A forma como você pede o próximo passo importa. Sempre confirme com o usuário
+qual mecânica usar:
 
-### Option 1: Calendar Link
-Best when: High volume, self-service feel, user has a scheduling tool set up.
+### Opção 1: Link de agenda
+Melhor quando: Alto volume, sensação self-service, o usuário tem ferramenta de agendamento.
 ```
 "Here's my calendar if you want to grab 15 minutes: [LINK]"
 ```
-- Use when the product config includes a `booking_url`
-- Always specify the time commitment ("15 minutes", "quick 20-min call")
-- Never say "book a demo" — say "grab time" or "jump on a call"
+- Use quando a configuração do produto inclui um `booking_url`
+- Sempre especifique o compromisso de tempo ("15 minutes", "quick 20-min call")
+- Nunca diga "book a demo" — diga "grab time" ou "jump on a call"
 
-### Option 2: Suggest Specific Times
-Best when: More personal feel, higher-touch sale, no calendar tool.
+### Opção 2: Sugerir horários específicos
+Melhor quando: Sensação mais pessoal, venda de maior toque, sem ferramenta de agenda.
 ```
 "Would Thursday at 2pm or Friday morning work for a quick call?"
 ```
-- Offer exactly 2-3 options
-- Always include day + time
-- Keep the window narrow (same week)
+- Ofereça exatamente 2 ou 3 opções
+- Sempre inclua dia + hora
+- Mantenha a janela estreita (mesma semana)
 
-### Option 3: Ask for Their Preference
-Best when: Enterprise prospects, respecting their schedule, senior decision-makers.
+### Opção 3: Perguntar a preferência deles
+Melhor quando: Prospects enterprise, respeito à agenda deles, decisores sênior.
 ```
 "What does your calendar look like this week for a quick 15 minutes?"
 ```
-- Deferential but still time-boxed
-- Good for C-suite where you don't want to seem presumptuous
+- Respeitoso mas ainda com limite de tempo
+- Bom para C-suite, onde você não quer parecer presunçoso
 
-### Option 4: Next Step Without a Call
-Best when: Product sells itself, prospect just needs access.
+### Opção 4: Próximo passo sem call
+Melhor quando: O produto se vende sozinho, o prospect só precisa de acesso.
 ```
 "Want me to set up a trial account for you? Takes 2 minutes."
 ```
-- For self-serve products with free trials
-- Skip the call if the product can speak for itself
+- Para produtos self-service com trial grátis
+- Pule a call se o produto consegue falar por si
 
-## What Sellbird Should Confirm with the User
+## O que o Sellbird deve confirmar com o usuário
 
-During setup or training, Sellbird needs to know:
+Durante o setup ou o treino, o Sellbird precisa saber:
 
-1. **What's the primary offer?** (subscription, service, trial, audit, etc.)
-2. **Is there an entry offer?** (free trial, free audit, sample, etc.)
-3. **What's the goal of outreach?** (book a call, start a trial, get a reply, etc.)
-4. **How should meetings be booked?**
-   - Calendar link (provide URL)
-   - Suggest times
-   - Ask for their preference
-5. **Who takes the meeting?** (the user, a sales team member, Sellbird books and someone else shows up)
-6. **Any qualification before booking?** (company size, budget, specific need)
+1. **Qual é a oferta principal?** (assinatura, serviço, trial, auditoria etc.)
+2. **Existe oferta de entrada?** (trial grátis, auditoria grátis, amostra etc.)
+3. **Qual é o objetivo da abordagem?** (agendar uma call, iniciar um trial, conseguir uma resposta etc.)
+4. **Como as reuniões devem ser agendadas?**
+   - Link de agenda (informe a URL)
+   - Sugerir horários
+   - Perguntar a preferência deles
+5. **Quem faz a reunião?** (o usuário, alguém do time de vendas, o Sellbird agenda e outra pessoa aparece)
+6. **Alguma qualificação antes de agendar?** (porte da empresa, orçamento, necessidade específica)
 
-These answers go into `sellbird.yaml` under the product config and inform how Sellbird writes emails and handles replies.
+Essas respostas vão para `sellbird.yaml` sob a configuração do produto e guiam
+como o Sellbird escreve e-mails e trata respostas.
 
-## Offer Timing in the Sequence
+## Timing da oferta na sequência
 
-### Cold Email Sequence (3 emails)
-- **Email 1**: No offer. Start a conversation. Ask a question. Share an insight.
-- **Email 2**: Soft mention only if relevant. "We help teams like yours [do thing]. Worth a conversation?"
-- **Email 3**: Break-up email. Slightly more direct but still no hard pitch. "If this isn't a priority right now, no worries. But if [pain point] comes up, I'm here."
+### Sequência de cold email (3 e-mails)
+- **E-mail 1**: Sem oferta. Comece uma conversa. Faça uma pergunta. Compartilhe um insight.
+- **E-mail 2**: Menção suave só se fizer sentido. "We help teams like yours [do thing]. Worth a conversation?"
+- **E-mail 3**: E-mail de encerramento. Um pouco mais direto mas ainda sem pitch duro. "If this isn't a priority right now, no worries. But if [pain point] comes up, I'm here."
 
-### Reply Handling (after interest)
-- **First interested reply**: Acknowledge, answer their question, then present the entry offer or suggest a call.
-- **Follow-up after interest**: If they went quiet after showing interest, one gentle nudge. Never more than one.
-- **Ready to book**: Present the specific closing mechanic. Be direct. "Let's get something on the calendar."
+### Tratamento de resposta (depois do interesse)
+- **Primeira resposta interessada**: Reconheça, responda a pergunta e então apresente a oferta de entrada ou sugira uma call.
+- **Follow-up depois do interesse**: Se a pessoa sumiu depois de mostrar interesse, um empurrãozinho gentil. Nunca mais de um.
+- **Pronto para agendar**: Apresente a mecânica de fechamento específica. Seja direto. "Let's get something on the calendar."
 
-## Language Rules
+## Regras de linguagem
 
-**Do say:**
+**Diga:**
 - "Worth a quick conversation?"
 - "Happy to walk you through it"
 - "Would it make sense to grab 15 minutes?"
 - "Want me to send over [specific thing]?"
 
-**Never say:**
-- "Book a demo" (sounds like a sales pitch)
-- "Schedule a call with our team" (impersonal)
-- "I'd love to show you" (self-serving framing)
-- "Let me know if you're interested" (passive, no clear next step)
-- "When are you free?" (too open-ended)
+**Nunca diga:**
+- "Book a demo" (soa como pitch de vendas)
+- "Schedule a call with our team" (impessoal)
+- "I'd love to show you" (enquadramento egocêntrico)
+- "Let me know if you're interested" (passivo, sem próximo passo claro)
+- "When are you free?" (aberto demais)
 
-## Handling "What's the Price?"
+## Lidando com "Quanto custa?"
 
-When a prospect asks about pricing before you've qualified them:
+Quando um prospect pergunta sobre preço antes de você qualificá-lo:
 
-1. Give a real answer — never dodge the question
-2. Frame it with context: "Plans start at $X/mo, depending on [variable]. Most teams your size are on the [tier] plan."
-3. Pivot to qualification: "To give you an exact number, it'd help to know [specific question about their needs]."
-4. If there's a free entry offer, lead with that: "There's a free trial so you can see if it fits before committing to anything."
+1. Dê uma resposta real — nunca fuja da pergunta
+2. Enquadre com contexto: "Plans start at $X/mo, depending on [variable]. Most teams your size are on the [tier] plan."
+3. Faça a transição para a qualificação: "To give you an exact number, it'd help to know [specific question about their needs]."
+4. Se existe oferta de entrada grátis, lidere com ela: "There's a free trial so you can see if it fits before committing to anything."

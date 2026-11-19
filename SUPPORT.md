@@ -1,14 +1,15 @@
-# Getting help
+# Obtendo ajuda
 
-- **Setting up?** Open the project in Claude Code and say "set up Sellbird for
-  me". The repo's `CLAUDE.md` walks you through it.
-- **Something not working?** Check [docs/troubleshooting.md](docs/troubleshooting.md)
-  first, then search the [issues](https://github.com/ethanplusai/sellbird/issues).
-- **Found a bug?** Open an issue with the bug template. Leave out real contact
-  details: names, emails and anything from your database.
-- **Have an idea?** Open an issue with the feature template.
-- **Security problem?** Follow [SECURITY.md](SECURITY.md) instead of opening an issue.
-- **Want it run for you?** [sellbird.ai](https://sellbird.ai) is the hosted
-  version, with domains, inboxes and warmup set up for you.
+- **Vai configurar?** Abra o projeto no Claude Code e diga "configure o Sellbird
+  para mim". O `CLAUDE.md` do repositório conduz você pelo processo.
+- **Algo não está funcionando?** Consulte primeiro o
+  [docs/troubleshooting.md](docs/troubleshooting.md) e depois pesquise nas
+  [issues](https://github.com/ethanplusai/sellbird/issues).
+- **Encontrou um bug?** Abra uma issue com o template de bug. Deixe de fora
+  dados de contato reais: nomes, e-mails e qualquer coisa do seu banco de dados.
+- **Tem uma ideia?** Abra uma issue com o template de funcionalidade.
+- **Problema de segurança?** Siga o [SECURITY.md](SECURITY.md) em vez de abrir uma issue.
+- **Quer que cuidem disso para você?** [sellbird.ai](https://sellbird.ai) é a
+  versão hospedada, com domínios, caixas de entrada e aquecimento configurados para você.
 
-Coming from Harvey? See [Upgrading from Harvey](README.md#upgrading-from-harvey).
+Vindo do Harvey? Veja [Atualizando a partir do Harvey](README.md#atualizando-a-partir-do-harvey).

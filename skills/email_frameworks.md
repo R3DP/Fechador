@@ -1,128 +1,139 @@
-# Cold Email Copywriting
+# Copywriting de cold email
 
-## The Only Rule That Matters
+## A única regra que importa
 
-Write like a real person sending a real email. Not a marketer. Not AI. A human who noticed something, has a thought, and is reaching out. If you read the email out loud and it sounds like a sales pitch, delete it and start over.
-
----
-
-## Compliance & Deliverability (Overrides Everything Below)
-
-Style rules are negotiable. These are not:
-
-- **Subject lines must be truthful.** No "re:" on a thread that doesn't exist, no fake forwards ("fwd:"), no implying a prior relationship. Deceptive subject lines violate CAN-SPAM.
-- **Identity must be real.** The from-name, company, and signature must match the configured persona. Never pose as an individual consumer, a customer, or a mutual contact.
-- **Every campaign needs a working opt-out.** The sending platform (Instantly) must have unsubscribe handling enabled, and the sender's valid physical mailing address must appear in the campaign footer. Sellbird never writes copy that discourages opting out.
-- **Any opt-out wording counts.** "Stop", "remove me", "not interested, don't email again": treat all of them as unsubscribes, immediately and permanently, even mid-conversation.
-- **Deliverability hygiene:** plain text only, at most one link per email (zero in email 1 is better), no attachments, no image pixels beyond what the platform adds, no ALL-CAPS or spam-trigger phrasing ("free money", "act now", "guarantee"). One recipient's spam report costs more than a hundred sends earn.
-- **EU/UK prospects:** B2B cold email requires a defensible legitimate-interest basis: the pitch must be genuinely relevant to the person's professional role, and the first email should make it easy to object. When relevance is a stretch, don't send.
+Escreva como uma pessoa real mandando um e-mail real. Não como um marketeiro.
+Não como uma IA. Uma pessoa que notou algo, teve uma ideia e está entrando em
+contato. Se você ler o e-mail em voz alta e ele soar como pitch de vendas,
+apague e comece de novo.
 
 ---
 
-## What Makes Bad Cold Email (NEVER DO THESE)
+## Conformidade e entregabilidade (passam por cima de tudo abaixo)
 
-### Banned Patterns
-- **Dashes between words** (em dash, en dash, a spaced hyphen): Dead giveaway of AI writing. Never use them. Use periods or commas.
-- **"Picture this"**: Delete on sight.
-- **"Here's what I keep seeing/hearing"**: Lazy framing. Be specific or don't say it.
-- **Before/After lists**: Overdone. Everyone does this. It screams template.
-- **Feature dumps**: Listing 3+ features in one email. Pick ONE thing.
-- **"Worth a quick look/chat/call?"**: Vague, overused, easy to ignore.
-- **"I hope this finds you well"**: Obviously.
-- **"Just following up"**: Say something new or don't email.
-- **"I'd love to"**: Self-serving framing. Nobody cares what you'd love.
-- **Bullet points in cold email**: Real emails don't have formatted bullets.
-- **"In today's [anything]"**: Filler.
-- **"Imagine if"**: Don't tell them to imagine. Show them.
-- **"What if I told you"**: Infomercial energy.
-- **"Game-changer/revolutionary/cutting-edge"**: Meaningless hype words.
-- **"Let me know if you're interested"**: Passive. No clear next step.
-- **"Are you the right person?"**: Weak opener.
-- **Multiple questions in one email**: Pick one.
-- **Starting with "I" or "We"**: Start with them, not yourself.
-- **Exclamation marks**: Never.
-- **"Reaching out because"**: Just say the thing.
-- **"Wanted to" / "Just wanted to"**: Weak, tentative. Say it directly.
-- **Parenthetical asides (like this)**: Adds clutter. Cut them.
-- **"No pressure" / "No obligation"**: Drawing attention to pressure.
+Regras de estilo são negociáveis. Estas não são:
 
-### Banned Formatting
-- No bold text in cold emails
-- No italics
-- No bullet points or numbered lists
-- No headers or sections
-- No horizontal rules
-- No blockquotes
-- Keep it plain text. Real emails are plain text.
+- **Linhas de assunto devem ser verdadeiras.** Nada de "re:" numa thread que não existe, nada de encaminhamento falso ("fwd:"), nada de insinuar relacionamento anterior. Linhas de assunto enganosas violam a CAN-SPAM.
+- **A identidade deve ser real.** O nome de exibição, a empresa e a assinatura devem bater com a persona configurada. Nunca se passe por consumidor individual, cliente ou contato em comum.
+- **Toda campanha precisa de opt-out funcional.** A plataforma de envio (Instantly) deve ter o tratamento de descadastro habilitado, e o endereço físico válido do remetente deve aparecer no rodapé da campanha. O Sellbird nunca escreve texto que desencoraje descadastro.
+- **Qualquer palavra de opt-out vale.** "Stop", "remove me", "not interested, don't email again": trate todas como descadastro, imediata e permanentemente, mesmo no meio da conversa.
+- **Higiene de entregabilidade:** só texto puro, no máximo um link por e-mail (zero no e-mail 1 é melhor), sem anexos, sem pixels de imagem além do que a plataforma adiciona, sem CAIXA ALTA nem frases que disparam spam ("free money", "act now", "guarantee"). A denúncia de spam de um destinatário custa mais do que cem envios rendem.
+- **Prospects da UE e do Reino Unido:** cold email B2B exige uma base defensável de legítimo interesse: o pitch deve ser genuinamente relevante para o papel profissional da pessoa, e o primeiro e-mail deve tornar fácil objetar. Quando a relevância for forçada, não envie.
 
 ---
 
-## What Makes Good Cold Email
+## O que faz um cold email ruim (NUNCA faça isso)
 
-### It's short. Then it's shorter.
-Every extra word costs replies. Aim for 25 to 45 words in email 1, and fewer in
-each follow-up. The ceilings are 60, 50 and 30 words, and Sellbird refuses a draft
-over them. After drafting, delete every sentence the email still works without,
-then every word. If it doesn't fit on one phone screen, it's too long.
+### Padrões proibidos
+- **Travessões entre palavras** (travessão, meia-risca, hífen com espaços): denúncia óbvia de escrita por IA. Nunca use. Use ponto ou vírgula.
+- **"Picture this"**: apague na hora.
+- **"Here's what I keep seeing/hearing"**: enquadramento preguiçoso. Seja específico ou não diga.
+- **Listas antes/depois**: batido demais. Todo mundo faz. Grita template.
+- **Despejo de recursos**: listar 3+ recursos num e-mail. Escolha UMA coisa.
+- **"Worth a quick look/chat/call?"**: vago, batido, fácil de ignorar.
+- **"I hope this finds you well"**: óbvio.
+- **"Just following up"**: diga algo novo ou não mande e-mail.
+- **"I'd love to"**: enquadramento egocêntrico. Ninguém se importa com o que você adoraria.
+- **Marcadores em cold email**: e-mails reais não têm marcadores formatados.
+- **"In today's [anything]"**: enchimento.
+- **"Imagine if"**: não diga para imaginar. Mostre.
+- **"What if I told you"**: energia de infomercial.
+- **"Game-changer/revolutionary/cutting-edge"**: hype sem significado.
+- **"Let me know if you're interested"**: passivo. Sem próximo passo claro.
+- **"Are you the right person?"**: abertura fraca.
+- **Várias perguntas num e-mail**: escolha uma.
+- **Começar com "I" ou "We"**: comece com eles, não com você.
+- **Pontos de exclamação**: nunca.
+- **"Reaching out because"**: diga logo a coisa.
+- **"Wanted to" / "Just wanted to"**: fraco, hesitante. Diga direto.
+- **Parênteses de aparte (como este)**: atrapalha. Corte.
+- **"No pressure" / "No obligation"**: chama atenção para a pressão.
 
-### It sounds like a person.
-Read it out loud. Does it sound like something you'd actually type to someone? Or does it sound like marketing copy? If it's the latter, rewrite.
-
-### It makes one point.
-Not three. Not five. One observation, one idea, one question. That's the whole email.
-
-### It's about them.
-The prospect's name, company, or situation should appear before your product does. Ideally your product isn't even named in email 1.
-
-### It earns a reply, not a sale.
-The goal of a cold email is to start a conversation. That's it. You are not closing a deal in an email. You're not even pitching. You're opening a door.
+### Formatação proibida
+- Sem negrito em cold email
+- Sem itálico
+- Sem marcadores nem listas numeradas
+- Sem cabeçalhos ou seções
+- Sem linhas horizontais
+- Sem citações em bloco
+- Texto puro. E-mails reais são texto puro.
 
 ---
 
-## What The 2026 Data Says (Use This)
+## O que faz um cold email bom
 
-Reply rates have fallen (median cold reply ~3.4%, true net-new closer to
-0.5%), but dispersion has exploded: the top decile still gets 10%+. The
-difference is almost entirely relevance and deliverability, not clever copy.
-Encode these findings:
+### É curto. E depois, mais curto.
+Toda palavra extra custa resposta. Mire em 25 a 45 palavras no e-mail 1, e menos
+em cada follow-up. Os limites são 60, 50 e 30 palavras, e o Sellbird recusa um
+rascunho que passe deles. Depois de rascunhar, apague toda frase sem a qual o
+e-mail ainda funciona, depois toda palavra. Se não couber numa tela de celular,
+está longo demais.
 
-- **Length**: long emails reply at roughly half the rate of short ones, and
-  most cold email is read on a phone. Shorter is the default. 25-45 words for
-  email 1, never more than 60.
-- **Offer CTAs beat meeting asks.** An ask that gives them something whether
-  or not they buy (a free audit, a teardown, a relevant data point) lifts
-  replies ~28% over "do you have 30 minutes?". Prefer "want the teardown?"
-  to "worth a call?".
-- **Easy-yes CTAs beat big asks.** "Is this on your radar at all?" outpulls
-  "can you do Thursday at 2?". Lower the cost of replying.
-- **Cadence**: ~6 touches over 14-28 days, then stop. Not 3 over a week.
-- **Bump emails work.** A 1-2 sentence follow-up ("still on your radar?")
-  nearly doubles replies versus re-pitching at length. Short beats
-  substantive on follow-ups.
-- **No open/click tracking on cold email.** Tracking pixels cost 8-12%
-  inbox placement. Plain text, no pixels, at most one link (zero in email 1).
-- **Small sharp lists beat blasts.** Segments of ≤50 reply ~5.8% vs ~2.1%
-  for 1,000+. This is why Scout personalizes per prospect and sends in small
-  batches.
+### Soa como uma pessoa.
+Leia em voz alta. Parece algo que você escreveria de verdade para alguém? Ou
+parece texto de marketing? Se for o segundo caso, reescreva.
 
-The order of impact is: **deliverability > list quality/relevance > copy.**
-A perfect email to an unverified address at a warmed-wrong domain gets zero
-replies. Copy is the last 20%.
+### Faz um único ponto.
+Não três. Não cinco. Uma observação, uma ideia, uma pergunta. O e-mail inteiro é isso.
 
-## The 3-Email Sequence
+### É sobre eles.
+O nome, a empresa ou a situação do prospect devem aparecer antes do seu produto.
+De preferência, seu produto nem é citado no e-mail 1.
 
-### Email 1: The Observation
+### Ganha uma resposta, não uma venda.
+O objetivo de um cold email é começar uma conversa. Só isso. Você não fecha
+negócio num e-mail. Nem faz pitch. Você abre uma porta.
 
-Start with something you noticed about them or their business. Not a compliment (those feel fake at scale). An observation that shows you actually looked.
+---
 
-Then connect that observation to a problem or opportunity. Don't name your product. Don't list features. Just ask a question that makes them think.
+## O que os dados de 2026 dizem (use isso)
 
-**Structure:**
-1. One line about something specific to them or their company (2 sentences max)
-2. One line connecting it to a problem or gap (1 sentence)
-3. One question (not "worth a call?" but something they'd actually want to answer)
+As taxas de resposta caíram (mediana de resposta em cold de ~3,4%; net-new de
+verdade perto de 0,5%), mas a dispersão explodiu: o decil de cima ainda passa
+de 10%. A diferença é quase toda relevância e entregabilidade, não texto
+esperto. Codifique estes achados:
 
-**Good example:**
+- **Tamanho**: e-mails longos recebem resposta a mais ou menos metade da taxa
+  dos curtos, e a maior parte do cold email é lida no celular. Mais curto é o
+  padrão. 25-45 palavras no e-mail 1, nunca mais de 60.
+- **CTAs de oferta vencem pedidos de reunião.** Um pedido que entrega algo com
+  ou sem compra (uma auditoria grátis, um diagnóstico, um dado relevante)
+  aumenta as respostas em ~28% em relação a "do you have 30 minutes?". Prefira
+  "want the teardown?" a "worth a call?".
+- **CTAs de sim fácil vencem pedidos grandes.** "Is this on your radar at all?"
+  supera "can you do Thursday at 2?". Reduza o custo de responder.
+- **Cadência**: ~6 toques em 14-28 dias, depois pare. Não 3 numa semana.
+- **E-mails de lembrete funcionam.** Um follow-up de 1-2 frases ("still on your
+  radar?") quase dobra as respostas comparado a repetir o pitch em detalhe.
+  Curto vence substantivo nos follow-ups.
+- **Sem rastreamento de abertura/clique em cold email.** Pixels de rastreamento
+  custam 8-12% de entrega na caixa de entrada. Texto puro, sem pixels, no
+  máximo um link (zero no e-mail 1).
+- **Listas pequenas e afiadas vencem disparos em massa.** Segmentos de ≤50
+  respondem ~5,8% contra ~2,1% para 1.000+. É por isso que o Scout
+  personaliza por prospect e envia em lotes pequenos.
+
+A ordem de impacto é: **entregabilidade > qualidade/relevância da lista > texto.**
+Um e-mail perfeito para um endereço não verificado num domínio mal aquecido
+recebe zero respostas. O texto é os últimos 20%.
+
+## A sequência de 3 e-mails
+
+### E-mail 1: A Observação
+
+Comece com algo que você notou sobre eles ou o negócio deles. Não um elogio
+(eles parecem falsos em escala). Uma observação que mostra que você realmente
+olhou.
+
+Depois conecte essa observação a um problema ou oportunidade. Não cite seu
+produto. Não liste recursos. Só faça uma pergunta que faça eles pensarem.
+
+**Estrutura:**
+1. Uma linha sobre algo específico deles ou da empresa (2 frases no máximo)
+2. Uma linha conectando isso a um problema ou lacuna (1 frase)
+3. Uma pergunta (não "worth a call?", mas algo que eles realmente queiram responder)
+
+**Exemplo bom:**
 ```
 Subject: {{company}} website
 
@@ -131,7 +142,7 @@ Subject: {{company}} website
 How do most new customers find you today?
 ```
 
-**Bad example:**
+**Exemplo ruim:**
 ```
 Subject: {{first_name}}, quick question about {{company}}'s growth
 
@@ -144,21 +155,26 @@ Picture this, a website built specifically for your industry that converts visit
 Worth a quick look?
 ```
 
-The good one sounds like a person. The bad one sounds like ChatGPT. The difference is: specificity over generality, one idea over many, a real question over a vague CTA.
+O bom soa como uma pessoa. O ruim soa como ChatGPT. A diferença é:
+especificidade em vez de generalidade, uma ideia em vez de muitas, uma
+pergunta real em vez de um CTA vago.
 
-### Email 2: The Angle
+### E-mail 2: O Ângulo
 
-Take a completely different angle from email 1. Don't reference email 1. Don't say "following up." New thread, new idea.
+Pegue um ângulo completamente diferente do e-mail 1. Não cite o e-mail 1. Não
+diga "following up". Thread nova, ideia nova.
 
-Pick one specific pain point and poke at it. Use a real stat if you have one, but don't stack multiple stats. End with a slightly more direct question or a one-line value statement.
+Escolha uma dor específica e cutuque. Use um dado real se tiver, mas não
+empilhe vários. Termine com uma pergunta um pouco mais direta ou uma linha de
+valor.
 
-**Structure:**
-1. One specific problem stated plainly (1-2 sentences)
-2. One stat or cost that makes it real (1 sentence, optional)
-3. One line about how you solve that specific thing (1 sentence)
-4. A direct question (1 sentence)
+**Estrutura:**
+1. Um problema específico dito com clareza (1-2 frases)
+2. Um dado ou custo que o torna real (1 frase, opcional)
+3. Uma linha sobre como você resolve aquela coisa específica (1 frase)
+4. Uma pergunta direta (1 frase)
 
-**Good example:**
+**Exemplo bom:**
 ```
 Subject: missed calls
 
@@ -169,24 +185,25 @@ Ours builds it from the systems {{company}} already runs.
 Is this already handled?
 ```
 
-### Email 3: The Breakup
+### E-mail 3: O Encerramento
 
-Short. Respectful. Under 30 words, and 10 to 20 is better.
+Curto. Respeitoso. Menos de 30 palavras, e 10 a 20 é melhor.
 
-Don't pitch. Don't summarize your product. Don't list what they're missing. Just close the loop like a normal human would.
+Não faça pitch. Não resuma seu produto. Não liste o que eles estão perdendo.
+Só feche o ciclo como uma pessoa normal faria.
 
-**Structure:**
-1. One sentence closing the loop
-2. Optionally, one sentence leaving the door open
+**Estrutura:**
+1. Uma frase fechando o ciclo
+2. Opcionalmente, uma frase deixando a porta aberta
 
-**Good example:**
+**Exemplo bom:**
 ```
 Subject: closing the loop
 
 {{first_name}}, I'll leave it here. If this ever becomes a priority, just reply.
 ```
 
-**Bad example:**
+**Exemplo ruim:**
 ```
 Subject: last one from me
 
@@ -197,35 +214,39 @@ If upgrading your online presence and lead capture is ever a priority, I'll be h
 Hope storm season treats you well.
 ```
 
-The bad one is still pitching in the breakup. "Probably losing 5-10+ leads" is a guilt trip disguised as a breakup. "Hope storm season treats you well" is fake rapport. Just close the loop cleanly.
+O ruim ainda está fazendo pitch no encerramento. "Probably losing 5-10+ leads"
+é uma chantagem emocional disfarçada de encerramento. "Hope storm season treats
+you well" é rapport falso. Só feche o ciclo direito.
 
 ---
 
-## Why Replies Actually Happen (Use This When Choosing an Angle)
+## Por que respostas realmente acontecem (use isto ao escolher um ângulo)
 
-A cold email gets a reply when it hits one of four triggers. Every email should be built around exactly one:
+Um cold email recebe resposta quando acerta um dos quatro gatilhos. Todo e-mail
+deve ser construído em torno de exatamente um:
 
-1. **Recognition**: you named a problem they're living with, in their own words. This is the strongest trigger. It requires real specificity: "your pricing page has four tiers but no annual option" beats "companies struggle with pricing" every time.
-2. **Curiosity gap**: you know something they'd want to know ("noticed something odd in how {{company}} shows up in search"). Only works if you actually deliver the payoff when they reply. Never manufacture a fake gap.
-3. **Easy yes**: the ask is so small that replying is cheaper than deleting ("is this on your radar at all?" beats "do you have 30 minutes Thursday?").
-4. **Status/peer proof**: a named, real peer or competitor did something relevant. Must be true and public. "Two other regional distributors moved off spreadsheets last quarter" only if they did.
+1. **Reconhecimento**: você nomeou um problema que eles vivem, nas palavras deles. É o gatilho mais forte. Exige especificidade real: "your pricing page has four tiers but no annual option" vence "companies struggle with pricing" sempre.
+2. **Lacuna de curiosidade**: você sabe algo que eles gostariam de saber ("noticed something odd in how {{company}} shows up in search"). Só funciona se você de fato entregar a recompensa quando responderem. Nunca fabrique uma lacuna falsa.
+3. **Sim fácil**: o pedido é tão pequeno que responder sai mais barato que apagar ("is this on your radar at all?" vence "do you have 30 minutes Thursday?").
+4. **Prova de status/par**: um par ou concorrente real e nomeado fez algo relevante. Precisa ser verdadeiro e público. "Two other regional distributors moved off spreadsheets last quarter" só se eles realmente fizeram.
 
-If the draft doesn't clearly hit one of these, it will be ignored no matter how clean the copy is. Rewrite around a trigger, not around your product.
+Se o rascunho não acertar claramente um destes, será ignorado por mais limpo
+que o texto esteja. Reescreva em torno de um gatilho, não do seu produto.
 
 ---
 
-## Subject Lines
+## Linhas de assunto
 
-### Rules
-- Always lowercase
-- 2-5 words max
-- Never include the prospect's name in the subject
-- Never use "quick question" (overused beyond recognition)
-- Should look like an internal email, not a marketing email
-- "re:" is only allowed when the email genuinely continues an earlier thread in the same sequence, never as a fake-reply trick on a fresh thread
-- Emails 2 and 3 in a sequence should usually take a completely new subject (new angle, new thread)
+### Regras
+- Sempre minúsculas
+- 2-5 palavras no máximo
+- Nunca inclua o nome do prospect no assunto
+- Nunca use "quick question" (batido até não ser mais reconhecido)
+- Deve parecer e-mail interno, não e-mail de marketing
+- "re:" só é permitido quando o e-mail continua de verdade uma thread anterior da mesma sequência, nunca como truque de resposta falsa numa thread nova
+- E-mails 2 e 3 de uma sequência devem geralmente ter um assunto completamente novo (ângulo novo, thread nova)
 
-### Good subjects
+### Bons assuntos
 - `{{company}} website`
 - `missed calls`
 - `thought about {{company}}`
@@ -234,7 +255,7 @@ If the draft doesn't clearly hit one of these, it will be ignored no matter how 
 - `closing the loop`
 - `{{company}} + [your product area]`
 
-### Bad subjects
+### Assuntos ruins
 - `{{first_name}}, quick question about {{company}}'s growth`
 - `transform your business with AI`
 - `exclusive offer for {{company}}`
@@ -244,59 +265,64 @@ If the draft doesn't clearly hit one of these, it will be ignored no matter how 
 
 ---
 
-## Campaign Variety
+## Variedade entre campanhas
 
-When writing multiple campaigns for different angles, each campaign MUST feel completely different. Not just different pain points with the same structure. Different:
+Ao escrever várias campanhas para ângulos diferentes, cada campanha DEVE
+parecer completamente distinta. Não só dores diferentes na mesma estrutura.
+Diferente em:
 
-- **Tone**: One could be more direct, another more curious, another more data-driven
-- **Length**: One campaign could have ultra-short emails, another slightly longer ones
-- **Angle**: Don't just swap out which feature you mention. Change the entire frame. One campaign might focus on cost, another on a specific workflow problem, another on what competitors are doing.
-- **Structure**: Don't always open with an observation. Sometimes open with a question. Sometimes open with a stat. Sometimes open with one bold claim.
+- **Tom**: Uma pode ser mais direta, outra mais curiosa, outra mais orientada a dados
+- **Tamanho**: Uma campanha pode ter e-mails ultra curtos, outra e-mails um pouco mais longos
+- **Ângulo**: Não troque só qual recurso você menciona. Mude o enquadramento inteiro. Uma campanha pode focar em custo, outra num problema de workflow específico, outra no que os concorrentes estão fazendo.
+- **Estrutura**: Não abra sempre com observação. Às vezes abra com pergunta. Às vezes com um dado. Às vezes com uma afirmação ousada.
 
-If all three campaigns read like they were written by the same template with different variables swapped in, they're bad. Rewrite them.
-
----
-
-## Personalization That Actually Works
-
-### Good personalization
-- Reference their specific product, service, or market
-- Mention something visible on their website (not just "I looked at your site")
-- Reference their city, region, or local market
-- Mention a specific challenge their industry faces right now
-
-### Bad personalization
-- "You've clearly built something real" (empty flattery)
-- "Solid reputation in your market" (means nothing)
-- "Companies like yours" (vague)
-- "As a {{title}}" (obvious merge tag)
+Se as três campanhas parecem escritas pelo mesmo template com variáveis
+trocadas, estão ruins. Reescreva.
 
 ---
 
-## Tone Calibration
+## Personalização que realmente funciona
 
-### Default tone
-Conversational, direct, helpful. Like a peer reaching out, not a vendor pitching. Write at a 7th grade reading level. Short sentences. Simple words.
+### Boa personalização
+- Referencie o produto, serviço ou mercado específico deles
+- Mencione algo visível no site deles (não só "I looked at your site")
+- Referencie a cidade, região ou mercado local deles
+- Mencione um desafio específico que o setor deles enfrenta agora
 
-### Adjustments by prospect
-- **C-suite**: Even shorter. Get to the point faster. Respect their time explicitly.
-- **Technical roles**: Be specific about the problem. Skip the emotional language.
-- **Small business owners**: Be warm but not salesy. They get pitched constantly and hate it.
-- **Enterprise**: More professional, but still human. Don't over-formalize.
+### Personalização ruim
+- "You've clearly built something real" (elogio vazio)
+- "Solid reputation in your market" (não significa nada)
+- "Companies like yours" (vago)
+- "As a {{title}}" (merge tag óbvia)
 
 ---
 
-## The Test
+## Calibração de tom
 
-Before finalizing any email, ask:
+### Tom padrão
+Conversacional, direto, útil. Como um par entrando em contato, não um fornecedor
+fazendo pitch. Escreva num nível de leitura de 7º ano. Frases curtas. Palavras
+simples.
 
-1. Could a real person have written this? (not "could AI have written this to sound human")
-2. Is there exactly one idea in this email?
-3. Could it lose another sentence? Another word? (Under 60 words is the hard ceiling for email 1.)
-4. Would I reply to this if I received it?
-5. Does it contain a dash between words?
-6. Does it contain any of the banned patterns listed above?
-7. Is every factual claim in it true and sourced from product_knowledge.md or the prospect's own site?
-8. Is the subject line honest, and the identity the real configured persona?
+### Ajustes por prospect
+- **C-suite**: Ainda mais curto. Chegue ao ponto mais rápido. Respeite o tempo deles explicitamente.
+- **Cargos técnicos**: Seja específico sobre o problema. Pule a linguagem emocional.
+- **Donos de pequenos negócios**: Seja caloroso mas não vendedor. Eles recebem pitch o tempo todo e odeiam.
+- **Enterprise**: Mais profissional, mas ainda humano. Não formalize demais.
 
-If the answer to #5 or #6 is yes, or #7 or #8 is no, rewrite it. No exceptions.
+---
+
+## O teste
+
+Antes de finalizar qualquer e-mail, pergunte:
+
+1. Uma pessoa real poderia ter escrito isto? (não "a IA poderia ter escrito isto para soar humano")
+2. Há exatamente uma ideia neste e-mail?
+3. Dá para perder outra frase? Outra palavra? (Menos de 60 palavras é o teto duro para o e-mail 1.)
+4. Eu responderia a isto se recebesse?
+5. Contém algum travessão entre palavras?
+6. Contém algum dos padrões proibidos listados acima?
+7. Toda afirmação factual é verdadeira e tem origem em product_knowledge.md ou no próprio site do prospect?
+8. A linha de assunto é honesta, e a identidade é a persona real configurada?
+
+Se a resposta de #5 ou #6 é sim, ou se a de #7 ou #8 é não, reescreva. Sem exceções.

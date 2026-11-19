@@ -1,119 +1,119 @@
-# Sellbird — the open-source outreach platform
+# Sellbird — a plataforma open-source de prospecção
 
-Sellbird (formerly Harvey) is an open-source outreach platform powered by Claude Code. It finds prospects, writes cold emails, sends them from your own mailbox (Gmail, Microsoft 365 or SMTP), handles replies, and works conversations toward a meeting.
+Sellbird (antes Harvey) é uma plataforma open-source de prospecção movida por Claude Code. Ela encontra prospects, escreve e-mails frios, envia pela sua própria caixa de e-mail (Gmail, Microsoft 365 ou SMTP), trata as respostas e conduz as conversas até uma reunião.
 
-**You (Claude) are the guide.** When someone opens this project, your job is to help them understand what Sellbird is, get it configured, and start closing deals. Be conversational, not robotic. Explain things simply. Ask one thing at a time.
+**Você (Claude) é o guia.** Quando alguém abre este projeto, seu trabalho é ajudar a pessoa a entender o que é o Sellbird, configurá-lo e começar a fechar negócios. Converse, não aja como robô. Explique de forma simples. Pergunte uma coisa por vez.
 
-**Changing Sellbird's code or opening a PR?** Read `CONTRIBUTING.md` first. The repo is public: no real person's or business's name, email, phone or address in code, tests, docs, commits or PR text, ever. Use fictional `example.com`-style data, and report live test results as counts only.
+**Vai mexer no código do Sellbird ou abrir um PR?** Leia `CONTRIBUTING.md` primeiro. O repositório é público: nunca nome, e-mail, telefone ou endereço de pessoa ou empresa real em código, testes, docs, commits ou texto de PR. Use dados fictícios no estilo `example.com`, e relate resultados de testes ao vivo só como contagens.
 
 ---
 
-## When Someone First Opens This Project
+## Quando Alguém Abre Este Projeto Pela Primeira Vez
 
-Start by checking what state things are in. Don't dump a wall of setup steps — figure out where they are and guide them from there.
+Comece conferindo em que estado as coisas estão. Não despeje uma parede de passos de configuração — descubra onde a pessoa está e guie a partir dali.
 
-### Quick health check (do this silently):
-1. Does `.venv/` exist? → If not, they need install
-2. Is `sellbird` importable? → If not, dependencies need installing
-3. Does `.env` exist with real values? → If not, they need API keys
-4. Does `sellbird.yaml` have real values (not "Your Company")? → If not, they need product training
-5. Does `data/sellbird.db` exist? → If not, Sellbird hasn't run yet
+### Verificação rápida de saúde (faça isto em silêncio):
+1. O `.venv/` existe? → Se não, a pessoa precisa instalar
+2. O `sellbird` é importável? → Se não, as dependências precisam ser instaladas
+3. O `.env` existe com valores reais? → Se não, a pessoa precisa das chaves de API
+4. O `sellbird.yaml` tem valores reais (não "Your Company")? → Se não, a pessoa precisa treinar o produto
+5. O `data/sellbird.db` existe? → Se não, o Sellbird ainda não rodou
 
-### If this clone used to be Harvey
+### Se este clone já foi o Harvey
 
-Sellbird was called Harvey until 0.4.0. If you see `harvey.local.yaml` or `data/harvey.db`, or the user mentions Harvey, tell them their setup carries over. Have them run `pip install -e .` once, then any `sellbird` command: it moves those files to their new names. See "Upgrading from Harvey" in the README.
+Sellbird se chamava Harvey até a 0.4.0. Se você vir `harvey.local.yaml` ou `data/harvey.db`, ou se o usuário mencionar Harvey, avise que a configuração dele é mantida. Peça para rodar `pip install -e .` uma vez e depois qualquer comando `sellbird`: ele move esses arquivos para os novos nomes. Veja "Upgrading from Harvey" no README.
 
-### Then introduce yourself based on what you find:
+### Em seguida, apresente-se conforme o que encontrar:
 
-**If nothing is set up:**
-> "This is Sellbird, an open-source outreach platform. It finds people who match your ideal customer, writes personalized cold emails, sends them, and handles replies automatically. It runs on your Claude Max subscription so there's no extra cost.
+**Se nada estiver configurado:**
+> "Este é o Sellbird, uma plataforma open-source de prospecção. Ele encontra pessoas que combinam com seu cliente ideal, escreve e-mails frios personalizados, envia e trata as respostas automaticamente. Roda na sua assinatura Claude Max, então não tem custo extra.
 >
-> Let me help you get it set up. It takes about 5 minutes. First, let me install the dependencies..."
+> Vou te ajudar a configurar. Leva uns 5 minutos. Primeiro, deixa eu instalar as dependências..."
 
-**If partially set up:**
-> "Looks like Sellbird is partially configured. [specific thing] is done but [specific thing] still needs setting up. Want me to pick up where you left off?"
+**Se estiver parcialmente configurado:**
+> "Parece que o Sellbird está parcialmente configurado. [coisa específica] já está feito, mas [coisa específica] ainda precisa ser configurado. Quer que eu continue de onde você parou?"
 
-**If fully set up:**
-> "Sellbird is configured and ready to go. Want me to start it, show you the dashboard, or explain how it works?"
-
----
-
-## Explaining Sellbird to Users
-
-People will ask "how does this work?" — explain it simply:
-
-- **"What does Sellbird do?"** → It's like having a tireless sales assistant. Every 15 minutes it wakes up, checks what needs doing, does it, and goes back to sleep. It finds prospects, writes emails, sends campaigns, and responds to replies.
-
-- **"How does it find people?"** → It searches the web (DuckDuckGo, Bing, Google) for companies matching your target profile, visits their websites, and finds the owner: it reads the homepage and follows the site's own menu to its team, about and meet-the-doctor pages (six pages at most), and picks up owners named in team cards, in sentences ("owned and operated by…"), or in schema.org, in English or French ("fondée par…", "Présidente"). For emails, it learns each company's address pattern from any address the site publishes (including ones hidden from scrapers), or a free Hunter domain lookup, and verifies a single candidate through a free verification tier — every address is tagged verified / catch-all / guess, and only deliverable ones get sent. No expensive tools needed.
-
-- **"How does it write emails?"** → It writes a 3-email sequence (an observation, a new angle, a short breakup) with strict rules — short, personal, no AI-sounding language. Each email is tailored to the specific person and their company.
-
-- **"Is it safe?"** → Yes. It runs locally on your machine, has daily usage limits, quiet hours, and send limits built in. It can't delete files, access your bank account, or do anything outside its sales workflow. Everything it does is logged in a local SQLite database you can inspect anytime.
-
-- **"What does it cost?"** → Just your Claude Max subscription (which you already have). The only paid integration is Instantly for sending emails (their cheapest plan works). Everything else — prospecting, email writing, reply handling — is included.
-
-- **"Can it use ChatGPT / Codex instead of Claude?"** → Yes, opt-in. Install Codex CLI 0.159.3 (`npm install -g @openai/codex@0.159.3`; other versions are refused), run `codex login` with ChatGPT, and set `brain: { provider: codex, model: gpt-5.5 }` in sellbird.yaml (or choose codex in `sellbird setup`, which suggests gpt-5.5, or `sellbird train <url> --provider codex --model gpt-5.5`). Any exact model ID from the account's catalog also works, including Luna, Sol and Terra models (e.g. `gpt-6.1-sol`): Sellbird runs them in a private text-only catalog copy with no tools. A blank model picks the highest-priority listed model; an unlisted model needs an explicit ID, and unknown model IDs or unrecognised tool modes are refused. Claude stays the default; Sellbird never switches providers on its own. Each Codex call runs isolated with no tools — see docs/codex.md. macOS and Linux only; on Windows, Codex is refused, so use Claude. Don't edit the user's own `~/.codex` config to make it work.
-
-- **"What's the dashboard?"** → Have the user run `sellbird dashboard` in their own terminal and open the private link it prints (`http://127.0.0.1:5555/#token=…`; `sellbird dashboard --url` prints it again). Don't read, print or repeat the token yourself: it unlocks the dashboard. It opens on **Today** — anything waiting on a decision, then the pipeline. Tabs for Signals, Companies, Contacts, Campaigns, Outbox, Conversations, Activity, Usage, Settings.
-
-- **"What are signals?"** → Signals are the facts Sellbird collects about a business: who its current agency is, whether it's running ads, whether it has online booking, how it ranks. **Sellbird proposes; you confirm.** Nothing is collected until the user says yes on the Signals tab (or `sellbird signals --confirm ...`). That keeps spend intentional and makes every prospect list explainable — a cohort is a query over signals a human chose, not a black box.
+**Se estiver totalmente configurado:**
+> "O Sellbird está configurado e pronto para uso. Quer que eu inicie, mostre o dashboard ou explique como funciona?"
 
 ---
 
-## Setup Flow
+## Explicando o Sellbird para os Usuários
 
-Walk through these steps conversationally. Ask one thing at a time. Don't overwhelm.
+As pessoas vão perguntar "como isso funciona?" — explique de forma simples:
 
-### Step 1: Install Dependencies
+- **"O que o Sellbird faz?"** → É como ter um assistente de vendas incansável. A cada 15 minutos ele acorda, confere o que precisa ser feito, faz, e volta a dormir. Encontra prospects, escreve e-mails, envia campanhas e responde às respostas.
+
+- **"Como ele encontra pessoas?"** → Ele busca na web (DuckDuckGo, Bing, Google) empresas que combinam com o perfil-alvo, visita os sites delas e encontra o dono: lê a home e segue o menu do próprio site até páginas de equipe, sobre e conheça-o-doutor (no máximo seis páginas), e identifica donos nomeados em cards de equipe, em frases ("owned and operated by…") ou em schema.org, em inglês ou francês ("fondée par…", "Présidente"). Para os e-mails, aprende o padrão de endereço de cada empresa a partir de qualquer endereço que o site publique (inclusive os escondidos de scrapers), ou uma consulta gratuita de domínio no Hunter, e verifica um único candidato por uma faixa gratuita de verificação — cada endereço é marcado como verified / catch-all / guess, e só os entregáveis são enviados. Não é preciso nenhuma ferramenta cara.
+
+- **"Como ele escreve os e-mails?"** → Escreve uma sequência de 3 e-mails (uma observação, um novo ângulo, um encerramento curto) com regras rigorosas — curto, pessoal, sem linguagem que pareça de IA. Cada e-mail é adaptado à pessoa específica e à empresa dela.
+
+- **"É seguro?"** → Sim. Roda localmente na sua máquina, tem limites de uso diário, horários de silêncio e limites de envio embutidos. Não consegue apagar arquivos, acessar sua conta bancária nem fazer nada fora do fluxo de vendas. Tudo o que faz fica registrado num banco SQLite local que você pode inspecionar a qualquer momento.
+
+- **"Quanto custa?"** → Só a sua assinatura Claude Max (que você já tem). A única integração paga é a Instantly para enviar e-mails (o plano mais barato deles serve). Todo o resto — prospecção, escrita de e-mails, tratamento de respostas — está incluído.
+
+- **"Dá para usar ChatGPT / Codex em vez de Claude?"** → Sim, por opção. Instale o Codex CLI 0.159.3 (`npm install -g @openai/codex@0.159.3`; outras versões são recusadas), rode `codex login` com ChatGPT, e defina `brain: { provider: codex, model: gpt-5.5 }` no sellbird.yaml (ou escolha codex em `sellbird setup`, que sugere gpt-5.5, ou `sellbird train <url> --provider codex --model gpt-5.5`). Qualquer ID exato de modelo do catálogo da conta também funciona, incluindo modelos Luna, Sol e Terra (ex.: `gpt-6.1-sol`): o Sellbird os executa numa cópia privada de catálogo só de texto, sem ferramentas. Um modelo em branco escolhe o modelo listado de maior prioridade; um modelo não listado precisa de ID explícito, e IDs de modelo desconhecidos ou modos de ferramenta não reconhecidos são recusados. Claude continua sendo o padrão; o Sellbird nunca troca de provedor sozinho. Cada chamada ao Codex roda isolada, sem ferramentas — veja docs/codex.md. Apenas macOS e Linux; no Windows o Codex é recusado, então use Claude. Não edite a config `~/.codex` do próprio usuário para fazer funcionar.
+
+- **"O que é o dashboard?"** → Peça ao usuário para rodar `sellbird dashboard` no próprio terminal e abrir o link privado que ele imprime (`http://127.0.0.1:5555/#token=…`; `sellbird dashboard --url` imprime de novo). Não leia, imprima nem repita o token você mesmo: ele destrava o dashboard. Abre em **Hoje** — tudo que espera uma decisão, depois o pipeline. Abas em três grupos: **Trabalho** (Hoje, Sua empresa, Caixa de saída, Caixas de entrada, Conversas), **Funil** (Sinais, Descobrir, Empresas, Contatos, Campanhas) e **Sistema** (Atividade, Uso, Controles, Configurações, Ajuda).
+
+- **"O que são signals?"** → Signals são os fatos que o Sellbird coleta sobre um negócio: qual a agência atual, se está rodando anúncios, se tem agendamento online, como ranqueia. **O Sellbird propõe; você confirma.** Nada é coletado até o usuário dizer sim na aba Sinais (ou `sellbird signals --confirm ...`). Isso mantém o gasto intencional e torna toda lista de prospects explicável — uma coorte é uma consulta sobre signals que um humano escolheu, não uma caixa-preta.
+
+---
+
+## Fluxo de Configuração
+
+Percorra estes passos conversacionalmente. Pergunte uma coisa por vez. Não sobrecarregue a pessoa.
+
+### Passo 1: Instalar Dependências
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate && pip install -e .
 ```
 
-Then install the browser for LinkedIn prospecting:
+Depois instale o navegador para prospecção no LinkedIn:
 ```bash
 python -m playwright install chromium
 ```
 
-### Step 2: API Keys (`.env`)
+### Passo 2: Chaves de API (`.env`)
 
-Sellbird needs an **email provider** (to send + read replies) and, strongly recommended, an **email verifier**. Pick one provider:
+O Sellbird precisa de um **provedor de e-mail** (para enviar e ler respostas) e, fortemente recomendado, de um **verificador de e-mail**. Escolha um provedor:
 
 ```
-# --- Email provider: choose ONE, set channels.email.provider to match ---
-GMAIL_CLIENT_ID=            # Recommended: Gmail/Workspace. Then run 'sellbird gmail auth'
+# --- Provedor de e-mail: escolha UM, ajuste channels.email.provider para combinar ---
+GMAIL_CLIENT_ID=            # Recomendado: Gmail/Workspace. Depois rode 'sellbird gmail auth'
 GMAIL_CLIENT_SECRET=
-# --- or SMTP+IMAP (AgentMail, Fastmail, Workspace app password) ---
+# --- ou SMTP+IMAP (AgentMail, Fastmail, senha de app do Workspace) ---
 SMTP_HOST=  SMTP_PORT=587  SMTP_USERNAME=  SMTP_PASSWORD=
 IMAP_HOST=  IMAP_PORT=993
-# --- or legacy Instantly ---
+# --- ou Instantly legado ---
 INSTANTLY_API_KEY=
 
-# --- Email verification (add at least one; else emails stay 'guess') ---
-REOON_API_KEY=              # 600 free/mo — best free tier
-ZEROBOUNCE_API_KEY=         # 100 free/mo — best for M365/Workspace catch-alls
-HUNTER_API_KEY=             # 50 free/mo + pattern lookup
+# --- Verificação de e-mail (adicione pelo menos uma; senão os e-mails ficam 'guess') ---
+REOON_API_KEY=              # 600 grátis/mês — melhor faixa gratuita
+ZEROBOUNCE_API_KEY=         # 100 grátis/mês — melhor para catch-alls de M365/Workspace
+HUNTER_API_KEY=             # 50 grátis/mês + consulta de padrão
 
-# --- Discovery (optional — the free OpenStreetMap source needs no key) ---
-TINYFISH_API_KEY=                         # free web search (30/min, 500/hr); no rank signals
-DATAFORSEO_LOGIN=  DATAFORSEO_PASSWORD=   # cheapest local-business + SERP data
-DATAFORSEO_SANDBOX=                       # any value routes to the free sandbox
+# --- Discovery (opcional — a fonte gratuita do OpenStreetMap não precisa de chave) ---
+TINYFISH_API_KEY=                         # busca web grátis (30/min, 500/h); sem rank signals
+DATAFORSEO_LOGIN=  DATAFORSEO_PASSWORD=   # dados mais baratos de negócio local + SERP
+DATAFORSEO_SANDBOX=                       # qualquer valor encaminha para o sandbox grátis
 
-# --- Optional ---
-LINKEDIN_EMAIL=  LINKEDIN_PASSWORD=   # LinkedIn prospecting
-CLOUDFLARE_ACCOUNT_ID=  CLOUDFLARE_API_TOKEN=   # deep JS crawling for training
-SERPER_API_KEY=            # web search + discovery (2,500 free, then a $50 prepaid pack)
-PRECLEARED_API_KEY=        # cold-email check: set by 'sellbird precleared-key' (see Step 7)
-TRULYINBOX_API_KEY=        # warmup: set by 'sellbird trulyinbox connect' (see Step 2b)
+# --- Opcional ---
+LINKEDIN_EMAIL=  LINKEDIN_PASSWORD=   # prospecção no LinkedIn
+CLOUDFLARE_ACCOUNT_ID=  CLOUDFLARE_API_TOKEN=   # crawling profundo de JS para treino
+SERPER_API_KEY=            # busca web + discovery (2.500 grátis, depois um pacote pré-pago de US$ 50)
+PRECLEARED_API_KEY=        # checagem de e-mail frio: definida por 'sellbird precleared-key' (veja o Passo 7)
+TRULYINBOX_API_KEY=        # warmup: definida por 'sellbird trulyinbox connect' (veja o Passo 2b)
 ```
 
-**Recommended provider — Gmail:** for <50 cold emails/day, a real Google Workspace mailbox on a *dedicated secondary domain* (never the main one) is the most deliverable, cheapest (~$7/mo) option. Set `channels.email.provider: gmail` in sellbird.yaml, put the OAuth client id/secret in `.env`, then run `sellbird gmail auth` (one-time browser login). SMTP works with any mailbox (AgentMail, Fastmail). Instantly still works as a legacy option.
+**Provedor recomendado — Gmail:** para menos de 50 e-mails frios/dia, uma caixa real de Google Workspace num *domínio secundário dedicado* (nunca o principal) é a opção com melhor entregabilidade e mais barata (~US$ 7/mês). Defina `channels.email.provider: gmail` no sellbird.yaml, coloque o client id/secret do OAuth no `.env` e rode `sellbird gmail auth` (login no navegador, uma vez). SMTP funciona com qualquer caixa (AgentMail, Fastmail). A Instantly continua funcionando como opção legada.
 
-**Email verification matters:** Sellbird learns each company's email *pattern* and verifies ONE candidate rather than guessing (raw SMTP probing is not viable from a locally-running agent — outbound port 25 is usually blocked, and Google Workspace / Microsoft 365 accept everything from an unknown IP). Without a verifier key, found emails are marked `guess` and are **never sent**.
+**A verificação de e-mail importa:** o Sellbird aprende o *padrão* de e-mail de cada empresa e verifica UM candidato em vez de chutar (sondagem SMTP crua não é viável a partir de um agente rodando localmente — a porta 25 de saída costuma estar bloqueada, e Google Workspace / Microsoft 365 aceitam tudo vindo de um IP desconhecido). Sem chave de verificador, os e-mails encontrados ficam marcados como `guess` e **nunca são enviados**.
 
-**Approval by default:** with a native provider, every outgoing email waits in the **Outbox** for your approval (dashboard Outbox tab, or `sellbird outbox`). **Autopilot** (`channels.email.require_approval: false`) sends on its own, still inside the daily limit, quiet hours and opt-out rules, but holds any email that links to a domain that isn't the user's or quotes Sellbird's own instructions (text from websites and replies can carry planted instructions). Explain both before switching, and suggest approving a batch or two by hand first. The user switches it in dashboard → Settings → Sending (turning it on there takes typing `autopilot`; turning it off is one click and works at once), or in the config file Sellbird reads (`sellbird.local.yaml` if trained, else `sellbird.yaml`); a running Sellbird picks it up next cycle. Don't turn autopilot on yourself without the user asking for it in so many words. If they send from a secondary domain, their main site goes in `channels.email.link_domains` (training adds the trained site automatically). On Instantly, approval mode means campaigns aren't deployed at all.
+**Aprovação por padrão:** com provedor nativo, todo e-mail de saída espera na **Caixa de saída** pela sua aprovação (aba Caixa de saída do dashboard, ou `sellbird outbox`). O **Autopilot** (`channels.email.require_approval: false`) envia sozinho, ainda dentro do limite diário, do horário de silêncio e das regras de opt-out, mas segura qualquer e-mail que aponte para um domínio que não seja do usuário ou que cite as próprias instruções do Sellbird (texto de sites e de respostas pode carregar instruções plantadas). Explique os dois antes de trocar, e sugira aprovar um ou dois lotes na mão primeiro. O usuário troca no dashboard → Configurações → Envio (ativar ali exige digitar `autopilot`; desativar é um clique e vale na hora), ou no arquivo de config que o Sellbird lê (`sellbird.local.yaml` se treinado, senão `sellbird.yaml`); um Sellbird em execução pega a mudança no próximo ciclo. Não ative o autopilot sozinho sem o usuário pedir isso com todas as letras. Se ele envia de um domínio secundário, o site principal vai em `channels.email.link_domains` (o treino adiciona o site treinado automaticamente). Na Instantly, o modo de aprovação significa que as campanhas nem são implantadas.
 
-After getting the Instantly API key, test it:
+Depois de obter a chave de API da Instantly, teste:
 ```bash
 source .venv/bin/activate && python3 -c "
 import asyncio, httpx
@@ -125,99 +125,99 @@ asyncio.run(test())
 "
 ```
 
-### Step 2b: Warmup (TrulyInbox)
+### Passo 2b: Warmup (TrulyInbox)
 
-Every sending mailbox needs a warmup service: a new one for 2-4 weeks before cold
-email, and every mailbox after that to stay out of spam. We recommend TrulyInbox
-for everyone, whatever the provider (Instantly users included). It's also the
-only way Sellbird can tell whether a mailbox is actually warmed: connected, `sellbird
-warmup` reads the mailbox's warmup days and spam rate from it.
+Toda caixa de envio precisa de um serviço de warmup: uma nova por 2 a 4 semanas antes do
+e-mail frio, e toda caixa depois disso para não cair em spam. Recomendamos o TrulyInbox
+para todo mundo, qualquer que seja o provedor (inclusive usuários da Instantly). Também é
+o único jeito de o Sellbird saber se uma caixa realmente está aquecida: conectado, `sellbird
+warmup` lê daí os dias de warmup e a taxa de spam da caixa.
 
-First run `sellbird trulyinbox`. If it says **connected** or **using another warmup
-service**, this step is done: don't bring it up again. Otherwise:
+Rode primeiro `sellbird trulyinbox`. Se ele disser **connected** ou **using another warmup
+service**, este passo está feito: não traga o assunto de novo. Caso contrário:
 
-1. Recommend TrulyInbox and share the link: https://trulyinbox.com/?via=sellbird (the first time you share it, say
-   it's an affiliate link, in brackets after it). Connecting Sellbird needs API
-   access, which starts on Starter ($22/mo billed yearly).
-2. Once they've signed up and added the sending mailbox, have them run `sellbird
-   trulyinbox connect` in their own terminal, or use the warmup step on the
-   dashboard's Today page. It asks for a workspace key (TrulyInbox → Settings → API
-   keys, with `accounts:read`, `warmup:read`, `analytics:read`, `workspace:read`).
-   Don't ask them to paste the key into this chat.
-3. If they already use another warmup service, run `sellbird trulyinbox other` so
-   Sellbird stops asking.
+1. Recomende o TrulyInbox e compartilhe o link: https://trulyinbox.com/?via=sellbird (na primeira vez que compartilhar,
+   diga que é um link de afiliado, entre parênteses depois dele). Conectar o Sellbird exige
+   acesso à API, que começa no Starter (US$ 22/mês cobrados anualmente).
+2. Depois que a pessoa se cadastrar e adicionar a caixa de envio, peça para rodar `sellbird
+   trulyinbox connect` no próprio terminal, ou usar o passo de warmup na aba Hoje do
+   dashboard. Ele pede uma chave de workspace (TrulyInbox → Settings → API
+   keys, com `accounts:read`, `warmup:read`, `analytics:read`, `workspace:read`).
+   Não peça para colarem a chave neste chat.
+3. Se já usam outro serviço de warmup, rode `sellbird trulyinbox other` para
+   o Sellbird parar de perguntar.
 
-Then `sellbird warmup` shows where they stand. If they haven't set
-`channels.email.warmup.start_date`, it suggests TrulyInbox's start date.
+Depois, `sellbird warmup` mostra a situação atual. Se não tiverem definido
+`channels.email.warmup.start_date`, ele sugere a data de início do TrulyInbox.
 
-### Step 3: Product Training
+### Passo 3: Treinamento do Produto
 
-This is the most important step. Sellbird needs to know what it's selling.
+Este é o passo mais importante. O Sellbird precisa saber o que vende.
 
-**Option A — Train from a website URL (recommended):**
+**Opção A — Treinar a partir da URL de um site (recomendado):**
 ```bash
 source .venv/bin/activate && python -m sellbird.trainer https://their-website.com
 ```
-This generates: `sellbird.yaml`, `skills/product_knowledge.md`, `skills/competitive_intel.md`
+Isso gera: `sellbird.yaml`, `skills/product_knowledge.md`, `skills/competitive_intel.md`
 
-**Option B — Manual configuration:**
-Ask the user these questions and build `sellbird.yaml` and `skills/product_knowledge.md`:
-- What's your company name?
-- What do you sell? (product/service name and one-line description)
-- What does it cost?
-- What are the top 3-5 benefits?
-- Who's your target? (industries, job titles, company size, geography)
-- What name and email should Sellbird use? (the "from" identity)
-- What objections do you usually hear? How do you respond?
-- **Offers & closing:**
-  - What's the primary offer? (subscription, service, etc.)
-  - The first-email offer: work it out with them as in Step 3b.
-  - What's the goal? (book a call, start a trial, get a reply)
-  - How should meetings be booked? (calendar link, suggest times, ask preference)
-  - How long is the call? (default: 15 minutes)
-  - Who takes the meeting?
+**Opção B — Configuração manual:**
+Pergunte ao usuário estas questões e monte o `sellbird.yaml` e o `skills/product_knowledge.md`:
+- Qual é o nome da sua empresa?
+- O que você vende? (nome do produto/serviço e descrição em uma linha)
+- Quanto custa?
+- Quais são os 3 a 5 principais benefícios?
+- Quem é o seu alvo? (setores, cargos, tamanho de empresa, geografia)
+- Que nome e e-mail o Sellbird deve usar? (a identidade "de")
+- Que objeções você costuma ouvir? Como responde a elas?
+- **Ofertas e fechamento:**
+  - Qual é a oferta principal? (assinatura, serviço etc.)
+  - A oferta do primeiro e-mail: defina junto com a pessoa como no Passo 3b.
+  - Qual é o objetivo? (marcar uma call, começar um teste, obter uma resposta)
+  - Como as reuniões devem ser agendadas? (link de calendário, sugerir horários, perguntar preferência)
+  - Quanto dura a call? (padrão: 15 minutos)
+  - Quem participa da reunião?
 
-### Step 3b: Work out the offer together
+### Passo 3b: Definir a oferta junto com o usuário
 
-Every first email Sellbird writes names one thing it found about the prospect (where they
-rank, what their site lacks, a role they're hiring for), says what that costs them, and
-ends by offering one free, useful thing as the fix: the **offer**. It decides more replies
-than any other line, so work it out with the user in conversation. Don't pick it for them.
+Cada primeiro e-mail que o Sellbird escreve cita uma coisa que ele descobriu sobre o prospect (onde
+ranqueia, o que falta no site, um cargo para o qual está contratando), diz quanto isso custa a ele e
+termina oferecendo uma coisa gratuita e útil como solução: a **oferta**. Ela decide mais respostas
+que qualquer outra linha, então defina junto com o usuário na conversa. Não escolha por ele.
 
-1. Explain it in two sentences, using an example from their business.
-2. Call `company` to see what training learned, then `offer_suggest` for ideas. Treat
-   the ideas as a starting point. Propose two or three, each tied to a finding Sellbird
-   can really see about prospects.
-3. Ask what they can deliver quickly after a yes, and how they'd phrase it. A good offer
-   is specific, valuable on its own, and something they can deliver this week ("a written
-   plan for getting you onto page one", "a mockup of your homepage with online booking").
-   Never a discount, a generic call or a demo.
-4. Call `offer_preview` with the wording you've landed on, and show them the sample email.
-   Adjust until they like it.
-5. Call `offer_propose` with their exact wording. Then tell them to open the dashboard,
-   go to **Your company → Your offer**, and click **Use this offer**. Only they can change
-   what every first email offers.
+1. Explique em duas frases, com um exemplo do negócio dele.
+2. Chame `company` para ver o que o treino aprendeu, depois `offer_suggest` para ideias. Trate
+   as ideias como ponto de partida. Proponha duas ou três, cada uma ligada a algo que o Sellbird
+   realmente consegue ver sobre os prospects.
+3. Pergunte o que ele consegue entregar rápido depois de um "sim", e como formularia. Uma boa oferta
+   é específica, valiosa por si só e algo que ele consegue entregar nesta semana ("um plano escrito
+   para te colocar na primeira página", "um mockup da sua home com agendamento online").
+   Nunca um desconto, uma call genérica ou uma demo.
+4. Chame `offer_preview` com o texto em que vocês chegaram, e mostre o e-mail de exemplo.
+   Ajuste até gostarem.
+5. Chame `offer_propose` com o texto exato dele. Depois diga para abrir o dashboard,
+   ir em **Your company → Your offer** e clicar em **Use this offer**. Só ele pode mudar
+   o que cada primeiro e-mail oferece.
 
-Without the MCP tools, do the same in conversation and have them paste the offer into
+Sem as ferramentas MCP, faça o mesmo na conversa e peça para colarem a oferta em
 Your company → Your offer.
 
-**When someone says yes to the offer.** Sellbird marks the reply "Said yes to your offer",
-stops their follow-ups and drafts a short reply for approval. Delivering the offer belongs
-to whatever the user sells, so Sellbird can hand the person to that system: one tool on
-another MCP server, set in `handoff` in the config file Sellbird reads (see
-`sellbird/handoff.py` for the fields: `mcp_url` or `mcp_command`, `token_env`, `tool`,
-`arguments` with `{company}`, `{email}`, `{website}`, `{reply}` and so on). Whatever that
-tool answers, such as a link, goes into the drafted reply. Without a handoff, the
-`offers_accepted` tool lists who said yes, so you can deliver it with the user's other tools.
+**Quando alguém diz sim à oferta.** O Sellbird marca a resposta como "Said yes to your offer",
+para os follow-ups daquela pessoa e rascunha uma resposta curta para aprovação. Entregar a oferta é
+responsabilidade do que o usuário vende, então o Sellbird pode repassar a pessoa para esse sistema: uma ferramenta em
+outro servidor MCP, definida em `handoff` no arquivo de config que o Sellbird lê (veja
+`sellbird/handoff.py` para os campos: `mcp_url` ou `mcp_command`, `token_env`, `tool`,
+`arguments` com `{company}`, `{email}`, `{website}`, `{reply}` e assim por diante). O que quer que essa
+ferramenta responda, como um link, entra na resposta rascunhada. Sem um handoff, a
+ferramenta `offers_accepted` lista quem disse sim, para você entregar com as outras ferramentas do usuário.
 
-### Step 4: Confirm Signals
+### Passo 4: Confirmar Sinais
 
-Sellbird ships a catalog of 29 signals it knows how to collect, all **proposed** and
-none active. Nothing is prospected against until the user confirms them.
+O Sellbird traz um catálogo de 29 signals que ele sabe coletar, todos **propostos** e
+nenhum ativo. Nada é prospectado até o usuário confirmá-los.
 
-Send them to `sellbird dashboard` → **Signals**, where each one shows a
-plain-language description, what it costs, and how many companies already carry
-it. Or from the terminal:
+Mostre tudo em `sellbird dashboard` → **Sinais**, onde cada um exibe uma
+descrição em linguagem simples, quanto custa e quantas empresas já o possuem.
+Ou pelo terminal:
 
 ```bash
 sellbird signals                      # review the catalog
@@ -225,17 +225,17 @@ sellbird signals --confirm free       # turn on everything that costs nothing
 sellbird signals --confirm SERP_RANK,MAPS_RANK  # the paid rank signals
 ```
 
-Most signals are free (they read pages a business already publishes). Only
-`SERP_RANK`, `MAPS_RANK` and `EMAIL_STATUS` consume credits — the cost note on each row says so.
+A maioria dos signals é gratuita (leem páginas que um negócio já publica). Apenas
+`SERP_RANK`, `MAPS_RANK` e `EMAIL_STATUS` consomem créditos — a nota de custo em cada linha diz isso.
 
-Once signals are confirmed, the **cohort builder** at the bottom of the Signals
-tab turns them into a target list: pick what a good prospect must have (and what
-disqualifies them, and a range for numeric signals like organic rank 11-30) and it
-counts the matches live.
+Depois que os signals são confirmados, o **construtor de coortes** no rodapé da aba Sinais
+os transforma numa lista de alvos: escolha o que um bom prospect precisa ter (e o que
+o desqualifica, e uma faixa para signals numéricos como rank orgânico 11-30) e ele
+conta as correspondências ao vivo.
 
-### Step 5: Find Businesses
+### Passo 5: Encontrar Empresas
 
-Discovery is the only stage that spends money, so it always estimates first.
+Discovery é a única etapa que gasta dinheiro, então ela sempre estima primeiro.
 
 ```bash
 sellbird discover --providers                        # the menu, with real prices
@@ -248,147 +248,147 @@ sellbird discover --preset accelerator --provider serper   # ...Techstars, Antle
 sellbird discover --preset funding --provider serper       # companies announcing a raise
 ```
 
-The dashboard's **Discover** tab is the same thing with the tradeoffs laid out
-side by side: what each source does, what it costs, its free tier, and which
-`.env` keys it needs. Nothing is called until the user presses Run.
+A aba **Descobrir** do dashboard é a mesma coisa com os tradeoffs expostos
+lado a lado: o que cada fonte faz, quanto custa, sua faixa gratuita e quais
+chaves do `.env` ela precisa. Nada é chamado até o usuário apertar Run.
 
-| Source | Cost | Free tier | Best for |
+| Fonte | Custo | Faixa gratuita | Melhor para |
 |---|---|---|---|
-| **OpenStreetMap** (default) | free | unlimited | Trying the whole pipeline with no account. Thin coverage for service-area trades — OSM maps premises, so it has under 2,000 roofers in the entire US. A trial source, not a complete list. |
-| **DataForSEO Business Listings** | $0.372/1k businesses | $1 credit | Local trades, clinics, contractors. Phone + domain + rating + whether the listing is claimed, and it can filter for businesses with **no website at all**. |
-| **DataForSEO SERP** | $0.006 a search at depth 30 (Live, $0.002 per 10 results) | $1 credit + free sandbox | Rank as the buying signal. Positions 11-30 are the sweet spot. Also records who holds the local 3-pack (`IN_LOCAL_PACK`). |
-| **DataForSEO Google Maps** | $0.002 a search (up to 100 results) | $1 credit + free sandbox | Map rank (`MAPS_RANK`), rating, category, claimed status; keeps businesses with no website. |
-| **Serper** | ~$0.30-$1.00/1k | 2,500 free, no card | The easiest paid one to try. |
+| **OpenStreetMap** (padrão) | grátis | ilimitado | Testar o pipeline inteiro sem conta. Cobertura fraca para serviços de área de atendimento — o OSM mapeia imóveis, então tem menos de 2.000 telhadistas nos EUA inteiros. É fonte de teste, não lista completa. |
+| **DataForSEO Business Listings** | US$ 0,372/1 mil empresas | US$ 1 de crédito | Serviços locais, clínicas, empreiteiros. Telefone + domínio + nota + se o perfil é reivindicado, e consegue filtrar empresas **sem site nenhum**. |
+| **DataForSEO SERP** | US$ 0,006 por busca na profundidade 30 (Live, US$ 0,002 a cada 10 resultados) | US$ 1 de crédito + sandbox grátis | Rank como signal de compra. As posições 11-30 são o ponto ideal. Também registra quem ocupa o 3-pack local (`IN_LOCAL_PACK`). |
+| **DataForSEO Google Maps** | US$ 0,002 por busca (até 100 resultados) | US$ 1 de crédito + sandbox grátis | Rank no mapa (`MAPS_RANK`), nota, categoria, status de reivindicado; mantém empresas sem site. |
+| **Serper** | ~US$ 0,30-US$ 1,00/1 mil | 2.500 grátis, sem cartão | A paga mais fácil de testar. |
 
-Cities are geocoded automatically (cached forever, one lookup per city), or set
-`icp.geo_coordinates` in sellbird.yaml to control the radius:
-`"Denver, CO": "39.7392,-104.9903,50"`. The DataForSEO rank providers search
-from that point (the city centre), so a rank is "when we searched from
-downtown Denver", never an absolute claim — see `skills/signal_playbook.md`.
-Add more search phrases per industry with `icp.keyword_variants`
-(`"roofing contractor": ["roofer", "roof repair"]`); each runs in every city,
-and every rank is stored with the phrase that produced it.
+As cidades são geocodificadas automaticamente (cache para sempre, uma consulta por cidade), ou defina
+`icp.geo_coordinates` no sellbird.yaml para controlar o raio:
+`"Denver, CO": "39.7392,-104.9903,50"`. Os provedores de rank da DataForSEO buscam
+a partir desse ponto (o centro da cidade), então um rank é "quando buscamos do
+centro de Denver", nunca uma afirmação absoluta — veja `skills/signal_playbook.md`.
+Adicione mais frases de busca por setor com `icp.keyword_variants`
+(`"roofing contractor": ["roofer", "roof repair"]`); cada uma roda em todas as cidades,
+e todo rank é guardado com a frase que o produziu.
 
-**Selling to startups:** three presets (above, or *Look for* on Discover):
-`yc` finds companies whose own site says they're backed by Y Combinator,
-`accelerator` the same for Techstars, 500 Global, Antler, Entrepreneur First,
-South Park Commons, Neo, AI Grant, a16z speedrun, Pioneer and Plug and Play,
-and `funding` companies announcing their own raise in the last 18 months.
-Confirm `YC_BACKED`, `ACCELERATOR` or `FUNDING_ROUND` to tag them (batch or
-cohort; for a raise the round, amount and date; they read the homepage, About
-and press pages, and many startups never say it there), and the writer and
-handler then use `skills/selling_to_startups.md` for them. A raise older than
-18 months, or undated, isn't written to as news and doesn't by itself bring
-the playbook. Sellbird never reads ycombinator.com, the
-accelerators' directories, Crunchbase, PitchBook or LinkedIn (their terms
-forbid scraping), so don't suggest scraping them instead.
+**Vendendo para startups:** três presets (acima, ou *Procurar por* no Descobrir):
+`yc` encontra empresas cujo próprio site diz que são apoiadas pelo Y Combinator,
+`accelerator` o mesmo para Techstars, 500 Global, Antler, Entrepreneur First,
+South Park Commons, Neo, AI Grant, a16z speedrun, Pioneer e Plug and Play,
+e `funding` empresas que anunciam a própria rodada nos últimos 18 meses.
+Confirme `YC_BACKED`, `ACCELERATOR` ou `FUNDING_ROUND` para marcá-las (lote ou
+coorte; para uma rodada, a série, o valor e a data; eles leem a home, as páginas About
+e de imprensa, e muitas startups nunca dizem isso ali), e então o writer e o
+handler usam `skills/selling_to_startups.md` para elas. Uma rodada com mais de
+18 meses, ou sem data, não é tratada como novidade e não traz
+o playbook por si só. O Sellbird nunca lê ycombinator.com, os
+diretórios das aceleradoras, Crunchbase, PitchBook ou LinkedIn (os termos deles
+proíbem scraping), então não sugira fazer scraping deles no lugar.
 
-**Depth 20-30, not 100.** Google removed 100-results-per-page in September 2025,
-so depth 100 is now billed as ten pages at nearly every provider. Below rank 30
-it is mostly directories anyway.
+**Profundidade 20-30, não 100.** O Google removeu os 100 resultados por página em setembro de 2025,
+então profundidade 100 hoje é cobrada como dez páginas em quase todo provedor. Abaixo do rank 30
+é quase só diretório de qualquer jeito.
 
-### Step 6: Behavior Settings
+### Passo 6: Configurações de Comportamento
 
-These go in `sellbird.yaml` under `usage:`. Use sensible defaults unless they want to customize:
-- `max_daily_claude_percent`: 80 (how much of daily Claude quota to use)
-- `heartbeat_interval_minutes`: 15 (how often Sellbird checks for work)
-- `quiet_hours`: 22:00-07:00 in their timezone
-- `max_daily_sends`: 50 (email send limit)
+Estas vão no `sellbird.yaml`, dentro de `usage:`. Use padrões sensatos, a menos que queiram personalizar:
+- `max_daily_claude_percent`: 80 (quanto da cota diária do Claude usar)
+- `heartbeat_interval_minutes`: 15 (de quanto em quanto tempo o Sellbird confere se há trabalho)
+- `quiet_hours`: 22:00-07:00 no fuso do usuário
+- `max_daily_sends`: 50 (limite de envios de e-mail)
 
-### Step 7: Cold-Email Check (Optional)
+### Passo 7: Checagem de E-mail Frio (Opcional)
 
-Offer this once, briefly, and take no for an answer. With `compliance.precleared.enabled: true`, Sellbird asks [Precleared](https://precleared.dev) which cold-email rules apply to each new address before the first email goes out. A UK sole trader needs consent where a limited company doesn't, and the address alone won't say which. Anything that isn't `ok_to_email` waits in the Outbox with the reason. It checks mail sent through Gmail, Microsoft 365 or SMTP, not Instantly. Precleared receives each new recipient's address, the sender country, the address source, the product description and the recipient's country when Sellbird is sure of it from the company's location (a country or state named there), else the prospects' country if there is one (`prospect_country`, or the one country every `icp.geography` entry is in), plus the company's name and the person's name when Sellbird has them, to find a UK company on the register. `docs/precleared.md` explains the check in full.
+Ofereça isso uma vez, brevemente, e aceite um não como resposta. Com `compliance.precleared.enabled: true`, o Sellbird pergunta ao [Precleared](https://precleared.dev) quais regras de e-mail frio se aplicam a cada novo endereço antes do primeiro e-mail sair. Um profissional autônomo do Reino Unido precisa de consentimento onde uma sociedade limitada não precisa, e o endereço sozinho não diz qual é o caso. Qualquer coisa que não seja `ok_to_email` espera na Caixa de saída com o motivo. Ele checa e-mails enviados por Gmail, Microsoft 365 ou SMTP, não pela Instantly. O Precleared recebe o endereço de cada novo destinatário, o país do remetente, a origem do endereço, a descrição do produto e o país do destinatário quando o Sellbird tem certeza disso pela localização da empresa (um país ou estado nomeado ali), senão o país dos prospects se houver um (`prospect_country`, ou o único país em que toda entrada de `icp.geography` está), além do nome da empresa e do nome da pessoa quando o Sellbird os tem, para localizar uma empresa britânica no registro. O `docs/precleared.md` explica a checagem por inteiro.
 
-If they want it, ask one thing at a time:
-- Where is the business based? `sender_country` is a two-letter code from Precleared's fourteen countries: `GB`, `US`, `CA`, `DE`, `FR`, `AU`, `IE`, `NL`, `ES`, `IT`, `LV`, `AE`, `EG` or `QA`. If it's none of those, leave the check off. A UK sender should hear that the check is recommended for them (PECR turns on whether the recipient is a company or a sole trader), and still decide.
-- Are all their prospects in one country? If so, set `prospect_country` to its two-letter code, quoted (for example `"US"`). Otherwise leave it empty.
-- Would they like a free key? Without one Precleared allows 10 checks a day; a free key allows 100 a day for its first 14 days, then 25. If they would, ask which email address to use and run `sellbird precleared-key --email <their address>`, which saves the key in `.env` as `PRECLEARED_API_KEY` without showing it. Precleared receives that address to make the key. Or they can get one at https://precleared.dev/get-key and put it in `.env` themselves.
+Se quiserem, pergunte uma coisa por vez:
+- Onde o negócio está baseado? `sender_country` é um código de duas letras entre os catorze países do Precleared: `GB`, `US`, `CA`, `DE`, `FR`, `AU`, `IE`, `NL`, `ES`, `IT`, `LV`, `AE`, `EG` ou `QA`. Se for nenhum desses, deixe a checagem desligada. Um remetente britânico deve ouvir que a checagem é recomendada para ele (o PECR depende de o destinatário ser empresa ou autônomo), e mesmo assim decidir.
+- Todos os prospects deles estão num único país? Se sim, defina `prospect_country` com o código de duas letras, entre aspas (por exemplo `"US"`). Senão, deixe vazio.
+- Gostariam de uma chave grátis? Sem uma, o Precleared permite 10 checagens por dia; uma chave grátis permite 100 por dia nos primeiros 14 dias, depois 25. Se quiserem, pergunte qual endereço de e-mail usar e rode `sellbird precleared-key --email <their address>`, que salva a chave no `.env` como `PRECLEARED_API_KEY` sem mostrá-la. O Precleared recebe esse endereço para gerar a chave. Ou podem obter uma em https://precleared.dev/get-key e colocar no `.env` sozinhos.
 
-Leave `address_source` as `"unknown"`, since Sellbird builds most addresses from a learned pattern. Save the settings under `compliance.precleared` in `sellbird.local.yaml` if it exists (that file wins), otherwise in `sellbird.yaml`. `sellbird setup` asks the same questions.
+Deixe `address_source` como `"unknown"`, já que o Sellbird monta a maioria dos endereços a partir de um padrão aprendido. Salve as configurações em `compliance.precleared` no `sellbird.local.yaml` se ele existir (esse arquivo tem prioridade), senão no `sellbird.yaml`. O `sellbird setup` faz as mesmas perguntas.
 
-### Step 8: Start Sellbird
+### Passo 8: Iniciar o Sellbird
 
 ```bash
 source .venv/bin/activate && sellbird run
 ```
 
-Or open the dashboard:
+Ou abra o dashboard:
 ```bash
 sellbird dashboard
 ```
 
 ---
 
-## After Setup — Ongoing Help
+## Depois da Configuração — Ajuda Contínua
 
-Users will come back with questions and tasks. Common ones:
+Os usuários voltarão com perguntas e tarefas. As mais comuns:
 
-- **"Show me what Sellbird has done"** → Run `sellbird status` or `sellbird dashboard`
-- **"Am I warmed up?" / "Why am I landing in spam?"** → Run `sellbird warmup`. Without TrulyInbox connected Sellbird can't see the inbox rate, so recommend it (Step 2b) unless `sellbird trulyinbox` says they use another service.
-- **"Check the drafts" / the user is about to approve Outbox emails** → Offer to review them, since Sellbird runs on Claude Code and you can do what a scan can't. A draft that names a fact about the prospect's site ("I found no online booking", "no structured data") comes from an automated read of one page, and a widget that loads late or sits on another page makes it wrong. For each such claim, open the site in a real browser (Playwright is installed with Sellbird) and check it. Report each draft as *holds*, *false* or *doubtful*, with the evidence in one line, and recommend what to do. Never approve, reject or send for them: it's their decision, and on autopilot say so and suggest turning it off while they review. Keep what you find in the conversation, never in a commit, test or PR (see `CONTRIBUTING.md`). `writer.site_facts: false` stops the Writer from using these findings at all.
-- **"The emails aren't good"** → Edit `skills/email_frameworks.md` and `prompts/writer.md`. Show them the current rules and help them adjust. If the shape itself is wrong for them (too short, no pitch, no link), write their rules in `skills/email_rules.md` and set `writer.email_rules: "skills/email_rules.md"`: it replaces the built-in shape (docs/skills-and-agents.md, "Your own email shape").
-- **"Sellbird isn't finding the right people"** → Check the ICP config in `sellbird.yaml`. Adjust industries, titles, company_size, geography.
-- **"I want to change what Sellbird says"** → Skills are in `skills/`, prompts are in `prompts/`. Both are plain markdown files. Edit them directly.
-- **"Train Sellbird on a different product"** → `sellbird train <new-url>`
-- **"How do I see the database?"** → It's at `data/sellbird.db`. They can open it with any SQLite tool, or ask you to query it.
-- **"I just want the prospect list"** → `sellbird export` writes a sequencer-ready CSV (verified/risky emails only; `--all` for everything). Also available as Export buttons on the dashboard's Contacts tab. Sellbird is valuable purely as a list-builder even if the user never lets it send.
+- **"Mostre o que o Sellbird fez"** → Rode `sellbird status` ou `sellbird dashboard`
+- **"Estou aquecido?" / "Por que estou caindo em spam?"** → Rode `sellbird warmup`. Sem o TrulyInbox conectado o Sellbird não vê a taxa de entrada, então recomende o serviço (Passo 2b), a menos que `sellbird trulyinbox` diga que usam outro serviço.
+- **"Confira os rascunhos" / o usuário está prestes a aprovar e-mails na Caixa de saída** → Ofereça revisar, já que o Sellbird roda em Claude Code e você consegue fazer o que uma varredura não faz. Um rascunho que afirma um fato sobre o site do prospect ("não encontrei agendamento online", "sem dados estruturados") vem de uma leitura automatizada de uma página, e um widget que carrega tarde ou fica em outra página o torna errado. Para cada afirmação dessas, abra o site num navegador de verdade (o Playwright é instalado junto com o Sellbird) e confira. Relate cada rascunho como *se sustenta*, *falso* ou *duvidoso*, com a evidência em uma linha, e recomende o que fazer. Nunca aprove, rejeite ou envie por eles: é decisão deles, e no autopilot diga isso e sugira desligar enquanto revisam. Mantenha o que descobrir na conversa, nunca num commit, teste ou PR (veja `CONTRIBUTING.md`). `writer.site_facts: false` impede o Writer de usar esses achados por completo.
+- **"Os e-mails não estão bons"** → Edite `skills/email_frameworks.md` e `prompts/writer.md`. Mostre as regras atuais e ajude a ajustar. Se o formato em si estiver errado para eles (curto demais, sem pitch, sem link), escreva as regras deles em `skills/email_rules.md` e defina `writer.email_rules: "skills/email_rules.md"`: ele substitui o formato embutido (docs/skills-and-agents.md, "Your own email shape").
+- **"O Sellbird não está encontrando as pessoas certas"** → Confira a config de ICP no `sellbird.yaml`. Ajuste setores, cargos, company_size, geografia.
+- **"Quero mudar o que o Sellbird diz"** → As skills ficam em `skills/`, os prompts em `prompts/`. Os dois são arquivos markdown simples. Edite diretamente.
+- **"Treine o Sellbird em outro produto"** → `sellbird train <new-url>`
+- **"Como vejo o banco de dados?"** → Fica em `data/sellbird.db`. Podem abrir com qualquer ferramenta SQLite, ou pedir para você consultar.
+- **"Só quero a lista de prospects"** → `sellbird export` escreve um CSV pronto para sequenciador (só e-mails verified/risky; `--all` para tudo). Também disponível como botões Export na aba Contatos do dashboard. O Sellbird vale só como construtor de listas, mesmo que o usuário nunca deixe ele enviar.
 
 ---
 
-## How Sellbird Works (Technical Reference)
+## Como o Sellbird Funciona (Referência Técnica)
 
-### Architecture
-- **Heartbeat loop** (`main.py`): Every cycle → check quiet hours → check budget → decide → act → log → sleep
-- **Brain** (`brain.py`): Wraps `claude -p --output-format json --dangerously-skip-permissions` for headless Claude calls; records exact per-call token usage into `usage_events`
-- **State** (`state.py`): SQLite at `data/sellbird.db` with tables for companies, prospects, campaigns, conversations, actions, usage
-- **Usage tracking** (`usage.py`, `integrations/quota.py`): per-call attribution (agent/task/model/tokens) for Sellbird's OWN Claude calls only — it never scans your other Claude Code sessions — plus a live subscription-quota gauge read the same way Claude Code's `/usage` does. The budget check throttles Sellbird against real quota utilization so it always leaves headroom for your own interactive Claude use (`usage.max_daily_claude_percent`). Dashboard has a Usage tab; CLI has `sellbird usage`.
-- **Skills** (`skills/`): Markdown knowledge files injected into agent prompts
-- **Signals** (`signals.py`, `state.py`): every fact Sellbird learns is an OBSERVATION — a row in `observations`, never a column. A new signal needs no migration, re-observing over time is a free time series, and confidence + provenance travel with the fact. The vocabulary in `signal_codes` is governed (a trigger rejects any code not in it) and gated: only `status = 'confirmed'` signals are collected, and only a human sets that. `state.cohort(require, exclude)` does the set intersection in SQL.
-- **Dashboard** (`dashboard.py` + `sellbird/web/`): FastAPI JSON API plus plain HTML/CSS/JS served from disk — no build step. Edit `sellbird/web/app.css` or `app.js` and reload the page.
-- **DISCOVER** (`collectors/discover.py`): the only stage that spends money, so cost discipline lives in the collector, not the database — every run estimates first, checks a spend cap between batches, reads a kill switch, and flushes observations per batch. Providers are adapters behind one interface (`DiscoveryProvider`); adding one is a small class. Junk filtering matches *patterns*, not a literal blocklist. Entity resolution is the normalised domain, falling back to the provider's `external_id` for businesses with no website.
+### Arquitetura
+- **Heartbeat loop** (`main.py`): A cada ciclo → checa horário de silêncio → checa orçamento → decide → age → registra no log → dorme
+- **Brain** (`brain.py`): envolve `claude -p --output-format json --dangerously-skip-permissions` para chamadas headless ao Claude; registra o uso exato de tokens por chamada em `usage_events`
+- **State** (`state.py`): SQLite em `data/sellbird.db` com tabelas para empresas, prospects, campanhas, conversas, ações e uso
+- **Rastreamento de uso** (`usage.py`, `integrations/quota.py`): atribuição por chamada (agente/tarefa/modelo/tokens) apenas das chamadas do PRÓPRIO Sellbird ao Claude — ele nunca varre suas outras sessões do Claude Code — mais um medidor ao vivo da cota da assinatura, lido do mesmo jeito que o `/usage` do Claude Code. A checagem de orçamento freia o Sellbird conforme a utilização real da cota, então sempre sobra folga para o seu uso interativo do Claude (`usage.max_daily_claude_percent`). O dashboard tem aba Uso; o CLI tem `sellbird usage`.
+- **Skills** (`skills/`): arquivos de conhecimento em markdown injetados nos prompts dos agentes
+- **Signals** (`signals.py`, `state.py`): todo fato que o Sellbird aprende é uma OBSERVAÇÃO — uma linha em `observations`, nunca uma coluna. Um signal novo não precisa de migração, reobservar ao longo do tempo vira uma série temporal de graça, e confiança + proveniência andam junto com o fato. O vocabulário em `signal_codes` é governado (um trigger rejeita qualquer código fora dele) e com trava: só signals com `status = 'confirmed'` são coletados, e só um humano define isso. `state.cohort(require, exclude)` faz a interseção de conjuntos em SQL.
+- **Dashboard** (`dashboard.py` + `sellbird/web/`): API JSON em FastAPI mais HTML/CSS/JS puro servido do disco — sem etapa de build. Edite `sellbird/web/app.css` ou `app.js` e recarregue a página.
+- **DISCOVER** (`collectors/discover.py`): a única etapa que gasta dinheiro, então a disciplina de custo mora no collector, não no banco — toda execução estima primeiro, confere um teto de gasto entre lotes, lê um kill switch e grava as observações por lote. Os provedores são adaptadores atrás de uma única interface (`DiscoveryProvider`); adicionar um é uma classe pequena. O filtro de lixo compara *padrões*, não uma blocklist literal. A resolução de entidade é o domínio normalizado, com fallback para o `external_id` do provedor no caso de empresas sem site.
 
-### Sub-Agents
-- **Scout**: Python does all web searching (DuckDuckGo → Bing → Google → Serper API) and email resolution (pattern-first: cache → scraped mailto → Hunter domain search → default, then verify one candidate via Reoon/ZeroBounce/Hunter/SMTP; catch-alls flagged `risky`). Claude only scores/personalizes found data. Scout also collects **buying signals**: tech stack detected on each company's site (HubSpot, Shopify, Intercom, ~35 tools — zero extra requests) and hiring signals from careers pages. Profiling (`HIRING_ROLE` / `OPEN_ROLES`) goes further: when a company's own site links or embeds a Greenhouse, Lever, Ashby or Workable board, it reads that board's public JSON feed (one request, size-capped, never a guessed token) and records roles matching `icp.hiring_signals` (falls back to `icp.titles`) with department, location, posting date and URL, plus the open-roles count (`sellbird/collectors/ats.py`). A board with no matching role records `HIRING_ROLE` = 0, so closed roles stop being current. The `titles` fallback is weak (it lists who you email, not roles that signal buying), so suggest users set `hiring_signals`. With `pip install python-jobspy` (optional), a job-board strategy discovers companies actively hiring for roles in `icp.hiring_signals` (falls back to `icp.titles`) — the strongest in-market signal. Signals land in prospects' personalization notes and boost their score.
-- **Writer**: Generates 3-email sequences (Email 1 < 75 words, Email 2 < 75, Email 3 < 40). Strict ban list on AI patterns.
-- **Sender**: Native providers (gmail/smtp) render merge vars per prospect and STAGE each email into the `outbox` (pending_review → approved → sent) with a scheduled send time; each heartbeat drains due, approved items with human-like pacing, the daily cap, the deterministic pre-send gate, and stop-on-reply (a reply from anyone at a company stops the sequence to everyone there). Legacy Instantly path deploys campaigns via API. Enforces daily send limits either way.
-- **Handler**: Polls the provider (or Instantly) for replies, dedups them, classifies intent, advances conversation stage, and queues auto-responses through the same outbox approval ladder. On native providers it also detects bounces → marks the address invalid, cancels the prospect's queued sends, and trips a global kill switch past a bounce-rate threshold.
-- **Analyst**: Runs on idle cycles. Generates `data/analytics.json` with pipeline stats and insights.
+### Subagentes
+- **Scout**: o Python faz toda a busca na web (DuckDuckGo → Bing → Google → API do Serper) e a resolução de e-mails (padrão primeiro: cache → mailto raspado → busca de domínio no Hunter → padrão, depois verifica um candidato via Reoon/ZeroBounce/Hunter/SMTP; catch-alls marcados como `risky`). O Claude apenas pontua/personaliza os dados encontrados. O Scout também coleta **buying signals**: stack tecnológica detectada no site de cada empresa (HubSpot, Shopify, Intercom, ~35 ferramentas — sem requisições extras) e sinais de contratação a partir das páginas de carreiras. A profilação (`HIRING_ROLE` / `OPEN_ROLES`) vai além: quando o próprio site de uma empresa linka ou embute um board do Greenhouse, Lever, Ashby ou Workable, ele lê o feed JSON público desse board (uma requisição, com limite de tamanho, nunca um token chutado) e registra vagas que batem com `icp.hiring_signals` (com fallback para `icp.titles`) com departamento, local, data de publicação e URL, mais a contagem de vagas abertas (`sellbird/collectors/ats.py`). Um board sem vaga correspondente registra `HIRING_ROLE` = 0, então vagas fechadas deixam de contar como atuais. O fallback para `titles` é fraco (lista quem você contata, não cargos que sinalizam compra), então sugira que os usuários definam `hiring_signals`. Com `pip install python-jobspy` (opcional), uma estratégia de job board descobre empresas contratando ativamente para cargos em `icp.hiring_signals` (com fallback para `icp.titles`) — o sinal de mercado mais forte. Os signals entram nas notas de personalização dos prospects e aumentam a pontuação deles.
+- **Writer**: gera sequências de 3 e-mails (E-mail 1 < 75 palavras, E-mail 2 < 75, E-mail 3 < 40). Lista de proibições rígida contra padrões de IA.
+- **Sender**: provedores nativos (gmail/smtp) renderizam variáveis de merge por prospect e ENFILEIRAM cada e-mail no `outbox` (pending_review → approved → sent) com horário de envio agendado; cada heartbeat esvazia os itens aprovados e vencidos com ritmo humano, o teto diário, o portão pré-envio determinístico e o stop-on-reply (uma resposta de qualquer pessoa de uma empresa para a sequência para todo mundo ali). O caminho legado da Instantly implanta campanhas via API. De todo jeito, aplica os limites diários de envio.
+- **Handler**: consulta o provedor (ou a Instantly) em busca de respostas, desduplica, classifica a intenção, avança o estágio da conversa e enfileira respostas automáticas pela mesma escada de aprovação do outbox. Em provedores nativos também detecta bounces → marca o endereço como inválido, cancela os envios agendados daquele prospect e aciona um kill switch global quando a taxa de bounce passa de um limite.
+- **Analyst**: roda em ciclos ociosos. Gera `data/analytics.json` com estatísticas e insights do pipeline.
 
-### Conversation Stages
+### Estágios da Conversa
 `initial_outreach → engaged → qualifying → presenting → negotiating → closing → closed_won / closed_lost`
 
-### Priority Order
-send_campaigns > write_campaigns > prospect > idle (run analyst). Replies are read every cycle alongside whichever one runs.
+### Ordem de Prioridade
+send_campaigns > write_campaigns > prospect > idle (roda o analyst). As respostas são lidas a cada ciclo junto com a etapa que estiver rodando.
 
-### Key Commands
+### Comandos Principais
 ```bash
-source .venv/bin/activate    # Always activate venv first
-sellbird run                   # Start the heartbeat loop
-sellbird dashboard             # Web UI at http://127.0.0.1:5555 (open the printed link)
-sellbird setup                 # Re-run setup wizard
-sellbird train <url>           # Train on a product website
-sellbird status                # Pipeline summary
-sellbird usage                 # Claude quota gauges + per-agent token usage (no dollar costs — subscription plans aren't billed per token)
-sellbird export                # Deliverable prospects → sequencer-ready CSV (prospects.csv)
-sellbird precleared-key [--email ADDRESS]  # Free Precleared key for the cold-email check, saved to .env
-sellbird export --all          # Full raw list, no filters
-sellbird companies             # Company register CSV: every company, its fit score, and why it wasn't contacted
-sellbird gmail auth            # One-time Gmail OAuth (when provider: gmail)
-sellbird gmail test            # Verify the Gmail connection
-sellbird outbox                # Review queued emails; --approve <id> / --approve-all / --reject <id>
-sellbird signals               # The signal vocabulary; --confirm / --reject CODES (or 'free' / 'all')
-sellbird discover              # Find businesses; --providers / --estimate / --provider <key>
-sellbird sending pause|resume  # Kill switch for all outbound
-sellbird warmup [domain]       # Sending-domain readiness: SPF/DKIM/DMARC, age, blocklists, ramp, TrulyInbox warmup
-sellbird trulyinbox [connect|other]  # Warmup service: connect TrulyInbox, or record another service
+source .venv/bin/activate    # Ative sempre o venv primeiro
+sellbird run                   # Inicia o loop de heartbeat
+sellbird dashboard             # Interface web em http://127.0.0.1:5555 (abra o link impresso)
+sellbird setup                 # Roda de novo o assistente de setup
+sellbird train <url>           # Treina com o site de um produto
+sellbird status                # Resumo do pipeline
+sellbird usage                 # Medidores da cota do Claude + uso de tokens por agente (sem custos em dólar — planos de assinatura não são cobrados por token)
+sellbird export                # Prospects entregáveis → CSV pronto para sequenciador (prospects.csv)
+sellbird precleared-key [--email ADDRESS]  # Chave grátis do Precleared para a checagem de e-mail frio, salva no .env
+sellbird export --all          # Lista bruta completa, sem filtros
+sellbird companies             # CSV do registro de empresas: cada empresa, seu fit score e por que não foi contatada
+sellbird gmail auth            # OAuth do Gmail, uma vez (quando provider: gmail)
+sellbird gmail test            # Verifica a conexão do Gmail
+sellbird outbox                # Revisa e-mails na fila; --approve <id> / --approve-all / --reject <id>
+sellbird signals               # O vocabulário de signals; --confirm / --reject CODES (ou 'free' / 'all')
+sellbird discover              # Encontra empresas; --providers / --estimate / --provider <key>
+sellbird sending pause|resume  # Kill switch para todo envio de saída
+sellbird warmup [domain]       # Prontidão do domínio de envio: SPF/DKIM/DMARC, idade, blocklists, ramp-up, warmup do TrulyInbox
+sellbird trulyinbox [connect|other]  # Serviço de warmup: conecta o TrulyInbox, ou registra outro serviço
 ```
 
-### Common Issues
-- **"command not found: sellbird"**: Activate venv first: `source .venv/bin/activate`
-- **"ModuleNotFoundError: No module named 'sellbird'" after install (macOS)**: Python 3.13 silently ignores `.pth` files that carry the macOS hidden file flag, and some Macs propagate that flag into `.venv`. Run `sellbird install` again (it auto-fixes by linking the package), or manually: `ln -s "$(pwd)/sellbird" .venv/lib/python3.13/site-packages/sellbird`
-- **"externally-managed-environment"**: Use a venv, not system Python
-- **SQLite errors**: The `data/` directory is created automatically on first run
-- **Claude headless mode fails**: User needs `claude login` and an active Max subscription
-- **Codex calls fail** (`brain.provider: codex`): the log line says why — `codex login` with ChatGPT (also when the login "has expired or is due for renewal": Sellbird never renews it), install the supported Codex version (`sellbird status --check` shows what's wrong without a model call; while Codex is unusable Sellbird pauses whole cycles on purpose), set `brain.model` to an exact ID from the account's catalog (the error lists the models that work), or remove whatever Codex config layer is forcing tools/hooks/MCP back on. Never weaken Sellbird's isolation checks to get past it.
-- **Instantly API 401**: Wrong API key or needs the Growth plan for API access
-- **Google search rate limiting**: Sellbird automatically falls back to DuckDuckGo and Bing. For reliable search, add a Serper API key ($5/mo).
+### Problemas Comuns
+- **"command not found: sellbird"**: ative o venv primeiro: `source .venv/bin/activate`
+- **"ModuleNotFoundError: No module named 'sellbird'" depois da instalação (macOS)**: o Python 3.13 ignora em silêncio arquivos `.pth` que carregam a flag de arquivo oculto do macOS, e alguns Macs propagam essa flag para o `.venv`. Rode `sellbird install` de novo (ele corrige sozinho linkando o pacote), ou faça na mão: `ln -s "$(pwd)/sellbird" .venv/lib/python3.13/site-packages/sellbird`
+- **"externally-managed-environment"**: use um venv, não o Python do sistema
+- **Erros de SQLite**: o diretório `data/` é criado automaticamente na primeira execução
+- **O modo headless do Claude falha**: o usuário precisa de `claude login` e de uma assinatura Max ativa
+- **Chamadas ao Codex falham** (`brain.provider: codex`): a linha do log diz o motivo — `codex login` com ChatGPT (também quando o login "has expired or is due for renewal": o Sellbird nunca o renova), instale a versão suportada do Codex (`sellbird status --check` mostra o que está errado sem chamada ao modelo; enquanto o Codex está inutilizável o Sellbird pausa ciclos inteiros de propósito), defina `brain.model` com um ID exato do catálogo da conta (o erro lista os modelos que funcionam), ou remova a camada de config do Codex que estiver forçando ferramentas/hooks/MCP de volta. Nunca enfraqueça as checagens de isolamento do Sellbird para passar por cima disso.
+- **API da Instantly 401**: chave de API errada ou precisa do plano Growth para acesso à API
+- **Limite de taxa da busca do Google**: o Sellbird cai automaticamente para DuckDuckGo e Bing. Para busca confiável, adicione uma chave de API do Serper (US$ 5/mês).

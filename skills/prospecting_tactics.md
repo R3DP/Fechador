@@ -1,31 +1,31 @@
-# DIY Prospecting Tactics
+# Táticas de Prospecção Faça-Você-Mesmo
 
-Sellbird's playbook for finding leads without expensive tools like Apollo, ZoomInfo, or Clearbit.
+O playbook do Sellbird para encontrar leads sem ferramentas caras como Apollo, ZoomInfo ou Clearbit.
 
 ---
 
-## Strategy 1: Google Dorking
+## Estratégia 1: Google Dorking
 
-### Find LinkedIn Profiles
+### Encontrar Perfis no LinkedIn
 ```
 site:linkedin.com/in "VP Marketing" "SaaS" "San Francisco"
 site:linkedin.com/in "Head of Growth" "marketing agency"
 site:linkedin.com/in "{{title}}" "{{industry}}" "{{location}}"
 ```
 
-### Find Company Team Pages
+### Encontrar Páginas de Equipe das Empresas
 ```
 site:{{domain}} "team" OR "about" OR "leadership"
 "{{company name}}" "team" "{{title}}"
 ```
 
-### Find Companies in an Industry
+### Encontrar Empresas de um Setor
 ```
 "{{industry}}" "Series A" OR "Series B" site:crunchbase.com
 "{{industry}}" company "{{location}}" "employees" site:linkedin.com/company
 ```
 
-### Find Email Patterns
+### Encontrar Padrões de E-mail
 ```
 "@{{domain}}" email
 site:{{domain}} "contact" OR "email" OR "@"
@@ -34,115 +34,115 @@ site:{{domain}} "contact" OR "email" OR "@"
 
 ---
 
-## Strategy 2: LinkedIn Search
+## Estratégia 2: Busca no LinkedIn
 
-### People Search Operators
-- **Title**: Search "VP Marketing" to find exact title matches
-- **Company**: Filter by current company
-- **Location**: Filter by geographic region
-- **Industry**: Filter by LinkedIn industry categories
-- **Connections**: 2nd-degree connections have higher accept rates
+### Operadores de Busca de Pessoas
+- **Cargo**: Busque "VP Marketing" para encontrar correspondências exatas de cargo
+- **Empresa**: Filtre pela empresa atual
+- **Localização**: Filtre por região geográfica
+- **Setor**: Filtre pelas categorias de setor do LinkedIn
+- **Conexões**: conexões de 2º grau têm taxas de aceite mais altas
 
-### Sales Navigator (if available)
-- Boolean search: "VP Marketing" AND "SaaS" NOT "consultant"
-- Saved searches with alerts for new matches
-- Lead lists for organized outreach
+### Sales Navigator (se disponível)
+- Busca booleana: "VP Marketing" AND "SaaS" NOT "consultant"
+- Buscas salvas com alertas para novas correspondências
+- Listas de leads para abordagem organizada
 
-### Without Sales Navigator
-- Use LinkedIn's basic search with keyword combinations
-- Browse "People Also Viewed" on relevant profiles
-- Check company pages → "People" tab for employees
-- Search within relevant LinkedIn Groups
-
----
-
-## Strategy 3: Company Website Scraping
-
-### Team/About Pages
-Most companies list leadership on /team, /about, /about-us, /our-team, /people, /leadership pages.
-
-**Extract:**
-- Name + title from team cards
-- Sometimes email or LinkedIn links directly listed
-- Company size indicator from number of team members
-
-### Job Postings
-- Companies hiring for roles your product supports = high-intent prospects
-- Check /careers, /jobs pages
-- Also check job boards: Indeed, LinkedIn Jobs, Wellfound (for startups)
-
-### Tech Stack Discovery
-- **BuiltWith/Wappalyzer**: Identify their current tools
-- Useful for: "I see you're using {{competitor}} — here's how we compare"
-- Free browser extensions available
+### Sem Sales Navigator
+- Use a busca básica do LinkedIn com combinações de palavras-chave
+- Navegue por "Pessoas Também Vistas" em perfis relevantes
+- Confira as páginas das empresas → aba "Pessoas" para funcionários
+- Pesquise dentro de Grupos relevantes do LinkedIn
 
 ---
 
-## Strategy 4: Email Pattern Discovery
+## Estratégia 3: Raspagem do Site da Empresa
 
-### Common Email Formats (in order of prevalence)
-1. `first.last@domain.com` (most common)
+### Páginas de Equipe/Sobre
+A maioria das empresas lista a liderança em páginas /team, /about, /about-us, /our-team, /people, /leadership.
+
+**Extraia:**
+- Nome + cargo dos cards de equipe
+- Às vezes e-mail ou links de LinkedIn listados diretamente
+- Indicador do porte da empresa pelo número de membros da equipe
+
+### Vagas de Emprego
+- Empresas contratando para cargos que seu produto apoia = prospects de alta intenção
+- Confira as páginas /careers, /jobs
+- Confira também os quadros de vagas: Indeed, LinkedIn Jobs, Wellfound (para startups)
+
+### Descoberta de Stack de Tecnologia
+- **BuiltWith/Wappalyzer**: Identifique as ferramentas atuais deles
+- Útil para: "I see you're using {{competitor}} — here's how we compare"
+- Extensões de navegador gratuitas disponíveis
+
+---
+
+## Estratégia 4: Descoberta do Padrão de E-mail
+
+### Formatos de E-mail Comuns (em ordem de prevalência)
+1. `first.last@domain.com` (mais comum)
 2. `first@domain.com`
 3. `firstlast@domain.com`
-4. `flast@domain.com` (first initial + last name)
+4. `flast@domain.com` (inicial do nome + sobrenome)
 5. `firstl@domain.com`
 6. `f.last@domain.com`
 7. `last.first@domain.com`
 8. `first_last@domain.com`
 9. `first-last@domain.com`
 
-### Verification Methods (Free)
-1. **MX Record Check**: Verify the domain accepts email (dns lookup)
-2. **SMTP RCPT TO**: Ask the mail server if the address exists
-3. **Hunter.io Free Tier**: 25 searches/mo + 50 verifications/mo
-4. **Email format from known addresses**: If you know one person's email at a company, the pattern applies to everyone
+### Métodos de Verificação (Grátis)
+1. **Checagem de registro MX**: Verifique se o domínio aceita e-mail (consulta DNS)
+2. **SMTP RCPT TO**: Pergunte ao servidor de e-mail se o endereço existe
+3. **Camada gratuita do Hunter.io**: 25 buscas/mês + 50 verificações/mês
+4. **Formato de e-mail a partir de endereços conhecidos**: Se você conhece o e-mail de uma pessoa em uma empresa, o padrão vale para todo mundo
 
-### Catch-All Domains
-Some domains accept all addresses (catch-all). SMTP verification won't work for these. Rely on pattern + domain verification instead.
-
----
-
-## Strategy 5: Trigger Events
-
-High-value timing signals that indicate a prospect might be ready to buy:
-
-1. **New hire in relevant role** — they're building the function you support
-2. **Recent funding** — they have budget to spend
-3. **New product launch** — they need marketing/growth support
-4. **Job posting for your product's domain** — they're investing in the area
-5. **Competitor using your product** — social proof angle
-6. **Company expansion** — growing teams need new tools
-7. **Leadership change** — new leaders bring new tools
-8. **Tech stack change** — they're evaluating alternatives
-
-### Where to find trigger events (free)
-- Google News alerts for target companies
-- LinkedIn: follow target companies for updates
-- Crunchbase (free tier): funding announcements
-- Company blogs and press release pages
-- Job boards: new postings in relevant departments
+### Domínios Catch-All
+Alguns domínios aceitam todos os endereços (catch-all). A verificação SMTP não funciona para eles. Confie no padrão + verificação do domínio.
 
 ---
 
-## Strategy 6: Referral Mining
+## Estratégia 5: Eventos-Gatilho
 
-When a prospect says "I'm not the right person":
-1. Ask who IS the right person (name + title)
-2. Ask if they'd be open to making an intro
-3. If no intro, use their name as social proof: "{{name}} on your team suggested I reach out..."
+Sinais de timing de alto valor que indicam que um prospect pode estar pronto para comprar:
 
-When a deal closes:
-1. Ask for referrals to similar companies
-2. Ask if they know peers in other companies with similar challenges
-3. LinkedIn: check their connections for ICP matches
+1. **Nova contratação em cargo relevante** — estão montando a função que você apoia
+2. **Captação recente** — têm orçamento para gastar
+3. **Lançamento de produto novo** — precisam de apoio de marketing/growth
+4. **Vaga aberta na área do seu produto** — estão investindo na área
+5. **Concorrente usando seu produto** — ângulo de prova social
+6. **Expansão da empresa** — equipes em crescimento precisam de ferramentas novas
+7. **Troca de liderança** — novos líderes trazem ferramentas novas
+8. **Mudança de stack de tecnologia** — estão avaliando alternativas
+
+### Onde encontrar eventos-gatilho (grátis)
+- Alertas do Google News para empresas-alvo
+- LinkedIn: siga as empresas-alvo para receber atualizações
+- Crunchbase (camada gratuita): anúncios de captação
+- Blogs das empresas e páginas de press release
+- Quadros de vagas: novas vagas em departamentos relevantes
 
 ---
 
-## Daily Prospecting Quotas
+## Estratégia 6: Mineração de Indicações
 
-For sustainable pipeline building:
-- **Research**: 20-30 companies per day
-- **New prospects identified**: 10-15 per day
-- **Emails verified**: 10-15 per day
-- **Total prospects added to DB**: 10-15 per day
-- **Quality check**: Score every prospect before adding to outreach
+Quando um prospect diz "não sou a pessoa certa":
+1. Pergunte quem É a pessoa certa (nome + cargo)
+2. Pergunte se ele estaria aberto a fazer uma apresentação
+3. Se não houver apresentação, use o nome dele como prova social: "{{name}} on your team suggested I reach out..."
+
+Quando um negócio fecha:
+1. Peça indicações para empresas semelhantes
+2. Pergunte se conhecem pares em outras empresas com desafios semelhantes
+3. LinkedIn: confira as conexões deles em busca de correspondências com o ICP
+
+---
+
+## Cotas Diárias de Prospecção
+
+Para construção sustentável de pipeline:
+- **Pesquisa**: 20-30 empresas por dia
+- **Novos prospects identificados**: 10-15 por dia
+- **E-mails verificados**: 10-15 por dia
+- **Total de prospects adicionados ao banco**: 10-15 por dia
+- **Controle de qualidade**: Pontue cada prospect antes de adicioná-lo à abordagem

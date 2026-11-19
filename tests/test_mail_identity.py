@@ -65,7 +65,7 @@ def test_a_sign_in_saves_only_for_the_expected_account(capsys):
     assert saved == [{"t": 1}]
     assert not save_if_signed_in_as({"t": 2}, "dana@example.com", lambda: "admin@example.com",
                                     saved.append)
-    assert saved == [{"t": 1}] and "Signed in as admin@example.com" in capsys.readouterr().out
+    assert saved == [{"t": 1}] and "Login feito como admin@example.com" in capsys.readouterr().out
 
 
 def test_a_sign_in_whose_account_cant_be_read_saves_nothing(capsys):

@@ -33,7 +33,7 @@ def _print_sellbird(message: str):
 def _print_step(step: int, total: int, title: str):
     """Print a step header."""
     print(f"\n{'─'*60}")
-    print(f"  Step {step}/{total}: {title}")
+    print(f"  Passo {step}/{total}: {title}")
     print(f"{'─'*60}")
 
 
@@ -45,29 +45,29 @@ def _ask(prompt: str, default: str = "", required: bool = True, secret: bool = F
         try:
             answer = reader(f"\n  → {prompt}{suffix}: ").strip()
         except (EOFError, KeyboardInterrupt):
-            print("\n\n  Setup cancelled.")
+            print("\n\n  Configuração cancelada.")
             raise SystemExit(1)
 
         if not answer and default:
             return default
         if not answer and required:
-            print("    (required — please enter a value)")
+            print("    (obrigatório — informe um valor)")
             continue
         return answer
 
 
 def _ask_yes_no(prompt: str, default: bool = True) -> bool:
     """Ask a yes/no question."""
-    suffix = " [Y/n]" if default else " [y/N]"
+    suffix = " [S/n]" if default else " [s/N]"
     try:
         answer = input(f"\n  → {prompt}{suffix}: ").strip().lower()
     except (EOFError, KeyboardInterrupt):
-        print("\n\n  Setup cancelled.")
+        print("\n\n  Configuração cancelada.")
         raise SystemExit(1)
 
     if not answer:
         return default
-    return answer in ("y", "yes")
+    return answer in ("s", "sim", "y", "yes")
 
 
 def _read_env_file() -> dict[str, str]:
@@ -247,43 +247,43 @@ class SetupWizard:
         print(f"""
 ╔══════════════════════════════════════════════════════════╗
 ║                                                          ║
-║   Sellbird Setup Wizard                                    ║
-║   Let's get you closing deals.                           ║
+║   Assistente de Configuração do Sellbird                    ║
+║   Vamos deixá-lo fechando negócios.                          ║
 ║                                                          ║
 ╚══════════════════════════════════════════════════════════╝""")
 
-        _print_sellbird("Hey. I'm Sellbird. Let's get me set up so I can start")
-        _print_sellbird("closing deals for you. I'll walk you through everything.")
-        _print_sellbird("This takes about 5 minutes.\n")
+        _print_sellbird("Oi. Eu sou o Sellbird. Vamos me configurar para que eu possa começar a")
+        _print_sellbird("fechar negócios para você. Vou te guiar por tudo.")
+        _print_sellbird("Isso leva cerca de 5 minutos.\n")
 
         total_steps = 7
 
         # Step 1: Check prerequisites
-        _print_step(1, total_steps, "Checking Prerequisites")
+        _print_step(1, total_steps, "Verificando Pré-requisitos")
         await self._check_prerequisites()
 
         # Step 2: Connect email platform
-        _print_step(2, total_steps, "Email Platform (Instantly)")
+        _print_step(2, total_steps, "Plataforma de E-mail (Instantly)")
         await self._setup_email_platform()
 
         # Step 3: LinkedIn (optional)
-        _print_step(3, total_steps, "LinkedIn (Optional)")
+        _print_step(3, total_steps, "LinkedIn (Opcional)")
         self._setup_linkedin()
 
         # Step 4: Cloudflare crawling (optional)
-        _print_step(4, total_steps, "Website Crawling (Optional)")
+        _print_step(4, total_steps, "Rastreamento de Site (Opcional)")
         self._setup_cloudflare()
 
         # Step 5: Train on product
-        _print_step(5, total_steps, "Train Sellbird on Your Product")
+        _print_step(5, total_steps, "Treinar o Sellbird no Seu Produto")
         await self._setup_product()
 
         # Step 6: Configure behavior
-        _print_step(6, total_steps, "Configure Behavior")
+        _print_step(6, total_steps, "Configurar Comportamento")
         self._setup_behavior()
 
         # Step 7: Cold-email check (optional)
-        _print_step(7, total_steps, "Cold-Email Check (Optional)")
+        _print_step(7, total_steps, "Verificação de E-mail Frio (Opcional)")
         self._setup_compliance()
 
         # Write everything
@@ -303,30 +303,30 @@ class SetupWizard:
 
     async def _check_claude(self):
         # Check Claude CLI
-        print("\n  Checking Claude Code CLI...", end=" ")
+        print("\n  Verificando a CLI do Claude Code...", end=" ")
         if _check_claude_cli():
-            print("✓ Found")
+            print("✓ Encontrada")
         else:
-            print("✗ Not found")
-            _print_sellbird("I need Claude Code CLI to think. Install it from:")
+            print("✗ Não encontrada")
+            _print_sellbird("Eu preciso da CLI do Claude Code para pensar. Instale-a em:")
             print("         https://claude.ai/download")
-            print("\n         After installing, run 'claude login' to authenticate,")
-            print("         then re-run this setup.")
+            print("\n         Depois de instalar, rode 'claude login' para autenticar,")
+            print("         e rode esta configuração de novo.")
             raise SystemExit(1)
 
         # Test headless mode
-        print("  Testing Claude headless mode...", end=" ", flush=True)
+        print("  Testando o modo headless do Claude...", end=" ", flush=True)
         state = StateManager()
         await state.init_db()
         brain = Brain(state, self.brain_config)
         if await _test_claude(brain):
-            print("✓ Working")
+            print("✓ Funcionando")
         else:
-            print("✗ Failed")
-            _print_sellbird("Claude CLI is installed but headless mode isn't working.")
-            _print_sellbird("Make sure you're logged in: run 'claude login'")
-            print("\n         Also verify your Max subscription is active.")
-            if not _ask_yes_no("Continue anyway?", default=False):
+            print("✗ Falhou")
+            _print_sellbird("A CLI do Claude está instalada, mas o modo headless não está funcionando.")
+            _print_sellbird("Confirme que você está autenticado: rode 'claude login'")
+            print("\n         Também confirme que sua assinatura Max está ativa.")
+            if not _ask_yes_no("Continuar mesmo assim?", default=False):
                 raise SystemExit(1)
         self._check_python_packages()
 
@@ -335,53 +335,53 @@ class SetupWizard:
             CODEX_INSTALL_HINT, CodexError, check_cli_version, check_native_auth,
         )
 
-        print("\n  Checking Codex CLI...", end=" ")
+        print("\n  Verificando a CLI do Codex...", end=" ")
         if _check_codex_cli():
-            print("✓ Found")
+            print("✓ Encontrada")
         else:
-            print("✗ Not found")
-            _print_sellbird("I need the Codex CLI to think with your ChatGPT plan:")
+            print("✗ Não encontrada")
+            _print_sellbird("Eu preciso da CLI do Codex para pensar com seu plano ChatGPT:")
             print(f"         {CODEX_INSTALL_HINT}")
-            print("\n         Then run 'codex login', choose 'Sign in with ChatGPT',")
-            print("         and re-run this setup.")
+            print("\n         Depois rode 'codex login', escolha 'Sign in with ChatGPT',")
+            print("         e rode esta configuração de novo.")
             raise SystemExit(1)
 
-        print("  Checking Codex CLI version...", end=" ")
+        print("  Verificando a versão da CLI do Codex...", end=" ")
         try:
             print(f"✓ {check_cli_version()}")
         except CodexError as e:
-            print("✗ Not supported")
+            print("✗ Não suportada")
             _print_sellbird(str(e))
             raise SystemExit(1)
 
-        print("  Checking Codex ChatGPT login...", end=" ")
+        print("  Verificando o login do Codex no ChatGPT...", end=" ")
         try:
             check_native_auth()
-            print("✓ Found")
+            print("✓ Encontrado")
         except CodexError as e:
-            print("✗ Not ready")
+            print("✗ Não pronto")
             _print_sellbird(str(e))
             raise SystemExit(1)
 
         # A real (subscription, not API-billed) call through the same
         # isolated runtime Sellbird uses for every prompt.
-        print("  Testing Codex (isolated, no tools)...", end=" ", flush=True)
+        print("  Testando o Codex (isolado, sem ferramentas)...", end=" ", flush=True)
         state = StateManager()
         await state.init_db()
         brain = Brain(state, self.brain_config)
         if await _test_claude(brain):
-            print("✓ Working")
+            print("✓ Funcionando")
         else:
-            print("✗ Failed")
-            _print_sellbird("Codex is installed but the test call failed. The log")
-            _print_sellbird("above says why (login, plan limits, or isolation).")
-            if not _ask_yes_no("Continue anyway?", default=False):
+            print("✗ Falhou")
+            _print_sellbird("O Codex está instalado, mas a chamada de teste falhou. O log")
+            _print_sellbird("acima diz o motivo (login, limites do plano ou isolamento).")
+            if not _ask_yes_no("Continuar mesmo assim?", default=False):
                 raise SystemExit(1)
         self._check_python_packages()
 
     def _check_python_packages(self):
         # Check Python packages
-        print("  Checking Python dependencies...", end=" ")
+        print("  Verificando dependências Python...", end=" ")
         missing = []
         for pkg in ["httpx", "aiosqlite", "yaml", "pydantic", "bs4"]:
             try:
@@ -389,168 +389,168 @@ class SetupWizard:
             except ImportError:
                 missing.append(pkg)
         if not missing:
-            print("✓ All installed")
+            print("✓ Todas instaladas")
         else:
-            print(f"✗ Missing: {', '.join(missing)}")
-            print("\n  Run: pip install -r requirements.txt")
-            if not _ask_yes_no("Continue anyway?", default=False):
+            print(f"✗ Faltando: {', '.join(missing)}")
+            print("\n  Rode: pip install -r requirements.txt")
+            if not _ask_yes_no("Continuar mesmo assim?", default=False):
                 raise SystemExit(1)
 
-        _print_sellbird("Prerequisites look good. Let's keep going.")
+        _print_sellbird("Os pré-requisitos estão bons. Vamos continuar.")
 
     async def _setup_email_platform(self):
         """Configure Instantly API."""
-        _print_sellbird("I need a cold email platform to send campaigns through.")
-        _print_sellbird("Right now I support Instantly (recommended) and Woodpecker.")
+        _print_sellbird("Eu preciso de uma plataforma de e-mail frio para enviar campanhas.")
+        _print_sellbird("No momento eu suporto Instantly (recomendado) e Woodpecker.")
 
-        has_instantly = _ask_yes_no("Do you have an Instantly account?")
+        has_instantly = _ask_yes_no("Você tem uma conta no Instantly?")
 
         if has_instantly:
-            api_key = _ask("Instantly API key (from Settings → Integrations; input hidden)", secret=True)
+            api_key = _ask("Chave de API do Instantly (em Settings → Integrations; entrada oculta)", secret=True)
             self.env_vars["INSTANTLY_API_KEY"] = api_key
 
             # Test the key
-            print("\n  Testing API key...", end=" ", flush=True)
+            print("\n  Testando a chave de API...", end=" ", flush=True)
             if await _test_instantly(api_key):
-                print("✓ Connected")
-                _print_sellbird("Perfect. I can send campaigns through Instantly now.")
+                print("✓ Conectado")
+                _print_sellbird("Perfeito. Agora posso enviar campanhas pelo Instantly.")
             else:
-                print("✗ Failed")
-                _print_sellbird("Couldn't connect. The key might be wrong, or you might")
-                _print_sellbird("need the Growth plan for API access. I'll save it anyway —")
-                _print_sellbird("you can fix it later in .env.")
+                print("✗ Falhou")
+                _print_sellbird("Não consegui conectar. A chave pode estar errada, ou você pode")
+                _print_sellbird("precisar do plano Growth para acesso à API. Vou salvá-la mesmo assim —")
+                _print_sellbird("você pode corrigir depois no .env.")
         else:
-            _print_sellbird("No problem. You'll need one eventually to send emails.")
-            _print_sellbird("Sign up at https://instantly.ai (Growth plan for API access).")
-            _print_sellbird("Add your API key to .env later as INSTANTLY_API_KEY.")
+            _print_sellbird("Sem problema. Você vai precisar de uma em algum momento para enviar e-mails.")
+            _print_sellbird("Cadastre-se em https://instantly.ai (plano Growth para acesso à API).")
+            _print_sellbird("Adicione sua chave de API ao .env depois como INSTANTLY_API_KEY.")
             self.env_vars["INSTANTLY_API_KEY"] = ""
 
     def _setup_linkedin(self):
         """Configure LinkedIn credentials."""
-        _print_sellbird("I can search LinkedIn to find prospects matching your ICP.")
-        _print_sellbird("I'll log into your LinkedIn account using a browser, with")
-        _print_sellbird("conservative rate limits and human-like pacing.")
-        print("\n  ⚠  Heads up: automating LinkedIn violates their Terms of Service.")
-        print("     Accounts doing this can be restricted or banned. Only use an")
-        print("     account you're comfortable putting at risk, and keep the")
-        print("     default rate limits. This is entirely optional.")
+        _print_sellbird("Eu posso pesquisar no LinkedIn para encontrar prospects que correspondam ao seu ICP.")
+        _print_sellbird("Vou fazer login na sua conta do LinkedIn usando um navegador, com")
+        _print_sellbird("limites de taxa conservadores e ritmo humano.")
+        print("\n  ⚠  Atenção: automatizar o LinkedIn viola os Termos de Serviço deles.")
+        print("     Contas que fazem isso podem ser restringidas ou banidas. Use apenas uma")
+        print("     conta que você se sinta confortável em colocar em risco, e mantenha os")
+        print("     limites de taxa padrão. Isso é totalmente opcional.")
 
-        use_linkedin = _ask_yes_no("Set up LinkedIn prospecting anyway?", default=False)
+        use_linkedin = _ask_yes_no("Configurar prospecção no LinkedIn mesmo assim?", default=False)
 
         if use_linkedin:
-            email = _ask("LinkedIn email/username")
-            password = _ask("LinkedIn password (input hidden)", secret=True)
+            email = _ask("E-mail/usuário do LinkedIn")
+            password = _ask("Senha do LinkedIn (entrada oculta)", secret=True)
             self.env_vars["LINKEDIN_EMAIL"] = email
             self.env_vars["LINKEDIN_PASSWORD"] = password
 
-            _print_sellbird("Got it. I'll stay well under the rate limits and behave")
-            _print_sellbird("like a careful human, but the ToS risk is yours to own.")
+            _print_sellbird("Entendido. Vou ficar bem abaixo dos limites de taxa e me comportar")
+            _print_sellbird("como um humano cuidadoso, mas o risco dos ToS é seu.")
         else:
-            _print_sellbird("That's fine. I can still find prospects via Google")
-            _print_sellbird("and company websites. You can add LinkedIn later.")
+            _print_sellbird("Tudo bem. Ainda posso encontrar prospects via Google")
+            _print_sellbird("e sites de empresas. Você pode adicionar o LinkedIn depois.")
             self.env_vars["LINKEDIN_EMAIL"] = ""
             self.env_vars["LINKEDIN_PASSWORD"] = ""
 
     def _setup_cloudflare(self):
         """Configure Cloudflare Browser Rendering for deep crawling."""
-        _print_sellbird("When I train on a product website, I can crawl it deeply")
-        _print_sellbird("using Cloudflare's Browser Rendering API. This means I can")
-        _print_sellbird("handle JavaScript-heavy sites and crawl hundreds of pages.")
-        _print_sellbird("It's $5/month for ~12,000 pages. Totally optional.")
+        _print_sellbird("Quando eu treino em um site de produto, posso rastreá-lo em profundidade")
+        _print_sellbird("usando a API Browser Rendering do Cloudflare. Isso significa que posso")
+        _print_sellbird("lidar com sites pesados em JavaScript e rastrear centenas de páginas.")
+        _print_sellbird("Custa $5/mês para ~12.000 páginas. Totalmente opcional.")
 
-        use_cloudflare = _ask_yes_no("Set up Cloudflare crawling?", default=False)
+        use_cloudflare = _ask_yes_no("Configurar rastreamento com Cloudflare?", default=False)
 
         if use_cloudflare:
-            account_id = _ask("Cloudflare Account ID")
-            api_token = _ask("Cloudflare API Token (needs Browser Rendering - Edit permission; input hidden)", secret=True)
+            account_id = _ask("Account ID do Cloudflare")
+            api_token = _ask("Token de API do Cloudflare (precisa da permissão Browser Rendering - Edit; entrada oculta)", secret=True)
             self.env_vars["CLOUDFLARE_ACCOUNT_ID"] = account_id
             self.env_vars["CLOUDFLARE_API_TOKEN"] = api_token
-            _print_sellbird("Nice. I'll use Cloudflare for deep crawling during training.")
+            _print_sellbird("Ótimo. Vou usar o Cloudflare para rastreamento profundo durante o treinamento.")
         else:
-            _print_sellbird("No problem. I'll use my built-in crawler instead. It works")
-            _print_sellbird("great for most sites — just can't render JavaScript.")
+            _print_sellbird("Sem problema. Vou usar meu rastreador embutido em vez disso. Ele funciona")
+            _print_sellbird("bem para a maioria dos sites — só não consegue renderizar JavaScript.")
             self.env_vars["CLOUDFLARE_ACCOUNT_ID"] = ""
             self.env_vars["CLOUDFLARE_API_TOKEN"] = ""
 
     async def _setup_product(self):
         """Train Sellbird on the product — either via URL or manual entry."""
-        _print_sellbird("Now the important part — I need to learn about what you're selling.")
-        _print_sellbird("I can either crawl your website and figure it out myself,")
-        _print_sellbird("or you can tell me the basics manually.\n")
+        _print_sellbird("Agora a parte importante — eu preciso aprender sobre o que você vende.")
+        _print_sellbird("Eu posso rastrear seu site e descobrir sozinho,")
+        _print_sellbird("ou você pode me contar o básico manualmente.\n")
 
         method = _ask(
-            "Train from website URL or enter manually? (url/manual)",
+            "Treinar a partir da URL do site ou inserir manualmente? (url/manual)",
             default="url",
         ).lower()
 
         if method in ("url", "u", "website"):
-            url = _ask("Your product's website URL (e.g. https://yourcompany.com)")
+            url = _ask("A URL do site do seu produto (ex.: https://suaempresa.com)")
 
-            _print_sellbird(f"Give me a minute — I'm going to crawl {url}")
-            _print_sellbird("and learn everything I can about your product.\n")
+            _print_sellbird(f"Me dê um minuto — vou rastrear {url}")
+            _print_sellbird("e aprender tudo que eu puder sobre o seu produto.\n")
 
             from sellbird.trainer import Trainer
             trainer = Trainer(brain_config=self.brain_config)
             self.config = await trainer.train(url, str(_config_file())) or {}
 
             if self.config:
-                _print_sellbird("Training complete! I've got a solid understanding")
-                _print_sellbird("of your product now. Check sellbird.yaml to review")
-                _print_sellbird("what I learned — tweak anything that looks off.")
+                _print_sellbird("Treinamento concluído! Agora eu tenho um bom entendimento")
+                _print_sellbird("do seu produto. Veja o sellbird.yaml para revisar")
+                _print_sellbird("o que aprendi — ajuste qualquer coisa que parecer errada.")
                 return
 
-            _print_sellbird("Hmm, had trouble with that URL. Let's do it manually.")
+            _print_sellbird("Hmm, tive problemas com essa URL. Vamos fazer manualmente.")
 
         # Manual entry
-        _print_sellbird("I'll ask you a few questions about your product.\n")
+        _print_sellbird("Vou te fazer algumas perguntas sobre o seu produto.\n")
 
-        company = _ask("Company name")
-        product = _ask("Product/service name")
-        description = _ask("One-line description (what does it do, who is it for?)")
-        pricing = _ask("Pricing info", default="Contact for pricing")
+        company = _ask("Nome da empresa")
+        product = _ask("Nome do produto/serviço")
+        description = _ask("Descrição de uma linha (o que ele faz, para quem é?)")
+        pricing = _ask("Informações de preço", default="Entre em contato para saber o preço")
 
-        print("\n  Enter 3-5 key benefits (one per line, empty line to finish):")
+        print("\n  Informe de 3 a 5 benefícios principais (um por linha, linha vazia para terminar):")
         benefits = []
         while True:
-            b = _ask(f"  Benefit {len(benefits) + 1}", required=False)
+            b = _ask(f"  Benefício {len(benefits) + 1}", required=False)
             if not b:
                 break
             benefits.append(b)
 
-        _print_sellbird("Now let's define your ideal customer.\n")
+        _print_sellbird("Agora vamos definir seu cliente ideal.\n")
 
-        industries = _ask("Target industries (comma-separated)").split(",")
+        industries = _ask("Indústrias-alvo (separadas por vírgula)").split(",")
         industries = [i.strip() for i in industries if i.strip()]
 
-        titles = _ask("Decision-maker titles (comma-separated)").split(",")
+        titles = _ask("Cargos de quem decide (separados por vírgula)").split(",")
         titles = [t.strip() for t in titles if t.strip()]
 
-        company_size = _ask("Target company size", default="10-200 employees")
+        company_size = _ask("Tamanho de empresa-alvo", default="10-200 funcionários")
         geography = _ask(
-            "Target geography (for a city, include the state/country, "
-            "e.g. 'Solon, Ohio' — an unqualified city name can silently "
-            "geocode to the wrong place)",
-            default="United States",
+            "Geografia-alvo (para uma cidade, inclua o estado/país, "
+            "ex.: 'Solon, Ohio' — um nome de cidade sem qualificação pode "
+            "geocodificar silenciosamente para o lugar errado)",
+            default="Estados Unidos",
         ).split(",")
         geography = [g.strip() for g in geography if g.strip()]
 
-        _print_sellbird("Now let's talk about your offer — what happens when someone's interested?\n")
+        _print_sellbird("Agora vamos falar sobre sua oferta — o que acontece quando alguém demonstra interesse?\n")
 
         primary_offer = _ask(
-            "What's your main offer? (e.g., 'SaaS subscription at $99/mo', 'Marketing retainer')",
+            "Qual é sua oferta principal? (ex.: 'assinatura SaaS a $99/mês', 'contrato de marketing')",
             required=False,
         )
         entry_offer = _ask(
-            "Any low-commitment entry offer? (e.g., 'Free trial', 'Free audit', 'Sample report')",
+            "Alguma oferta de entrada com baixo compromisso? (ex.: 'teste grátis', 'auditoria grátis', 'relatório de amostra')",
             default="",
             required=False,
         )
 
-        print("\n  What's the goal when someone shows interest?")
-        print("    1. Book a call")
-        print("    2. Start a free trial")
-        print("    3. Just get a reply / start a conversation")
-        goal_choice = _ask("Goal (1/2/3)", default="1")
+        print("\n  Qual é o objetivo quando alguém demonstra interesse?")
+        print("    1. Agendar uma chamada")
+        print("    2. Começar um teste grátis")
+        print("    3. Só obter uma resposta / iniciar uma conversa")
+        goal_choice = _ask("Objetivo (1/2/3)", default="1")
         goal_map = {"1": "book_call", "2": "start_trial", "3": "get_reply"}
         goal = goal_map.get(goal_choice, "book_call")
 
@@ -560,25 +560,25 @@ class SetupWizard:
         meeting_owner = ""
 
         if goal == "book_call":
-            has_calendar = _ask_yes_no("Do you have a calendar booking link (Calendly, Cal.com, etc.)?")
+            has_calendar = _ask_yes_no("Você tem um link de agendamento de calendário (Calendly, Cal.com, etc.)?")
             if has_calendar:
-                booking_url = _ask("Booking URL")
+                booking_url = _ask("URL de agendamento")
                 booking_method = "calendar_link"
             else:
-                print("\n  How should Sellbird suggest meeting times?")
-                print("    1. Suggest specific times ('How about Thursday at 2pm?')")
-                print("    2. Ask for their preference ('What does your calendar look like?')")
-                method_choice = _ask("Method (1/2)", default="1")
+                print("\n  Como o Sellbird deve sugerir horários de reunião?")
+                print("    1. Sugerir horários específicos ('Que tal quinta às 14h?')")
+                print("    2. Perguntar a preferência ('Como está sua agenda?')")
+                method_choice = _ask("Método (1/2)", default="1")
                 booking_method = "suggest_times" if method_choice == "1" else "ask_preference"
 
-            meeting_duration = _ask("How long is the call?", default="15 minutes")
-            meeting_owner = _ask("Who takes the meeting? (your name or role)", required=False)
+            meeting_duration = _ask("Qual a duração da chamada?", default="15 minutes")
+            meeting_owner = _ask("Quem vai à reunião? (seu nome ou cargo)", required=False)
 
-        _print_sellbird("What persona should I use for outreach?\n")
+        _print_sellbird("Qual persona devo usar para a prospecção?\n")
 
-        persona_name = _ask("My name (what prospects see)", default="Alex")
-        persona_email = _ask("My email address")
-        persona_role = _ask("My title/role", default="Business Development")
+        persona_name = _ask("Meu nome (o que os prospects veem)", default="Alex")
+        persona_email = _ask("Meu endereço de e-mail")
+        persona_role = _ask("Meu cargo/função", default="Desenvolvimento de Negócios")
 
         self.config = {
             "persona": {
@@ -642,48 +642,48 @@ class SetupWizard:
         _print_sellbird("Last thing — a few settings for how I operate.\n")
 
         # Usage limit
-        print("  I track my own Claude usage so I don't eat your whole daily quota.")
+        print("  Eu monitoro meu próprio uso do Claude para não consumir toda a sua cota diária.")
         usage_pct = _ask(
-            "Max % of daily Claude usage I can consume",
+            "% máxima do uso diário do Claude que posso consumir",
             default="80",
         )
         try:
             usage_pct = min(100.0, max(1.0, float(usage_pct)))
         except ValueError:
-            print("    (didn't catch that — using 80)")
+            print("    (não entendi — usando 80)")
             usage_pct = 80.0
 
         # Heartbeat interval
-        print("\n  I wake up on a schedule to check for work.")
+        print("\n  Eu acordo em uma programação para verificar se há trabalho.")
         interval = _ask(
-            "How often should I check for work (minutes)?",
+            "Com que frequência devo verificar se há trabalho (minutos)?",
             default="15",
         )
         try:
             interval = max(1, int(interval))
         except ValueError:
-            print("    (didn't catch that — using 15)")
+            print("    (não entendi — usando 15)")
             interval = 15
 
         # Quiet hours
-        print("\n  I won't send emails or do outreach during quiet hours.")
-        quiet_start = _ask("Quiet hours start (24h format)", default="22:00")
-        quiet_end = _ask("Quiet hours end (24h format)", default="07:00")
-        timezone = _ask("Your timezone", default="America/New_York")
+        print("\n  Eu não vou enviar e-mails nem fazer prospecção durante o horário silencioso.")
+        quiet_start = _ask("Início do horário silencioso (formato 24h)", default="22:00")
+        quiet_end = _ask("Fim do horário silencioso (formato 24h)", default="07:00")
+        timezone = _ask("Seu fuso horário", default="America/Sao_Paulo")
 
         # Daily send limit
         daily_sends = _ask(
-            "Max emails to send per day",
+            "Máximo de e-mails a enviar por dia",
             default="50",
         )
         try:
             daily_sends = max(1, int(daily_sends))
         except ValueError:
-            print("    (didn't catch that — using 50)")
+            print("    (não entendi — usando 50)")
             daily_sends = 50
         if daily_sends > 200:
-            print("\n  ⚠  200+ sends/day from a fresh domain will torch your")
-            print("     deliverability. Warm up gradually (see docs/deliverability.md).")
+            print("\n  ⚠  200+ envios/dia a partir de um domínio novo vai destruir sua")
+            print("     entregabilidade. Aqueça gradualmente (veja docs/deliverability.md).")
 
         # Update config
         if self.config:
@@ -699,7 +699,7 @@ class SetupWizard:
             if "channels" in self.config and "email" in self.config["channels"]:
                 self.config["channels"]["email"]["max_daily_sends"] = daily_sends
 
-        _print_sellbird("Perfect. All configured.")
+        _print_sellbird("Perfeito. Tudo configurado.")
 
     def _timezone(self) -> str:
         """The timezone this run of setup chose (step 6), else the saved one."""
@@ -719,29 +719,29 @@ class SetupWizard:
         current = _current_precleared()
         was_on = current.get("enabled") is True
         uk_sender = self._timezone() == "Europe/London"
-        _print_sellbird("Before the first email to anyone new, I can ask Precleared")
-        _print_sellbird("(precleared.dev) which cold-email rules apply to them. A UK")
-        _print_sellbird("sole trader needs consent where a limited company doesn't,")
-        _print_sellbird("and the address alone won't tell you which. Totally optional.")
+        _print_sellbird("Antes do primeiro e-mail para qualquer pessoa nova, eu posso perguntar ao Precleared")
+        _print_sellbird("(precleared.dev) quais regras de e-mail frio se aplicam a elas. Um autônomo")
+        _print_sellbird("no Reino Unido precisa de consentimento onde uma empresa limitada não precisa,")
+        _print_sellbird("e o endereço sozinho não diz qual é o caso. Totalmente opcional.")
         if uk_sender:
             # Recommended, not switched on: the check stays opt-in (#93).
-            _print_sellbird("Recommended for a UK sender like you: under PECR, whether a cold")
-            _print_sellbird("email is allowed turns on who the recipient is (a company or a")
-            _print_sellbird("sole trader), and Precleared looks each one up on Companies House.")
-        print("\n  Anything that isn't a clear yes waits in the Outbox with the reason.")
-        print("  It checks mail sent through Gmail, Microsoft 365 or SMTP, not Instantly.")
-        print("  Precleared receives each new recipient's address, your country, how")
-        print("  the address was found, your product description and the recipient's")
-        print("  country when the company's location makes it certain, else your")
-        print("  prospects' country if you set one. It also gets the company's and")
-        print("  person's names, to find a UK company on the register; it doesn't")
-        print("  store the person's name.")
+            _print_sellbird("Recomendado para um remetente do Reino Unido como você: sob a PECR, se um e-mail")
+            _print_sellbird("frio é permitido depende de quem é o destinatário (uma empresa ou um")
+            _print_sellbird("autônomo), e o Precleared verifica cada um na Companies House.")
+        print("\n  Qualquer coisa que não seja um sim claro fica em espera na Outbox com o motivo.")
+        print("  Verifica e-mail enviado por Gmail, Microsoft 365 ou SMTP, não Instantly.")
+        print("  O Precleared recebe o endereço de cada novo destinatário, seu país, como")
+        print("  o endereço foi encontrado, a descrição do seu produto e o país do destinatário")
+        print("  quando a localização da empresa deixa isso certo, senão o país dos seus")
+        print("  prospects, se você definir um. Também recebe o nome da empresa e da")
+        print("  pessoa, para localizar uma empresa do Reino Unido no registro; não")
+        print("  guarda o nome da pessoa.")
 
-        if not _ask_yes_no("Turn on the cold-email check?", default=was_on):
+        if not _ask_yes_no("Ativar a verificação de e-mail frio?", default=was_on):
             # Only touch the config to switch off a check that was on.
             self.precleared = {"enabled": False} if was_on else None
-            _print_sellbird("No problem. You can turn it on later under")
-            _print_sellbird(f"compliance.precleared in {_config_file().name}.")
+            _print_sellbird("Sem problema. Você pode ativá-la depois em")
+            _print_sellbird(f"compliance.precleared no {_config_file().name}.")
             return
 
         saved_country = _sender_country(current.get("sender_country"))
@@ -750,8 +750,8 @@ class SetupWizard:
         codes = ", ".join(SENDER_COUNTRIES)
         while True:
             country = _sender_country(_ask(
-                "Where is your business based? (two-letter code, e.g. GB or US"
-                + (")" if default_country else "; blank to skip)"),
+                "Onde fica sua empresa? (código de duas letras, ex.: GB ou US"
+                + (")" if default_country else "; deixe em branco para pular)"),
                 default=default_country,
                 required=False,
             ), strict=False)
@@ -759,19 +759,19 @@ class SetupWizard:
                 break
             if not country:
                 self.precleared = {"enabled": False} if was_on else None
-                _print_sellbird("Precleared takes a sender based in one of these countries:")
-                _print_sellbird(f"{codes}. I'll leave the check off for now.")
+                _print_sellbird("O Precleared aceita um remetente baseado em um destes países:")
+                _print_sellbird(f"{codes}. Vou deixar a verificação desligada por enquanto.")
                 return
-            print(f"    (type one of {codes}, or leave it blank to skip)")
+            print(f"    (digite um de {codes}, ou deixe em branco para pular)")
 
         try:
             saved_prospects = normalize_prospect_country(current.get("prospect_country"))
         except ValueError:
             saved_prospects = ""
-        hint = "type none if not" if saved_prospects else "blank if not"
+        hint = "digite none se não" if saved_prospects else "em branco se não"
         while True:
             answer = _ask(
-                f"Your prospects' country, if they're all in one (e.g. US; {hint})",
+                f"O país dos seus prospects, se todos estiverem em um só (ex.: US; {hint})",
                 default=saved_prospects,
                 required=False,
             )
@@ -780,7 +780,7 @@ class SetupWizard:
                 break
             # "no" answers "if they're all in one" but is also Norway's code.
             if answer.strip().lower() == "no" and not _ask_yes_no(
-                    "NO is Norway's code. Are your prospects all in Norway?", default=False):
+                    "NO é o código da Noruega. Seus prospects estão todos na Noruega?", default=False):
                 prospects = ""
                 break
             try:
@@ -805,47 +805,47 @@ class SetupWizard:
         saved_key = _read_env_file().get("PRECLEARED_API_KEY", "").strip("'\" ")
         has_key = bool(saved_key or os.getenv("PRECLEARED_API_KEY", "").strip())
         if not has_key:
-            _print_sellbird("Without a key Precleared allows 10 checks a day. A free key")
-            _print_sellbird("gives Sellbird 100 a day for its first 14 days, then 25 a day.")
+            _print_sellbird("Sem uma chave o Precleared permite 10 verificações por dia. Uma chave grátis")
+            _print_sellbird("dá ao Sellbird 100 por dia nos primeiros 14 dias, depois 25 por dia.")
             key = self._get_free_precleared_key()
             if key:
                 self.env_vars["PRECLEARED_API_KEY"] = key
-                _print_sellbird("Got your free key and saved it to .env.")
+                _print_sellbird("Sua chave grátis foi obtida e salva no .env.")
                 return
         key = _ask(
-            "Precleared API key (input hidden; Enter keeps your current key)" if has_key
-            else "Precleared API key (input hidden; Enter to skip)",
+            "Chave de API do Precleared (entrada oculta; Enter mantém sua chave atual)" if has_key
+            else "Chave de API do Precleared (entrada oculta; Enter para pular)",
             required=False,
             secret=True,
         )
         if key:
             self.env_vars["PRECLEARED_API_KEY"] = key
-            _print_sellbird("Saved the key to .env.")
+            _print_sellbird("Chave salva no .env.")
         elif has_key:
-            _print_sellbird("Keeping the key you already have.")
+            _print_sellbird("Mantendo a chave que você já tem.")
         else:
             self.env_vars["PRECLEARED_API_KEY"] = ""
-            _print_sellbird("No problem: 10 checks a day without one. Run")
-            _print_sellbird("`sellbird precleared-key` whenever you'd like a free key.")
+            _print_sellbird("Sem problema: 10 verificações por dia sem uma chave. Rode")
+            _print_sellbird("`sellbird precleared-key` sempre que quiser uma chave grátis.")
 
     def _get_free_precleared_key(self) -> str:
         """Offer to get a free key for an email address. Returns the key, or
         "" to fall back to pasting one. The key is never printed."""
-        if not _ask_yes_no("Get a free Precleared key now? It only needs your email address"):
+        if not _ask_yes_no("Obter uma chave grátis do Precleared agora? Só precisa do seu endereço de e-mail"):
             return ""
-        print("\n  Precleared receives the address to make the key")
-        print("  (privacy: https://precleared.dev/privacy).")
+        print("\n  O Precleared recebe o endereço para gerar a chave")
+        print("  (privacidade: https://precleared.dev/privacy).")
         country = (self.precleared or {}).get("sender_country", "")
         while True:
-            email = _ask("Email address for the key (Enter to skip)", required=False)
+            email = _ask("Endereço de e-mail para a chave (Enter para pular)", required=False)
             if not email:
                 return ""
             result = create_free_key(email, country=country)
             if result.key:
                 return result.key
-            _print_sellbird(f"Couldn't get a key: {result.error}.")
+            _print_sellbird(f"Não foi possível obter uma chave: {result.error}.")
             if not result.bad_email:
-                _print_sellbird(f"You can paste one from {GET_KEY_URL} instead.")
+                _print_sellbird(f"Você pode colar uma de {GET_KEY_URL} em vez disso.")
                 return ""
 
     def _write_env(self):
@@ -912,29 +912,29 @@ class SetupWizard:
                     f.write(text)
                 self.config_saved = True
             except Exception as e:
-                _print_sellbird(f"Couldn't save your settings to {config_file.name} ({e}).")
-                _print_sellbird("Nothing in it was changed. Fix the file and re-run setup.")
+                _print_sellbird(f"Não foi possível salvar suas configurações em {config_file.name} ({e}).")
+                _print_sellbird("Nada nele foi alterado. Corrija o arquivo e rode a configuração de novo.")
 
     async def _print_summary(self):
         """Print final summary and next steps."""
         print(f"""
 ╔══════════════════════════════════════════════════════════╗
 ║                                                          ║
-║   Setup Complete!                                        ║
+║   Configuração Concluída!                                ║
 ║                                                          ║
 ╚══════════════════════════════════════════════════════════╝
 """)
 
         # Show what's configured
         checks = {
-            ("Codex CLI (ChatGPT plan)" if self.brain_config.provider == "codex"
-             else "Claude Code CLI"): (_check_codex_cli() if self.brain_config.provider == "codex"
+            ("CLI do Codex (plano ChatGPT)" if self.brain_config.provider == "codex"
+             else "CLI do Claude Code"): (_check_codex_cli() if self.brain_config.provider == "codex"
                                       else _check_claude_cli()),
-            "Instantly API": bool(self.env_vars.get("INSTANTLY_API_KEY")),
+            "API do Instantly": bool(self.env_vars.get("INSTANTLY_API_KEY")),
             "LinkedIn": bool(self.env_vars.get("LINKEDIN_EMAIL")),
-            "Cloudflare Crawl": bool(self.env_vars.get("CLOUDFLARE_ACCOUNT_ID")),
-            "Product trained": _product_configured(),
-            "Cold-email check (Precleared)": bool(
+            "Rastreamento Cloudflare": bool(self.env_vars.get("CLOUDFLARE_ACCOUNT_ID")),
+            "Produto treinado": _product_configured(),
+            "Verificação de e-mail frio (Precleared)": bool(
                 self.config_saved and self.precleared and self.precleared.get("enabled")),
         }
 
@@ -943,32 +943,32 @@ class SetupWizard:
             print(f"  {status} {name}")
 
         print(f"""
-  Files created:
-    - .env (your credentials)
-    - {_config_file().name} (your configuration)
+  Arquivos criados:
+    - .env (suas credenciais)
+    - {_config_file().name} (sua configuração)
 
-  To start Sellbird:
-    sellbird run          (or: python -m sellbird)
+  Para iniciar o Sellbird:
+    sellbird run          (ou: python -m sellbird)
 
-  To re-train on a different product:
-    sellbird train https://newproduct.com
+  Para treinar de novo em outro produto:
+    sellbird train https://novoproduto.com
 
-  To re-run this setup:
+  Para rodar esta configuração de novo:
     sellbird setup
 
-  News, new releases and the roadmap go out first on X:
+  Novidades, novos lançamentos e o roadmap saem primeiro no X:
     https://x.com/sellbirdagent
 
-  Before you send a single email:
-    1. Use a dedicated sending domain (not your main domain) with
-       SPF, DKIM, and DMARC configured.
-    2. Warm it up 2-4 weeks before real volume (Instantly has warmup).
-    3. Make sure your Instantly campaigns include an unsubscribe
-       option and your physical mailing address (CAN-SPAM).
-    See docs/deliverability.md.
+  Antes de enviar um único e-mail:
+    1. Use um domínio de envio dedicado (não o seu domínio principal) com
+       SPF, DKIM e DMARC configurados.
+    2. Aqueça-o por 2-4 semanas antes do volume real (o Instantly tem aquecimento).
+    3. Garanta que suas campanhas no Instantly incluam uma opção de
+       cancelar inscrição e seu endereço postal físico (CAN-SPAM).
+    Veja docs/deliverability.md.
 """)
-        _print_sellbird("I'm ready. Run 'sellbird run' and I'll start closing.")
-        _print_sellbird("Make the first move.\n")
+        _print_sellbird("Estou pronto. Rode 'sellbird run' e vou começar a fechar negócios.")
+        _print_sellbird("Dê o primeiro passo.\n")
 
 
 async def run_setup():

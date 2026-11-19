@@ -357,10 +357,10 @@ def sending_notice(config) -> str:
     if not legacy_sending_held(config):
         return ""
     return (
-        "Instantly sending is held: channels.email.require_approval is true, and "
-        "Instantly has no approval queue. Campaigns stay as drafts and replies go to "
-        "a human (dashboard Activity tab). Set require_approval: false to let Instantly "
-        "send automatically, or switch to gmail, microsoft or smtp to approve each email."
+        "O envio pelo Instantly está retido: channels.email.require_approval é true, e o "
+        "Instantly não tem fila de aprovação. As campanhas ficam como rascunho e as respostas vão para "
+        "um humano (aba Atividade do painel). Defina require_approval: false para o Instantly "
+        "enviar automaticamente, ou mude para gmail, microsoft ou smtp para aprovar cada e-mail."
     )
 
 
@@ -635,16 +635,16 @@ def compliance_notice(config) -> str:
     compliance = compliance_of(config)
     missing = []
     if not compliance.postal_address.strip():
-        missing.append("a postal address (compliance.postal_address: a street "
-                       "address, PO box or virtual mailbox)")
+        missing.append("um endereço postal (compliance.postal_address: um endereço "
+                       "físico, caixa postal ou endereço virtual)")
     if not compliance.opt_out_line.strip():
-        missing.append("a way to opt out (compliance.opt_out_line)")
+        missing.append("uma forma de cancelar a inscrição (compliance.opt_out_line)")
     if not missing:
         return ""
     return (
-        "Cold emails are going out without " + " or ".join(missing) + ". US law "
-        "(CAN-SPAM) requires both in every cold email. Set them in sellbird.yaml "
-        "(or sellbird.local.yaml if you trained Sellbird)."
+        "E-mails frios estão saindo sem " + " ou ".join(missing) + ". A lei dos EUA "
+        "(CAN-SPAM) exige ambos em todo e-mail frio. Defina-os no sellbird.yaml "
+        "(ou sellbird.local.yaml se você treinou o Sellbird)."
     )
 
 
@@ -926,20 +926,20 @@ def load_config(config_path: str | None = None) -> SellbirdConfig:
         data = yaml.safe_load(read_user_text(config_path))
     except FileNotFoundError:
         raise ConfigFileNotFoundError(
-            f"Config file not found: {config_path}. "
-            "Create one from sellbird.yaml.example or run 'sellbird setup'."
+            f"Arquivo de configuração não encontrado: {config_path}. "
+            "Crie um a partir de sellbird.yaml.example ou rode 'sellbird setup'."
         )
     except yaml.YAMLError as e:
-        raise ConfigError(f"Invalid YAML in {config_path}:\n  {e}")
+        raise ConfigError(f"YAML inválido em {config_path}:\n  {e}")
     except OSError as e:
-        raise ConfigError(f"Could not read {config_path}: {e}")
+        raise ConfigError(f"Não foi possível ler {config_path}: {e}")
 
     if data is None:
-        raise ConfigError(f"{config_path} is empty. Run 'sellbird setup' to configure Sellbird.")
+        raise ConfigError(f"{config_path} está vazio. Rode 'sellbird setup' para configurar o Sellbird.")
     if not isinstance(data, dict):
         raise ConfigError(
-            f"{config_path} must contain a YAML mapping (key: value pairs), "
-            f"got {type(data).__name__}."
+            f"{config_path} deve conter um mapeamento YAML (pares chave: valor), "
+            f"recebido {type(data).__name__}."
         )
 
     try:
@@ -950,8 +950,8 @@ def load_config(config_path: str | None = None) -> SellbirdConfig:
         # Log a friendly, actionable summary, then re-raise the original
         # ValidationError so callers (and tests) keep the pydantic type.
         logger.error(
-            f"Invalid configuration in {config_path}:\n{_format_validation_error(e)}\n"
-            "Fix the fields above or re-run 'sellbird setup'."
+            f"Configuração inválida em {config_path}:\n{_format_validation_error(e)}\n"
+            "Corrija os campos acima ou rode 'sellbird setup' de novo."
         )
         raise
 
@@ -975,17 +975,17 @@ def load_brain_config(config_path: str | None = None) -> BrainConfig:
     except FileNotFoundError:
         return BrainConfig()
     except (yaml.YAMLError, OSError) as e:
-        raise ConfigError(f"Could not read the brain settings in {config_path}: {e}")
+        raise ConfigError(f"Não foi possível ler as configurações de brain em {config_path}: {e}")
     section = data.get("brain") if isinstance(data, dict) else None
     if section is None:
         return BrainConfig()
     if not isinstance(section, dict):
-        raise ConfigError(f"'brain' in {config_path} must be a mapping.")
+        raise ConfigError(f"'brain' em {config_path} deve ser um mapeamento.")
     try:
         return BrainConfig(**section)
     except ValidationError as e:
         raise ConfigError(
-            f"Invalid brain settings in {config_path}:\n{_format_validation_error(e)}"
+            f"Configurações de brain inválidas em {config_path}:\n{_format_validation_error(e)}"
         )
 
 
@@ -1070,15 +1070,15 @@ def set_require_approval(value: bool, path=None) -> Path:
     try:
         raw = data_bytes.decode("utf-8-sig").replace("\r\n", "\n")
     except UnicodeDecodeError:
-        raise ConfigError(f"{path.name} isn't UTF-8, so it isn't rewritten. Set "
-                          f"channels.email.require_approval there by hand.")
+        raise ConfigError(f"{path.name} não é UTF-8, então não foi reescrito. Defina "
+                          f"channels.email.require_approval lá manualmente.")
     try:
         data = yaml.safe_load(raw)
     except yaml.YAMLError as e:
-        raise ConfigError(f"Invalid YAML in {path.name}: {e}")
+        raise ConfigError(f"YAML inválido em {path.name}: {e}")
     if _email_section(data) is None:
-        raise ConfigError(f"{path.name} has no channels.email section. Set "
-                          f"channels.email.require_approval there by hand.")
+        raise ConfigError(f"{path.name} não tem a seção channels.email. Defina "
+                          f"channels.email.require_approval lá manualmente.")
     expected = copy.deepcopy(data)
     _email_section(expected)["require_approval"] = bool(value)
     word = "true" if value else "false"
@@ -1100,8 +1100,8 @@ def set_require_approval(value: bool, path=None) -> Path:
             tmp.unlink(missing_ok=True)
         _mode_cache.pop(str(target), None)
         return path
-    raise ConfigError(f"Couldn't change require_approval in {path.name} safely. "
-                      f"Set channels.email.require_approval: {word} there by hand.")
+    raise ConfigError(f"Não foi possível mudar require_approval em {path.name} com segurança. "
+                      f"Defina channels.email.require_approval: {word} lá manualmente.")
 
 
 _mode_cache: dict[str, tuple[tuple, object]] = {}

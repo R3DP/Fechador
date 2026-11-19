@@ -162,8 +162,8 @@ def test_the_command_saves_a_free_key_and_never_prints_it(env_file, monkeypatch,
     assert "SMTP_PASSWORD=a=b=c" in lines and "# a comment" in lines
     assert calls == [("jo@example.com", "GB")]
     out = capsys.readouterr().out
-    assert "saved in .env as PRECLEARED_API_KEY" in out
-    assert "100 checks a day for 14 days" in out
+    assert "salva no .env como PRECLEARED_API_KEY" in out
+    assert "100 checagens por dia por 14 dias" in out
     assert FAKE_KEY not in out
     if os.name != "nt":   # Windows uses the folder's ACLs, not POSIX modes
         assert env_file.stat().st_mode & 0o777 == 0o600
@@ -198,7 +198,7 @@ def test_the_command_keeps_a_key_that_is_already_there(env_file, monkeypatch, ca
     assert run("jo@example.com") == 0
 
     assert calls == []
-    assert "kept it" in capsys.readouterr().out
+    assert "Sellbird a manteve" in capsys.readouterr().out
     assert where == "environment" or env_file.read_text() == "PRECLEARED_API_KEY=existing_key\n"
 
 
@@ -208,7 +208,7 @@ def test_the_command_says_why_no_key_came_back(env_file, monkeypatch, capsys):
     assert run("jo@example.com") == 1
 
     out = capsys.readouterr().out
-    assert "Couldn't get a key: Too many keys from this network today." in out
+    assert "Não foi possível obter uma chave: Too many keys from this network today." in out
     assert "https://precleared.dev/get-key" in out
     assert not env_file.exists()
 
@@ -220,7 +220,7 @@ def test_with_the_check_off_the_key_is_saved_and_the_user_told(env_file, monkeyp
     assert run("jo@example.com") == 0
 
     assert calls == [("jo@example.com", "")]  # the sender country goes only when the check is on
-    assert "The check itself is off" in capsys.readouterr().out
+    assert "A checagem em si está desligada" in capsys.readouterr().out
     assert f"PRECLEARED_API_KEY={FAKE_KEY}" in env_file.read_text().splitlines()
 
 

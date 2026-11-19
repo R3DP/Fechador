@@ -530,7 +530,7 @@ def run_auth_flow(client_id: str, tenant: str = "", *,
     import urllib.parse
 
     if not client_id:
-        print("  Set M365_CLIENT_ID (and M365_TENANT_ID) in .env first.")
+        print("  Defina M365_CLIENT_ID (e M365_TENANT_ID) no .env primeiro.")
         print("  (entra.microsoft.com → App registrations → New registration)")
         return False
     tenant = tenant or "organizations"
@@ -565,7 +565,7 @@ def run_auth_flow(client_id: str, tenant: str = "", *,
             self.send_header("Content-Type", "text/html")
             self.end_headers()
             self.wfile.write(
-                b"<h2>Sellbird is connected to Microsoft 365.</h2>You can close this tab.")
+                b"<h2>O Sellbird est\xc3\xa1 conectado ao Microsoft 365.</h2>Voc\xc3\xaa pode fechar esta aba.")
             done.set()
 
         def log_message(self, *args):
@@ -582,18 +582,18 @@ def run_auth_flow(client_id: str, tenant: str = "", *,
     for server in servers:
         threading.Thread(target=server.serve_forever, daemon=True).start()
 
-    print(f"\n  Opening browser for Microsoft sign-in...\n  {auth_url}\n")
+    print(f"\n  Abrindo o navegador para login da Microsoft...\n  {auth_url}\n")
     webbrowser.open(auth_url)
     finished = done.wait(timeout=300)
     for server in servers:
         server.shutdown()
         server.server_close()
     if not finished:
-        print("  Timed out waiting for the browser round-trip.")
+        print("  Tempo esgotado aguardando o retorno do navegador.")
         return False
 
     if result.get("error") or not result.get("code"):
-        print(f"  Authorization failed: {result.get('error') or 'no code returned'}")
+        print(f"  Falha na autorização: {result.get('error') or 'nenhum código retornado'}")
         return False
 
     resp = httpx.post(_token_url(tenant), data={
@@ -605,11 +605,11 @@ def run_auth_flow(client_id: str, tenant: str = "", *,
         "scope": scope,
     }, timeout=30)
     if resp.status_code != 200:
-        print(f"  Token exchange failed ({resp.status_code}): {resp.text[:300]}")
+        print(f"  Falha na troca do token ({resp.status_code}): {resp.text[:300]}")
         return False
     data = resp.json()
     if not data.get("refresh_token"):
-        print("  Microsoft returned no refresh token (offline_access missing?).")
+        print("  A Microsoft não retornou um refresh token (offline_access ausente?).")
         return False
     record = {
         "refresh_token": data["refresh_token"],
@@ -620,6 +620,6 @@ def run_auth_flow(client_id: str, tenant: str = "", *,
     if not _store_authorized(record, data.get("access_token", ""), save=save,
                              expected_address=expected_address):
         return False
-    print("  ✓ Microsoft 365 authorized." if save else
-          f"  ✓ Microsoft 365 authorized. Token stored at {current_home().m365_token_file}")
+    print("  ✓ Microsoft 365 autorizado." if save else
+          f"  ✓ Microsoft 365 autorizado. Token armazenado em {current_home().m365_token_file}")
     return True

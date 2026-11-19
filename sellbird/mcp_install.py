@@ -44,27 +44,27 @@ CODEX_MARKER = ("# Added by Sellbird (sellbird mcp install). "
 CLIENT_NAMES = {"claude": "Claude Code", "codex": "Codex"}
 RESTART_CLAUDE = "If Claude Code is open, restart it."
 
-REFUSE_NO_CLAUDE = ("Claude Code isn't installed here (no `claude` command "
-                    "and no ~/.claude.json).")
-REFUSE_BAD_JSON = "~/.claude.json isn't valid JSON, so it was left alone."
-REFUSE_FOREIGN_CLAUDE = ("~/.claude.json already has a Sellbird server that this "
-                         "command didn't add. Edit it yourself, or remove it and run this again.")
-REFUSE_BAD_TOML = "~/.codex/config.toml isn't valid TOML, so it was left alone."
-REFUSE_FOREIGN_CODEX = ("~/.codex/config.toml already has a Sellbird server that this "
-                        "command didn't add. Edit it yourself, or remove it and run this again.")
-VERIFY_FAILED = "The change didn't check out, so your original file was restored."
-NOT_TTY = "Nothing was changed. Re-run with --yes to apply."
+REFUSE_NO_CLAUDE = ("O Claude Code não está instalado aqui (sem o comando `claude` "
+                    "e sem ~/.claude.json).")
+REFUSE_BAD_JSON = "~/.claude.json não é um JSON válido, então foi deixado intacto."
+REFUSE_FOREIGN_CLAUDE = ("~/.claude.json já tem um servidor Sellbird que este "
+                         "comando não adicionou. Edite-o você mesmo, ou remova-o e rode isto de novo.")
+REFUSE_BAD_TOML = "~/.codex/config.toml não é um TOML válido, então foi deixado intacto."
+REFUSE_FOREIGN_CODEX = ("~/.codex/config.toml já tem um servidor Sellbird que este "
+                        "comando não adicionou. Edite-o você mesmo, ou remova-o e rode isto de novo.")
+VERIFY_FAILED = "A mudança não foi confirmada, então seu arquivo original foi restaurado."
+NOT_TTY = "Nada foi alterado. Rode de novo com --yes para aplicar."
 CLAUDE_LABEL = "~/.claude.json"
 CODEX_LABEL = "~/.codex/config.toml"
 
 
 def _symlink_refusal(label: str) -> str:
-    return (f"{label} is a symlink, so it was left alone. Add the entry to the file it "
-            f"points to yourself (sellbird mcp install --print shows it).")
+    return (f"{label} é um symlink, então foi deixado intacto. Adicione a entrada ao arquivo que ele "
+            f"aponta você mesmo (sellbird mcp install --print mostra ela).")
 
 
 def _unreadable(label: str, err: OSError) -> str:
-    return f"{label} couldn't be read ({err.strerror or type(err).__name__}), so it was left alone."
+    return f"{label} não pôde ser lido ({err.strerror or type(err).__name__}), então foi deixado intacto."
 
 
 class InstallError(Exception):
@@ -200,7 +200,7 @@ def plan_uninstall_claude(*, home: Path, which=shutil.which,
     current = doc.get("mcpServers", {}).get(SERVER_NAME)
     if current is None:
         return PlannedChange("claude", "none", path, "",
-                             "Sellbird isn't set up for Claude Code; nothing to remove.")
+                             "O Sellbird não está configurado para o Claude Code; nada a remover.")
     if not is_ours(current):
         return PlannedChange("claude", "refuse", path, "", REFUSE_FOREIGN_CLAUDE)
     if claude:
@@ -331,7 +331,7 @@ def plan_uninstall_codex(*, env: Mapping[str, str], home: Path) -> PlannedChange
         return PlannedChange("codex", "refuse", path, "", refusal)
     if (doc.get("mcp_servers") or {}).get(SERVER_NAME) is None:
         return PlannedChange("codex", "none", path, "",
-                             "Sellbird isn't set up for Codex; nothing to remove.")
+                             "O Sellbird não está configurado para o Codex; nada a remover.")
     block = _our_block(text or "")
     if block is None:
         return PlannedChange("codex", "refuse", path, "", REFUSE_FOREIGN_CODEX)
@@ -420,8 +420,8 @@ def _label(change: PlannedChange) -> str:
 
 
 def _cant_back_up(label: str, e: OSError) -> InstallError:
-    return InstallError(f"{label} couldn't be read or backed up "
-                        f"({e.strerror or type(e).__name__}), so nothing was changed.")
+    return InstallError(f"{label} não pôde ser lido ou copiado "
+                        f"({e.strerror or type(e).__name__}), então nada foi alterado.")
 
 
 def _read(change: PlannedChange) -> bytes | None:
@@ -491,14 +491,14 @@ def _run_cli(argv: tuple[str, ...], runner) -> None:
         result = runner(list(argv), capture_output=True, text=True, encoding="utf-8",
                         errors="replace", timeout=60)
     except (OSError, subprocess.SubprocessError) as e:
-        raise InstallError(f"`{shlex.join(argv[:3])}` couldn't run ({type(e).__name__})")
+        raise InstallError(f"`{shlex.join(argv[:3])}` não pôde rodar ({type(e).__name__})")
     if result.returncode != 0:
         detail = ((result.stderr or result.stdout or "").strip().splitlines() or [""])[-1]
-        raise InstallError(f"`{shlex.join(argv[:3])}` failed: {detail}".rstrip(": "))
+        raise InstallError(f"`{shlex.join(argv[:3])}` falhou: {detail}".rstrip(": "))
 
 
 def _kept_at(backup: Path | None) -> str:
-    return f" Your previous file is at {backup}." if backup else ""
+    return f" Seu arquivo anterior está em {backup}." if backup else ""
 
 
 def _apply_cli(change: PlannedChange, runner, now: datetime, *, expect_absent: bool) -> None:
@@ -516,15 +516,15 @@ def _apply_cli(change: PlannedChange, runner, now: datetime, *, expect_absent: b
             _run_cli(_claude_cli_argv(change.argv[0], "add", json.loads(change.old_json)),
                      runner)
         except InstallError:
-            raise InstallError("The old Sellbird entry was removed and the new one "
-                               f"couldn't be added ({add_failed})." + _kept_at(backup))
-        raise InstallError(f"{add_failed}. Your previous Sellbird entry was put back.")
+            raise InstallError("A entrada Sellbird antiga foi removida e a nova não "
+                               f"pôde ser adicionada ({add_failed})." + _kept_at(backup))
+        raise InstallError(f"{add_failed}. Sua entrada Sellbird anterior foi restaurada.")
     doc, refusal = _read_claude(change.path)
     entry = (doc or {}).get("mcpServers", {}).get(SERVER_NAME)
     # An unreadable file afterwards proves nothing, even for a remove.
     if refusal or not (entry is None if expect_absent else _same(entry)):
-        raise InstallError("Claude Code's config didn't end up as expected after "
-                           "`claude mcp`." + _kept_at(backup))
+        raise InstallError("A configuração do Claude Code não ficou como esperado depois "
+                           "do `claude mcp`." + _kept_at(backup))
 
 
 def apply_change(change: PlannedChange, *, runner=subprocess.run, now: datetime) -> str:
@@ -533,17 +533,17 @@ def apply_change(change: PlannedChange, *, runner=subprocess.run, now: datetime)
     if change.action == "refuse":
         return change.reason
     if change.action == "none":
-        return change.reason or f"Already set up for {name}."
+        return change.reason or f"Já configurado para {name}."
     removing = change.action == "remove" or (change.argv[2:3] == ("remove",))
-    done = (f"Removed Sellbird from {name}." if removing
-            else f"Added Sellbird to {name}.")
+    done = (f"Sellbird removido de {name}." if removing
+            else f"Sellbird adicionado a {name}.")
     if change.action == "cli":
         _apply_cli(change, runner, now, expect_absent=removing)
-        return f"{done} Start a new Claude Code session to use it."
+        return f"{done} Inicie uma nova sessão do Claude Code para usá-lo."
     _apply_file(change, now)
     if change.client == "claude":
         return f"{done} {RESTART_CLAUDE}"
-    return f"{done} Restart Codex to pick it up."
+    return f"{done} Reinicie o Codex para aplicar."
 
 
 def print_config() -> str:
@@ -552,7 +552,7 @@ def print_config() -> str:
     return "\n\n".join([
         json.dumps({"mcpServers": {SERVER_NAME: entry}}, indent=2),
         render_codex_block(entry).rstrip("\n"),
-        (f"Any other MCP client: command {entry['command']}, args -P -m sellbird mcp, "
+        (f"Qualquer outro cliente MCP: command {entry['command']}, args -P -m sellbird mcp, "
          f"env {HOME_ENV}={entry['env'][HOME_ENV]}"),
     ])
 
@@ -594,9 +594,9 @@ def run_command(action: str, client: str | None, *, print_only: bool = False,
         change = plan(env=env, home=home)
 
     if client is None and _codex_detected(which, env, home):
-        verb = "add Sellbird to it too" if action == "install" else \
-            "remove Sellbird from it too"
-        hint = f"Codex found. To {verb}, run: sellbird mcp {action} codex"
+        verb = "adicionar o Sellbird nele também" if action == "install" else \
+            "remover o Sellbird dele também"
+        hint = f"Codex encontrado. Para {verb}, rode: sellbird mcp {action} codex"
     else:
         hint = ""
 
@@ -616,7 +616,7 @@ def _show_and_apply(change: PlannedChange, *, yes, isatty, ask, out, runner, now
         out(apply_change(change, runner=runner, now=now))
         return 0
     if change.action == "cli":
-        out(f"{name}: this will run")
+        out(f"{name}: isto vai rodar")
     else:
         out(f"{name}: {change.path}")
     out(change.preview)
@@ -624,8 +624,8 @@ def _show_and_apply(change: PlannedChange, *, yes, isatty, ask, out, runner, now
         if not isatty():
             out(NOT_TTY)
             return 2
-        if ask("Apply this change? [y/N] ").strip().lower() not in ("y", "yes"):
-            out("Nothing was changed.")
+        if ask("Aplicar esta mudança? [s/N] ").strip().lower() not in ("s", "sim", "y", "yes"):
+            out("Nada foi alterado.")
             return 1
     try:
         out(apply_change(change, runner=runner, now=now))

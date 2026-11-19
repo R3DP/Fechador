@@ -1,9 +1,9 @@
-# Roadmap
+# Roteiro
 
-## Roadmap
+## Roteiro
 
-**Done:** heartbeat loop · observation data model with governed vocabulary · user-confirmed signal catalog · cohort builder · discovery provider menu with cost estimates · free HTTP profiler with agency detection · pattern-first email finding with honest status · native mail providers (Gmail API, Microsoft 365 via Graph, SMTP+IMAP) · outbox approval ladder · deterministic pre-send gate · bounce detection and kill switch · reply handling with intent classification · subscription quota tracking · website trainer · web dashboard · CSV export
+**Feito:** laço de heartbeat · modelo de dados de observações com vocabulário governado · catálogo de sinais confirmado pelo usuário · construtor de coortes · menu de provedores de descoberta com estimativas de custo · profiler HTTP gratuito com detecção de agência · busca de e-mail por padrão com status honesto · provedores de e-mail nativos (API do Gmail, Microsoft 365 via Graph, SMTP+IMAP) · escada de aprovação da caixa de saída · bloqueio determinístico antes do envio · detecção de bounce e kill switch · tratamento de respostas com classificação de intenção · acompanhamento de cota da assinatura · treinamento por website · dashboard web · exportação CSV
 
-**Next:** people enrichment from public registries · consent-gated voice callbacks · calendar integration for auto-booking · scheduled re-observation so signal *changes* trigger outreach · multi-product support
+**Próximo:** enriquecimento de pessoas a partir de registros públicos · callbacks de voz condicionados a consentimento · integração com calendário para agendamento automático · reobservação agendada para que *mudanças* de sinal disparem abordagem · suporte a múltiplos produtos
 
-> **On voice:** a fully autonomous AI cold dialer is not on this roadmap, and won't be. Under FCC 24-17 an AI-generated voice is an "artificial voice" under the TCPA, and 47 CFR 64.1200(a)(1) has no B2B exemption — penalties run $500–1,500 per call, uncapped, and some states ban it outright. Voice here will be **consent-gated**: inbound and opt-in-triggered callbacks only.
+> **Sobre voz:** um discador frio de IA totalmente autônomo não está neste roteiro e não estará. Pela FCC 24-17, uma voz gerada por IA é uma "voz artificial" sob a TCPA, e o 47 CFR 64.1200(a)(1) não tem isenção B2B — as penalidades vão de US$ 500 a 1.500 por ligação, sem teto, e alguns estados proíbem por completo. Voz aqui será **condicionada a consentimento**: apenas callbacks de entrada e disparados por opt-in.

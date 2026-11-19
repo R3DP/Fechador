@@ -126,7 +126,7 @@ def test_old_command_says_it_moved_then_runs_sellbird(monkeypatch, capsys):
     harvey.cli.main()
 
     assert ran == ["sellbird"]
-    assert "Harvey is now Sellbird" in capsys.readouterr().err
+    assert "Harvey agora é Sellbird" in capsys.readouterr().err
 
 
 @pytest.mark.parametrize("module", ["harvey", "sellbird"])
@@ -135,7 +135,7 @@ def test_both_names_run_as_modules(module):
                             capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     assert "sellbird" in result.stdout
-    assert ("Harvey is now Sellbird" in result.stderr) == (module == "harvey")
+    assert ("Harvey agora é Sellbird" in result.stderr) == (module == "harvey")
 
 
 def test_package_declares_both_commands():

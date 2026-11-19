@@ -114,14 +114,14 @@ def test_cli_lists_adds_and_removes(tmp_path, monkeypatch, capsys):
     db = str(tmp_path / "cli.db")
     monkeypatch.setattr("sellbird.state.DB_PATH", db)
     assert cli.cmd_suppressions(SimpleNamespace(suppression_action="add", value="www.Example.org")) is None
-    assert "Suppressed: example.org (domain)" in capsys.readouterr().out
+    assert "Suprimido: example.org (domain)" in capsys.readouterr().out
     assert cli.cmd_suppressions(SimpleNamespace(suppression_action="list", value="")) is None
     listed = capsys.readouterr().out
     sid = listed.split()[0]
     assert "example.org" in listed
     assert cli.cmd_suppressions(SimpleNamespace(suppression_action="remove", value=sid)) is None
     assert cli.cmd_suppressions(SimpleNamespace(suppression_action="list", value="")) is None
-    assert "Nobody is suppressed" in capsys.readouterr().out
+    assert "Ninguém está suprimido" in capsys.readouterr().out
 
 
 def test_cli_exits_nonzero_on_a_bad_value(tmp_path, monkeypatch):

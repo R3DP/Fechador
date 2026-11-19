@@ -1,14 +1,14 @@
-## What this changes
+## O que esta mudança altera
 
-<!-- What and why, in a few lines. Link the issue if there is one. -->
+<!-- O que e por quê, em poucas linhas. Vincule a issue, se houver. -->
 
-## How it was tested
+## Como foi testado
 
-<!-- Tests added or run, and what you checked by hand. Report live checks as counts only. -->
+<!-- Testes adicionados ou executados e o que você conferiu à mão. Relate verificações ao vivo apenas como contagens. -->
 
 ## Checklist
 
-- [ ] No real person's or business's name, email, phone, address or domain anywhere in the code, tests, docs or this description ([CONTRIBUTING.md](../CONTRIBUTING.md)).
-- [ ] `pytest` passes.
-- [ ] Commits are signed off (`git commit -s`).
-- [ ] Docs and `CHANGELOG.md` updated if behaviour changed.
+- [ ] Nenhum nome, e-mail, telefone, endereço ou domínio de pessoa ou empresa real em nenhum lugar do código, dos testes, da documentação ou desta descrição ([CONTRIBUTING.md](../CONTRIBUTING.md)).
+- [ ] O `pytest` passa.
+- [ ] Os commits têm sign-off (`git commit -s`).
+- [ ] Documentação e `CHANGELOG.md` atualizados se o comportamento mudou.

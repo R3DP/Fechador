@@ -144,7 +144,7 @@ class CloudflareCrawler:
             finished = data.get("finished", 0)
 
             elapsed = int(time.time() - start_time)
-            print(f"\r      Crawling... {finished}/{total} pages ({elapsed}s)", end="", flush=True)
+            print(f"\r      Rastreando... {finished}/{total} páginas ({elapsed}s)", end="", flush=True)
 
             if status in ("completed", "cancelled_due_to_timeout", "cancelled_due_to_limits"):
                 print()  # newline after progress
@@ -246,7 +246,7 @@ class FallbackCrawler:
                     continue
 
                 pages[url] = text
-                print(f"\r      Scraped {len(pages)} pages...", end="", flush=True)
+                print(f"\r      {len(pages)} páginas coletadas...", end="", flush=True)
 
                 # Discover new links from this page and add to queue
                 if html:
@@ -434,11 +434,11 @@ def write_trained_config(learned: dict, path: Path) -> dict:
             existing = None
         if not isinstance(existing, dict) and source == path and raw.strip():
             backup = _backup(path, raw)
-            print(f"      Couldn't read the existing {path.name}; saved it as {backup.name}.")
+            print(f"      Não foi possível ler o {path.name} existente; salvo como {backup.name}.")
     config = merge_trained_config(learned, existing)
     if config is not learned and source == path:
-        print(f"      Kept your settings from {path.name} (email provider, schedule, limits,")
-        print("      compliance, sender identity); updated the product, targeting and company.")
+        print(f"      Mantidas suas configurações de {path.name} (provedor de e-mail, agenda, limites,")
+        print("      compliance, identidade do remetente); produto, segmentação e empresa atualizados.")
 
     tmp = path.with_name(path.name + ".tmp")
     try:
@@ -481,15 +481,15 @@ class Trainer:
         parsed = urlparse(url)
         domain = parsed.netloc
         if not domain:
-            print(f"\nERROR: '{url}' doesn't look like a valid URL.")
-            print("Try something like: https://yourcompany.com")
+            print(f"\nERRO: '{url}' não parece ser uma URL válida.")
+            print("Tente algo como: https://suaempresa.com")
             return None
         base_url = f"{parsed.scheme}://{domain}"
 
         logger.info(f"Training Sellbird on {base_url}...")
         print(f"\n{'='*60}")
-        print(f"  Sellbird Training Mode")
-        print(f"  Learning from: {base_url}")
+        print(f"  Modo de treinamento do Sellbird")
+        print(f"  Aprendendo a partir de: {base_url}")
         print(f"{'='*60}\n")
 
         # Step 1: Deep crawl
@@ -497,62 +497,62 @@ class Trainer:
         cf_api_token = os.getenv("CLOUDFLARE_API_TOKEN", "")
 
         if cf_account_id and cf_api_token:
-            print(f"[1/6] Deep crawling with Cloudflare (up to {max_pages} pages)...")
+            print(f"[1/6] Rastreamento profundo com Cloudflare (até {max_pages} páginas)...")
             crawler = CloudflareCrawler(cf_account_id, cf_api_token)
             self.scraped_pages = await crawler.crawl(
                 base_url, max_pages=max_pages, depth=10
             )
         else:
-            print("[1/6] Crawling website (add CLOUDFLARE_ACCOUNT_ID and")
-            print("      CLOUDFLARE_API_TOKEN to .env for deep JS-rendered crawling)...")
+            print("[1/6] Rastreando o site (adicione CLOUDFLARE_ACCOUNT_ID e")
+            print("      CLOUDFLARE_API_TOKEN ao .env para rastreamento profundo com JS)...")
             crawler = FallbackCrawler()
             self.scraped_pages = await crawler.crawl(base_url, max_pages=max_pages)
 
         if not self.scraped_pages:
             if getattr(crawler, "blocked", False):
-                print(f"\nERROR: {base_url} points to a local or private address. Sellbird only")
-                print("learns from public websites, so it never reaches into your own network.")
-                print("Train on the live public site instead.")
+                print(f"\nERRO: {base_url} aponta para um endereço local ou privado. O Sellbird só")
+                print("aprende de sites públicos, então nunca acessa sua própria rede.")
+                print("Treine no site público ativo em vez disso.")
             else:
-                print("\nERROR: Could not scrape any pages. Check the URL.")
+                print("\nERRO: Não foi possível coletar nenhuma página. Verifique a URL.")
             return None
 
-        print(f"      Done! Crawled {len(self.scraped_pages)} pages.\n")
+        print(f"      Pronto! {len(self.scraped_pages)} páginas rastreadas.\n")
 
         # Step 2: Extract product information
-        print("[2/6] Analyzing product information...")
+        print("[2/6] Analisando informações do produto...")
         product_info = await self._extract_product_info()
         if not product_info:
-            print("ERROR: Could not extract product information.")
+            print("ERRO: Não foi possível extrair informações do produto.")
             return None
-        print(f"      Found: {product_info.get('product_name', 'Unknown Product')}\n")
+        print(f"      Encontrado: {product_info.get('product_name', 'Produto desconhecido')}\n")
 
         # Step 3: Identify ICP
-        print("[3/6] Identifying ideal customer profile...")
+        print("[3/6] Identificando o perfil de cliente ideal...")
         icp_info = await self._extract_icp()
-        print(f"      Target: {', '.join(icp_info.get('industries', ['Unknown']))}\n")
+        print(f"      Alvo: {', '.join(icp_info.get('industries', ['Desconhecido']))}\n")
 
         # Step 4: Competitive analysis
-        print("[4/6] Analyzing competitive landscape...")
+        print("[4/6] Analisando o cenário competitivo...")
         competitive_intel = await self._extract_competitive_intel(product_info)
-        print(f"      Identified {len(competitive_intel.get('competitors', []))} competitors.\n")
+        print(f"      {len(competitive_intel.get('competitors', []))} concorrentes identificados.\n")
 
         # Step 5: Generate objection responses
-        print("[5/6] Generating objection handling playbook...")
+        print("[5/6] Gerando o guia de tratamento de objeções...")
         objections = await self._generate_objections(
             product_info,
             competitive_intel,
         )
 
         if not objections:
-            print("\nERROR: Could not generate a valid objection playbook.")
-            print("Training stopped. Existing configuration was not modified.")
+            print("\nERRO: Não foi possível gerar um guia de objeções válido.")
+            print("Treinamento interrompido. A configuração existente não foi alterada.")
             return None
 
-        print(f"      Prepared {len(objections)} objection responses.\n")
+        print(f"      {len(objections)} respostas a objeções preparadas.\n")
 
         # Step 6: Generate config + skills
-        print("[6/6] Building configuration and product knowledge...")
+        print("[6/6] Montando configuração e conhecimento de produto...")
         config = self._build_config(product_info, icp_info, objections, domain)
 
         # Write config (relative paths resolve against the project root,
@@ -571,33 +571,33 @@ class Trainer:
             await self._generate_battle_cards(product_info, competitive_intel)
 
         print(f"\n{'='*60}")
-        print(f"  Training complete!")
+        print(f"  Treinamento concluído!")
         print(f"{'='*60}")
-        print(f"\n  Product:      {config['product']['name']}")
-        print(f"  Company:      {config['persona']['company']}")
-        print(f"  ICP titles:   {', '.join(config['icp']['titles'])}")
-        print(f"  Industries:   {', '.join(config['icp']['industries'])}")
-        print(f"  Pages crawled: {len(self.scraped_pages)}")
+        print(f"\n  Produto:        {config['product']['name']}")
+        print(f"  Empresa:        {config['persona']['company']}")
+        print(f"  Cargos do ICP:  {', '.join(config['icp']['titles'])}")
+        print(f"  Setores:        {', '.join(config['icp']['industries'])}")
+        print(f"  Páginas rastreadas: {len(self.scraped_pages)}")
         offer = (config.get("product") or {}).get("offer") or {}
         if offer.get("entry"):
-            print(f"\n  First-email offer: {offer['entry']}")
+            print(f"\n  Oferta do primeiro e-mail: {offer['entry']}")
         else:
-            print("\n  Next: work out the offer every first email ends with. Ask your coding agent")
-            print("  to work it out with you, or open the dashboard's Your company tab.")
+            print("\n  Próximo passo: definir a oferta com que todo primeiro e-mail termina. Peça ao seu")
+            print("  agente de código para montá-la com você, ou abra a aba Sua empresa do painel.")
             if offer.get("entry_ideas"):
-                print("  Ideas to start from: " + "; ".join(offer["entry_ideas"]))
-        print(f"\n  Files generated:")
+                print("  Ideias para começar: " + "; ".join(offer["entry_ideas"]))
+        print(f"\n  Arquivos gerados:")
         print(f"    - {config_path}")
         print(f"    - skills/product_knowledge.md")
         if competitive_intel.get("competitors"):
             print(f"    - skills/competitive_intel.md")
         if config["persona"].get("email") == guessed_email:
-            print(f"\n  Review {config_path} and adjust as needed — especially the")
-            print(f"  persona name/email, which I guessed from your domain.")
+            print(f"\n  Revise {config_path} e ajuste como necessário — especialmente o")
+            print(f"  nome/e-mail da persona, que foi deduzido a partir do seu domínio.")
         else:
-            print(f"\n  Review {config_path} and adjust as needed. Emails still go out as")
+            print(f"\n  Revise {config_path} e ajuste como necessário. Os e-mails continuam saindo como")
             print(f"  {config['persona'].get('name', '')} <{config['persona']['email']}>.")
-        print(f"  Then run: sellbird run\n")
+        print(f"  Depois rode: sellbird run\n")
 
         return config
 
@@ -901,7 +901,7 @@ Do NOT pursue prospects who:
 
         skills_path = PROJECT_ROOT / "skills" / "product_knowledge.md"
         skills_path.write_text(knowledge, encoding="utf-8")
-        print(f"      Generated: skills/product_knowledge.md")
+        print(f"      Gerado: skills/product_knowledge.md")
 
     async def _generate_battle_cards(self, product_info: dict, competitive_intel: dict):
         """Generate competitive battle cards as a skill file."""
@@ -949,7 +949,7 @@ What prospects do instead of buying a solution like ours:
 
         skills_path = PROJECT_ROOT / "skills" / "competitive_intel.md"
         skills_path.write_text(cards, encoding="utf-8")
-        print(f"      Generated: skills/competitive_intel.md")
+        print(f"      Gerado: skills/competitive_intel.md")
 
     def _build_config(
         self,
@@ -1026,18 +1026,18 @@ def main():
     import sys
 
     if len(sys.argv) < 2:
-        print("Usage: python -m sellbird.trainer <website-url> [max-pages]")
+        print("Uso: python -m sellbird.trainer <url-do-site> [max-paginas]")
         print("")
-        print("Examples:")
-        print("  python -m sellbird.trainer https://acmecorp.com")
-        print("  python -m sellbird.trainer https://acmecorp.com 200")
+        print("Exemplos:")
+        print("  python -m sellbird.trainer https://suaempresa.com")
+        print("  python -m sellbird.trainer https://suaempresa.com 200")
         print("")
-        print("For deep JS-rendered crawling, add to .env:")
-        print("  CLOUDFLARE_ACCOUNT_ID=your_account_id")
-        print("  CLOUDFLARE_API_TOKEN=your_api_token")
+        print("Para rastreamento profundo com renderização JS, adicione ao .env:")
+        print("  CLOUDFLARE_ACCOUNT_ID=seu_account_id")
+        print("  CLOUDFLARE_API_TOKEN=seu_api_token")
         print("")
-        print("Without Cloudflare credentials, Sellbird will use basic HTTP")
-        print("scraping (no JavaScript rendering, limited page discovery).")
+        print("Sem credenciais do Cloudflare, o Sellbird usará rastreamento HTTP")
+        print("básico (sem renderização JavaScript, descoberta de páginas limitada).")
         sys.exit(1)
 
     url = _normalize_start_url(sys.argv[1])
@@ -1047,7 +1047,7 @@ def main():
         try:
             max_pages = max(1, int(sys.argv[2]))
         except ValueError:
-            print(f"Invalid max-pages value: {sys.argv[2]!r} (expected a number)")
+            print(f"Valor de max-paginas inválido: {sys.argv[2]!r} (esperado um número)")
             sys.exit(1)
 
     asyncio.run(run_training(url, max_pages=max_pages))

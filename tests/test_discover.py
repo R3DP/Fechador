@@ -1354,9 +1354,9 @@ def test_missing_key_fails_loudly_at_startup(monkeypatch, capsys):
     out = capsys.readouterr().out
     assert "provider skipped: missing key" in out
     assert "SERPER_API_KEY" in out
-    assert "0 queries can run" in out
+    assert "0 consultas podem rodar" in out
     # The guard fires before the estimate is even attempted.
-    assert "Estimated cost" not in out
+    assert "Custo estimado" not in out
 
 
 def test_placeholder_key_is_treated_as_missing(monkeypatch, capsys):

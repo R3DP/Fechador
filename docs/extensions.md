@@ -1,28 +1,28 @@
-# Extensions
+# Extensões
 
-An extension is a separate Python package that adds to Sellbird without
-patching it. It can add:
+Uma extensão é um pacote Python separado que se soma ao Sellbird sem alterá-lo
+por patch. Ela pode adicionar:
 
-- **dashboard routes**: served behind the dashboard's sign-in, after every
-  built-in route, so an extension can add paths but never replace one;
-- **tick steps**: async functions run once at the end of each heartbeat cycle;
-- **commands**: `sellbird <name>` subcommands. A name the built-in CLI
-  already uses is refused;
-- **send rules**: asked before each email, after Sellbird's own checks. A
-  rule returns `send_hooks.Hold(reason)` (the email waits for the next
-  cycle), `send_hooks.Cancel(reason)`, or None. It can stop an email, never
-  let one through, and a rule that raises holds the email;
-- **send headers**: extra headers for an email, such as `List-Unsubscribe`.
-  Headers Sellbird owns (From, To, Subject, Message-ID and the like) are
-  refused. An email that needs headers its inbox can't carry (Microsoft 365
-  can't) waits instead of going out without them.
+- **rotas do dashboard**: servidas atrás do login do dashboard, depois de todas as
+  rotas nativas, então uma extensão pode adicionar caminhos, mas nunca substituir um;
+- **etapas de tick**: funções assíncronas executadas uma vez ao fim de cada ciclo de heartbeat;
+- **comandos**: subcomandos `sellbird <name>`. Um nome que a CLI nativa já
+  usa é recusado;
+- **regras de envio**: consultadas antes de cada e-mail, depois das verificações do
+  próprio Sellbird. Uma regra retorna `send_hooks.Hold(reason)` (o e-mail espera pelo próximo
+  ciclo), `send_hooks.Cancel(reason)`, ou None. Ela pode barrar um e-mail, nunca
+  liberar um, e uma regra que levanta exceção retém o e-mail;
+- **cabeçalhos de envio**: cabeçalhos extras para um e-mail, como `List-Unsubscribe`.
+  Cabeçalhos de posse do Sellbird (From, To, Subject, Message-ID e similares) são
+  recusados. Um e-mail que precisa de cabeçalhos que a caixa de entrada não suporta (o
+  Microsoft 365 não suporta) espera em vez de sair sem eles.
 
-A plain install has no extensions and behaves exactly as without them.
+Uma instalação padrão não tem extensões e se comporta exatamente como sem elas.
 
-## Writing one
+## Escrevendo uma
 
-Declare an entry point in the `sellbird.extensions` group. Its value is a
-function that takes the registry:
+Declare um entry point no grupo `sellbird.extensions`. Seu valor é uma
+função que recebe o registro:
 
 ```toml
 # your package's pyproject.toml
@@ -67,25 +67,25 @@ def install(registry):
     registry.add_mailbox_connection("myext", lambda row, *, config, env, secrets: MyProvider(row))
 ```
 
-## The rules
+## As regras
 
-- **Extensions load once per process,** on first use, in entry-point name
-  order.
-- **A failing `install` stops Sellbird with the extension's name.** It never
-  runs with half an extension installed.
-- **Tick steps are isolated.** A step that raises, or runs past two minutes,
-  is logged and skipped. It never stops the heartbeat or the other steps.
-- **Names are short lowercase words:** letters, digits, `.`, `_` or `-`.
-  Prefix tick steps with your extension's name (`myext.sync`).
-- **Extensions are trusted code.** They run in Sellbird's process with
-  Sellbird's access to your data and keys. Install only ones you would
-  install as any other Python package.
+- **As extensões carregam uma vez por processo,** no primeiro uso, na ordem do
+  nome do entry point.
+- **Um `install` que falha para o Sellbird, citando o nome da extensão.** Ele nunca
+  roda com meia extensão instalada.
+- **As etapas de tick são isoladas.** Uma etapa que levanta exceção ou passa de dois
+  minutos é registrada e ignorada. Ela nunca para o heartbeat nem as outras etapas.
+- **Nomes são palavras curtas em minúsculas:** letras, dígitos, `.`, `_` ou `-`.
+  Prefixe etapas de tick com o nome da sua extensão (`myext.sync`).
+- **Extensões são código confiável.** Elas rodam no processo do Sellbird, com o
+  acesso do Sellbird aos seus dados e chaves. Instale só o que você instalaria
+  como qualquer outro pacote Python.
 
-## Running Sellbird for someone else
+## Rodando o Sellbird para outra pessoa
 
-`sellbird.dashboard.build_app(guard=, routers=)` returns a new app that
-serves every built-in route, with your routers first and your own sign-in
-middleware in place of the dashboard token. Set `app.state.home` to a
-`sellbird.workspace_home.Home`, and each request runs with that home's files
-and database. Features that only make sense on the user's own computer call
-`require_self_hosted()`, which answers `409` on a hosted home.
+`sellbird.dashboard.build_app(guard=, routers=)` retorna um novo app que
+serve todas as rotas nativas, com seus routers primeiro e seu próprio middleware de login
+no lugar do token do dashboard. Defina `app.state.home` como um
+`sellbird.workspace_home.Home`, e cada requisição roda com os arquivos e o banco
+desse home. Recursos que só fazem sentido no computador do próprio usuário chamam
+`require_self_hosted()`, que responde `409` em um home hospedado.

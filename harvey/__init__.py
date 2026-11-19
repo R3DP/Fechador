@@ -5,5 +5,5 @@ working for a while after the rename, including for clones that ran
 ``git pull`` without reinstalling. Everything lives in ``sellbird``.
 """
 
-NOTICE = ("Harvey is now Sellbird. Run `pip install -e .` once, then use `sellbird` "
-          "instead of `harvey`. The `harvey` command will be removed in a later release.")
+NOTICE = ("Harvey agora é Sellbird. Rode `pip install -e .` uma vez, depois use `sellbird` "
+          "em vez de `harvey`. O comando `harvey` será removido em uma versão futura.")

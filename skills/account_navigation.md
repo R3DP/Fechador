@@ -1,80 +1,80 @@
-# Account Navigation: Working Multiple Contacts at One Company
+# Account Navigation: Trabalhando com Múltiplos Contatos em Uma Empresa
 
-## Companies vs Contacts
+## Empresas vs Contatos
 
-A company is an account. A contact is a person at that company. One company can have many contacts. Sellbird must always create the company profile first, then attach contacts to it.
+Uma empresa é uma conta. Um contato é uma pessoa nessa empresa. Uma empresa pode ter muitos contatos. O Sellbird deve sempre criar primeiro o perfil da empresa e depois anexar os contatos a ele.
 
-## Company Profiles
+## Perfis de Empresa
 
-Every company Sellbird researches must have:
-- **Name**: The actual company name
-- **Domain**: Their website domain (e.g., acme.com)
-- **Website**: Full URL
-- **Description**: What the company does (1-2 sentences)
-- **Industry**: Primary industry
-- **Company size**: Employee range
-- **Location**: HQ city/region
-- **Source**: How Sellbird found them (google, linkedin, website scrape)
-- **Source URL**: The exact URL where Sellbird found the info
+Toda empresa que o Sellbird pesquisa deve ter:
+- **Name**: O nome real da empresa
+- **Domain**: O domínio do site dela (ex.: acme.com)
+- **Website**: URL completa
+- **Description**: O que a empresa faz (1-2 frases)
+- **Industry**: Setor principal
+- **Company size**: Faixa de funcionários
+- **Location**: Cidade/região da sede
+- **Source**: Como o Sellbird a encontrou (google, linkedin, website scrape)
+- **Source URL**: A URL exata onde o Sellbird encontrou a informação
 
-Sellbird should pull this from the company's website, LinkedIn company page, or Google results. Do not guess. If you can't verify a field, leave it blank.
+O Sellbird deve extrair isso do site da empresa, da página da empresa no LinkedIn ou dos resultados do Google. Não adivinhe. Se você não consegue verificar um campo, deixe em branco.
 
-## Contact Profiles
+## Perfis de Contato
 
-Every contact must have at minimum:
-- **First name**: Required. Must be real, verified.
-- **Last name**: Required. Must be real, verified.
-- **Title**: Required. Must be their actual current title.
-- **Company**: Linked to the company profile.
+Todo contato deve ter no mínimo:
+- **First name**: Obrigatório. Deve ser real, verificado.
+- **Last name**: Obrigatório. Deve ser real, verificado.
+- **Title**: Obrigatório. Deve ser o cargo atual real dele.
+- **Company**: Vinculado ao perfil da empresa.
 
-Optional fields (only fill if verifiable):
-- **Email**: Only include if verified via MX/SMTP check or found on the company website. Mark email_verified = true only if confirmed.
-- **Phone**: Very difficult to find. Only include if listed publicly (company website, LinkedIn profile). Mark phone_verified = true only if confirmed. Do NOT guess phone numbers.
-- **LinkedIn URL**: Include if found.
-- **Seniority**: c_suite, vp, director, manager, individual. Infer from title.
-- **Department**: Sales, marketing, engineering, operations, etc. Infer from title.
+Campos opcionais (preencher só se verificável):
+- **Email**: Inclua apenas se verificado por checagem MX/SMTP ou encontrado no site da empresa. Marque email_verified = true só se confirmado.
+- **Phone**: Muito difícil de encontrar. Inclua apenas se listado publicamente (site da empresa, perfil no LinkedIn). Marque phone_verified = true só se confirmado. NÃO adivinhe números de telefone.
+- **LinkedIn URL**: Inclua se encontrado.
+- **Seniority**: c_suite, vp, director, manager, individual. Deduza do cargo.
+- **Department**: Sales, marketing, engineering, operations, etc. Deduza do cargo.
 
-### Data Quality Rules
-1. Never fabricate contact information. If you can't verify it, don't include it.
-2. Email patterns (first.last@domain.com) are only valid after SMTP verification.
-3. A contact without a verified email can still be valuable for LinkedIn outreach.
-4. Always record where you found each piece of information (source + source_url).
+### Regras de Qualidade de Dados
+1. Nunca fabrique informação de contato. Se você não consegue verificar, não inclua.
+2. Padrões de e-mail (first.last@domain.com) só são válidos após verificação SMTP.
+3. Um contato sem e-mail verificado ainda pode ser valioso para abordagem no LinkedIn.
+4. Sempre registre onde você encontrou cada informação (source + source_url).
 
-## Who to Contact at a Company
+## Quem Contatar em uma Empresa
 
-### The Entry Point Matrix
+### A Matriz de Ponto de Entrada
 
-Not all contacts are equal. Who you reach out to first depends on the deal type:
+Nem todos os contatos são iguais. Quem você aborda primeiro depende do tipo de negócio:
 
-| Deal Type | First Contact | Second Contact | Avoid First |
+| Tipo de Negócio | Primeiro Contato | Segundo Contato | Evitar Primeiro |
 |-----------|--------------|----------------|-------------|
-| **Small purchase** (<$500/mo) | End user / manager | Their boss | C-suite (too senior) |
-| **Mid-market** ($500-5k/mo) | Director / VP | Manager who'd use it | Individual contributors |
-| **Enterprise** ($5k+/mo) | VP / C-suite | Champion (manager who'll advocate) | Junior staff |
+| **Compra pequena** (<$500/mês) | Usuário final / gerente | O chefe dele | C-level (sênior demais) |
+| **Mid-market** ($500-5k/mês) | Diretor / VP | Gerente que usaria | Contribuidores individuais |
+| **Enterprise** ($5k+/mês) | VP / C-level | Defensor (gerente que vai advogar) | Funcionários júnior |
 
-### Multi-Threading: Working Multiple Contacts
+### Multi-Threading: Trabalhando Múltiplos Contatos
 
-When Sellbird finds multiple contacts at one company:
+Quando o Sellbird encontra múltiplos contatos em uma empresa:
 
-1. **Start with one.** Never email multiple people at the same company simultaneously. It looks spammy and they'll compare notes.
+1. **Comece com um.** Nunca envie e-mail para várias pessoas da mesma empresa simultaneamente. Parece spam e elas vão comparar anotações.
 
-2. **Start at the right level.** Pick the person most likely to:
-   - Feel the pain your product solves
-   - Have authority to evaluate solutions
-   - Actually read and respond to email
+2. **Comece no nível certo.** Escolha a pessoa com mais probabilidade de:
+   - Sentir a dor que seu produto resolve
+   - Ter autoridade para avaliar soluções
+   - Realmente ler e responder e-mail
 
-3. **Move up or down based on response:**
-   - No response from manager? Try the VP.
-   - VP says "talk to my team"? Email the manager and reference the VP.
-   - Manager is interested? Ask if they'd like to loop in their boss.
+3. **Suba ou desça conforme a resposta:**
+   - Sem resposta do gerente? Tente o VP.
+   - O VP diz "fale com meu time"? Envie e-mail ao gerente e cite o VP.
+   - O gerente se interessou? Pergunte se ele gostaria de incluir o chefe.
 
-4. **Wait between contacts.** If you email Person A at Acme, wait at least 5 business days before emailing Person B at Acme. Treat the company as one account, not individual contacts.
+4. **Espere entre contatos.** Se você envia e-mail para a Pessoa A na Acme, espere pelo menos 5 dias úteis antes de enviar e-mail para a Pessoa B na Acme. Trate a empresa como uma conta, não como contatos individuais.
 
-5. **Share context across contacts.** If Person A replied, Sellbird should know that when writing to Person B. "Your colleague Sarah mentioned she's evaluating options" is powerful.
+5. **Compartilhe contexto entre contatos.** Se a Pessoa A respondeu, o Sellbird deve saber disso ao escrever para a Pessoa B. "Your colleague Sarah mentioned she's evaluating options" é poderoso.
 
-### Seniority Detection
+### Detecção de Senioridade
 
-Infer seniority from the title:
+Deduza a senioridade do cargo:
 
 - **C-Suite**: CEO, CTO, CFO, CMO, COO, CRO, "Chief __"
 - **VP**: VP, Vice President, SVP, EVP, "Head of __"
@@ -82,27 +82,27 @@ Infer seniority from the title:
 - **Manager**: Manager, Senior Manager, Team Lead, "Manager of __"
 - **Individual**: Analyst, Specialist, Coordinator, Associate, Engineer
 
-### When to Stop
+### Quando Parar
 
-Stop contacting a company if:
-- 3 different contacts have been emailed with no response
-- Any contact explicitly says "not interested" or "stop emailing"
-- The company doesn't match ICP after further research
+Pare de contatar uma empresa se:
+- 3 contatos diferentes receberam e-mail sem resposta
+- Qualquer contato disser explicitamente "não tenho interesse" ou "pare de enviar e-mails"
+- A empresa não corresponder ao ICP após mais pesquisa
 
-## Sample Verification
+## Validação por Amostra
 
-Before adding prospects to the live pipeline, Sellbird should create a sample batch of 5-10 company + contact profiles and present them to the user for review. This ensures:
+Antes de adicionar prospects ao pipeline ativo, o Sellbird deve criar um lote de amostra de 5-10 perfis de empresa + contato e apresentá-los ao usuário para revisão. Isso garante:
 
-1. The ICP targeting is correct (right industries, right company sizes)
-2. The contact titles match what the user wants
-3. The data quality meets expectations
-4. The research sources are legitimate
+1. Que o direcionamento do ICP está correto (setores certos, portes de empresa certos)
+2. Que os cargos dos contatos correspondem ao que o usuário quer
+3. Que a qualidade dos dados atende às expectativas
+4. Que as fontes da pesquisa são legítimas
 
-### Sample Flow
-1. Sellbird researches 5-10 companies and their contacts
-2. Presents them as a sample: "Here are 8 companies I found. Each has 1-2 contacts. Take a look and let me know if these are the right kind of targets."
-3. User reviews and gives feedback ("too small", "wrong industry", "perfect", "we already work with them")
-4. Sellbird adjusts targeting based on feedback
-5. After approval, Sellbird proceeds with full prospecting
+### Fluxo da Amostra
+1. O Sellbird pesquisa 5-10 empresas e seus contatos
+2. Apresenta como amostra: "Here are 8 companies I found. Each has 1-2 contacts. Take a look and let me know if these are the right kind of targets."
+3. O usuário revisa e dá feedback ("muito pequena", "setor errado", "perfeito", "já trabalhamos com eles")
+4. O Sellbird ajusta o direcionamento com base no feedback
+5. Após aprovação, o Sellbird segue com a prospecção completa
 
-This sample step only happens once at the start (or when the ICP changes). After the user approves the sample, Sellbird prospects autonomously.
+Esta etapa de amostra só acontece uma vez no início (ou quando o ICP muda). Depois que o usuário aprova a amostra, o Sellbird prospecta de forma autônoma.

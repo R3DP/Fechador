@@ -610,7 +610,7 @@ def run_auth_flow(client_id: str, client_secret: str, *,
     import urllib.parse
 
     if not client_id or not client_secret:
-        print("  Set GMAIL_CLIENT_ID and GMAIL_CLIENT_SECRET in .env first.")
+        print("  Defina GMAIL_CLIENT_ID e GMAIL_CLIENT_SECRET no .env primeiro.")
         print("  (Google Cloud Console → APIs → Credentials → OAuth client, Desktop app)")
         return False
 
@@ -641,7 +641,7 @@ def run_auth_flow(client_id: str, client_secret: str, *,
             self.send_header("Content-Type", "text/html")
             self.end_headers()
             self.wfile.write(
-                b"<h2>Sellbird is connected to Gmail.</h2>You can close this tab.")
+                b"<h2>O Sellbird est\xc3\xa1 conectado ao Gmail.</h2>Voc\xc3\xaa pode fechar esta aba.")
             done.set()
 
         def log_message(self, *args):
@@ -651,16 +651,16 @@ def run_auth_flow(client_id: str, client_secret: str, *,
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
 
-    print(f"\n  Opening browser for Google sign-in...\n  {auth_url}\n")
+    print(f"\n  Abrindo o navegador para login do Google...\n  {auth_url}\n")
     webbrowser.open(auth_url)
     if not done.wait(timeout=300):
         server.shutdown()
-        print("  Timed out waiting for the browser round-trip.")
+        print("  Tempo esgotado aguardando o retorno do navegador.")
         return False
     server.shutdown()
 
     if result.get("error") or not result.get("code"):
-        print(f"  Authorization failed: {result.get('error') or 'no code returned'}")
+        print(f"  Falha na autorização: {result.get('error') or 'nenhum código retornado'}")
         return False
 
     resp = httpx.post(TOKEN_URL, data={
@@ -671,12 +671,12 @@ def run_auth_flow(client_id: str, client_secret: str, *,
         "redirect_uri": redirect_uri,
     }, timeout=30)
     if resp.status_code != 200:
-        print(f"  Token exchange failed ({resp.status_code}): {resp.text[:200]}")
+        print(f"  Falha na troca do token ({resp.status_code}): {resp.text[:200]}")
         return False
     data = resp.json()
     if not data.get("refresh_token"):
-        print("  Google returned no refresh token. Remove Sellbird from your"
-              " account's third-party access list and retry.")
+        print("  O Google não retornou um refresh token. Remova o Sellbird da lista"
+              " de acesso de terceiros da sua conta e tente novamente.")
         return False
     record = {
         "refresh_token": data["refresh_token"],
@@ -686,6 +686,6 @@ def run_auth_flow(client_id: str, client_secret: str, *,
     if not _store_authorized(record, data.get("access_token", ""), save=save,
                              expected_address=expected_address):
         return False
-    print("  ✓ Gmail authorized." if save else
-          f"  ✓ Gmail authorized. Token stored at {current_home().gmail_token_file}")
+    print("  ✓ Gmail autorizado." if save else
+          f"  ✓ Gmail autorizado. Token armazenado em {current_home().gmail_token_file}")
     return True

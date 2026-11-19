@@ -1,88 +1,89 @@
-# Contributing to Sellbird
+# Como contribuir com o Sellbird
 
-For anyone changing this repository and opening pull requests, and above all
-for coding agents (Claude Code, Codex, Cursor, Aider). `CLAUDE.md` is different:
-it guides someone *using* Sellbird. This file is about contributing to it.
+Para quem altera este repositório e abre pull requests e, sobretudo,
+para agentes de código (Claude Code, Codex, Cursor, Aider). O `CLAUDE.md` é diferente:
+ele orienta quem está *usando* o Sellbird. Este arquivo trata de contribuir com ele.
 
-## No real contact data, anywhere it gets published
+## Nada de dados de contato reais, em nenhum lugar em que sejam publicados
 
-This repository is public. Sellbird's job is finding real people at real businesses,
-so testing it turns up real names, addresses and phone numbers. Those stay on
-your machine. A pull request once listed thirteen real people's work addresses,
-with their names and employers, in its description and test fixtures, and
-cleaning it up meant rewriting the branch.
+Este repositório é público. O trabalho do Sellbird é encontrar pessoas reais em empresas
+reais, então testá-lo revela nomes, endereços e telefones reais. Esses dados ficam na
+sua máquina. Um pull request já listou os endereços de trabalho de treze pessoas reais,
+com seus nomes e empregadores, na descrição e nas fixtures de teste, e limpar isso
+exigiu reescrever a branch.
 
-**Never put any of these in a commit, test, fixture, comment, docstring, doc,
-changelog entry, commit message, PR title, PR description, PR comment, review or
-issue:**
+**Nunca coloque nada disto em um commit, teste, fixture, comentário, docstring,
+documento, entrada de changelog, mensagem de commit, título de PR, descrição de PR,
+comentário de PR, revisão ou issue:**
 
-- a real person's name, email address, phone number or street address;
-- a real business found while testing: its name, domain, website URL or
-  location, including inside HTML copied from its site;
-- anything taken from `data/sellbird.db`, a user's export, an Outbox item, a reply,
-  or a live test run.
+- o nome, e-mail, telefone ou endereço de rua de uma pessoa real;
+- uma empresa real encontrada durante os testes: nome, domínio, URL do site ou
+  localização, inclusive dentro de HTML copiado do site dela;
+- qualquer coisa tirada de `data/sellbird.db`, de uma exportação de usuário, de um item
+  do Outbox, de uma resposta ou de uma execução de teste ao vivo.
 
-**Do this instead:**
+**Faça assim em vez disso:**
 
-- Write fixtures by hand with fictional businesses and people. Use the reserved
-  names wherever the code accepts them: `example.com`, `example.net`,
-  `example.org`, and the `.example`, `.test` and `.invalid` top-level domains.
-  `acme.com`-style placeholders are fine. Invented people get generic invented
-  names.
-- When a test needs markup that broke on a real site, rebuild the structure that
-  broke (a `<br>` inside a span, a sentence shape, a schema.org block) with
-  fictional content. Don't trim a copy of the real page.
-- Report live checks as counts and types only: "found the decision maker on 17
-  of 19 small-business sites (roofers, dentists, law firms)". Not a per-site
-  table, not the addresses found, not the domains tried. Keep the detailed
-  results in your local scratch directory.
-- Vendors and infrastructure are fine to name, because they aren't contacts:
-  Google, Cloudflare, Hunter, Instantly, DataForSEO, Greenhouse and so on.
-  Companies named only for public product facts (whose job board format was
-  tested) are fine too. Their staff are not.
+- Escreva as fixtures à mão com empresas e pessoas fictícias. Use os nomes
+  reservados onde o código os aceita: `example.com`, `example.net`,
+  `example.org` e os domínios de topo `.example`, `.test` e `.invalid`.
+  Placeholders no estilo `acme.com` servem. Pessoas inventadas ganham nomes
+  inventados genéricos.
+- Quando um teste precisa de marcação que quebrou em um site real, reconstrua a estrutura
+  que quebrou (um `<br>` dentro de um span, o formato de uma frase, um bloco schema.org)
+  com conteúdo fictício. Não recorte uma cópia da página real.
+- Relate verificações ao vivo apenas como contagens e tipos: "encontrei o
+  decisor em 17 de 19 sites de pequenas empresas (telhados, dentistas, escritórios de
+  advocacia)". Não uma tabela por site, não os endereços encontrados, não os domínios
+  testados. Mantenha os resultados detalhados no seu diretório de rascunho local.
+- Fornecedores e infraestrutura podem ser nomeados, porque não são contatos:
+  Google, Cloudflare, Hunter, Instantly, DataForSEO, Greenhouse e assim por diante.
+  Empresas nomeadas só por fatos públicos de produto (cujo formato de job board foi
+  testado) também podem. Os funcionários delas não.
 
-**Before you push or open a PR**, check the diff and the description you're
-about to post for addresses:
+**Antes de dar push ou abrir um PR**, confira o diff e a descrição que você vai
+publicar em busca de endereços:
 
 ```bash
 git diff origin/main | grep '^+' | grep -oE '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}' | sort -u
 ```
 
-Every hit should be a placeholder. If one isn't, fix it before pushing. Once
-something is pushed to a public repository, deleting it later doesn't remove it:
-old commits stay reachable by their hash and PR descriptions keep an edit
-history.
+Todo resultado deve ser um placeholder. Se um não for, corrija antes do push. Depois que
+algo é enviado a um repositório público, apagá-lo depois não o remove:
+commits antigos continuam acessíveis pelo hash e as descrições de PR mantêm um histórico
+de edições.
 
-## Test and verification email
+## E-mail de teste e de verificação
 
-Every test or verification email goes to an address you own, set up for that
-purpose. Never to an address from a database, an export, a reply or a fixture.
-Tests never send real email: use the fake providers in `tests/`.
+Todo e-mail de teste ou de verificação vai para um endereço que é seu, criado para
+esse propósito. Nunca para um endereço de um banco de dados, de uma exportação, de uma
+resposta ou de uma fixture. Os testes nunca enviam e-mail real: use os provedores
+falsos em `tests/`.
 
-## Releases (maintainers)
+## Lançamentos (mantenedores)
 
-Every GitHub release note opens with this line, so people watching releases know where announcements go:
+Toda nota de versão no GitHub começa com esta linha, para quem acompanha as versões saber onde vão os anúncios:
 
 ```markdown
-> **Follow [@sellbirdagent](https://x.com/sellbirdagent) on X** for new releases, features and the roadmap.
+> **Siga [@sellbirdagent](https://x.com/sellbirdagent) no X** para novidades de versões, funcionalidades e o roadmap.
 ```
 
-Announce the release on X first, then link that post from the release notes.
+Anuncie a versão no X primeiro e depois vincule essa publicação nas notas de versão.
 
-## License and sign-off
+## Licença e sign-off
 
-Sellbird is licensed under the GNU Affero General Public License v3.0 only
-(see `LICENSE`). Code from the MIT-licensed Harvey releases (0.3.x and
-earlier) keeps its MIT notice in `NOTICE`.
+O Sellbird é licenciado sob a GNU Affero General Public License v3.0 apenas
+(veja `LICENSE`). Código das versões do Harvey licenciadas em MIT (0.3.x e
+anteriores) mantém seu aviso MIT em `NOTICE`.
 
-By contributing, you agree that your contribution is licensed under the
-project's license. Sign off every commit to certify that you wrote it or have
-the right to submit it, under the
+Ao contribuir, você concorda que sua contribuição é licenciada sob a
+licença do projeto. Assine todo commit para atestar que você o escreveu ou tem
+o direito de enviá-lo, sob o
 [Developer Certificate of Origin](https://developercertificate.org/):
 
 ```sh
-git commit -s -m "Describe the change"
+git commit -s -m "Descreva a mudança"
 ```
 
-That adds a `Signed-off-by: Your Name <you@example.com>` line. Use the name and
-email you commit with; a GitHub noreply address is fine.
+Isso adiciona uma linha `Signed-off-by: Seu Nome <voce@example.com>`. Use o nome e o
+e-mail com que você faz commit; um endereço noreply do GitHub serve.

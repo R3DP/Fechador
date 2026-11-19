@@ -10,10 +10,10 @@ import sys
 
 
 def register_desktop_commands(subparsers) -> None:
-    sub = subparsers.add_parser("autostart", help="Start the Sellbird tray when you log in")
+    sub = subparsers.add_parser("autostart", help="Iniciar a bandeja do Sellbird quando você fizer login")
     sub.add_argument("autostart_action", choices=["install", "uninstall", "status"])
     sub.add_argument("--port", type=int, default=None,
-                     help="Dashboard port the tray uses (default: the tray's own default)")
+                     help="Porta do painel que a bandeja usa (padrão: a padrão da bandeja)")
     sub.set_defaults(func=cmd_autostart)
 
 
@@ -29,12 +29,12 @@ def cmd_autostart(args, *, platform=None, runner=subprocess.run, env=None, home=
         else:
             state = li.status(**common)
             if not state["installed"]:
-                print("  Start at login is off.")
+                print("  O início automático no login está desligado.")
             elif state["ours"]:
-                print(f"  Start at login is on ({state['path']}).")
+                print(f"  O início automático no login está ligado ({state['path']}).")
             else:
-                print(f"  Start at login is off. {state['path']} exists but wasn't "
-                      "created by Sellbird.")
+                print(f"  O início automático no login está desligado. {state['path']} existe mas não foi "
+                      "criado pelo Sellbird.")
     except (li.UnsupportedPlatform, li.ForeignLoginItem, li.LoginItemFailed) as e:
         print(f"  {e}", file=sys.stderr)
         sys.exit(1)
@@ -43,11 +43,11 @@ def cmd_autostart(args, *, platform=None, runner=subprocess.run, env=None, home=
 # ── `sellbird tray` ──
 
 def register(subparsers) -> None:
-    sub = subparsers.add_parser("tray", help="Menu-bar icon: start, stop and open Sellbird")
+    sub = subparsers.add_parser("tray", help="Ícone na barra de menu: iniciar, parar e abrir o Sellbird")
     sub.add_argument("--status", action="store_true",
-                     help="Print whether it's running and the next setup step, then exit")
+                     help="Imprimir se está rodando e o próximo passo de configuração, e sair")
     sub.add_argument("--port", type=int, default=None,
-                     help="Dashboard port (default: the last one given, else 5555)")
+                     help="Porta do painel (padrão: a última informada, senão 5555)")
     sub.set_defaults(func=cmd_tray)
 
 
@@ -63,7 +63,7 @@ def cmd_tray(args, *, data_dir=None, transport=None, autostart=None):
 
     data_dir = Path(data_dir) if data_dir is not None else PROJECT_ROOT / "data"
     if args.port is not None and not 1 <= args.port <= 65535:
-        print(f"  Invalid port: {args.port}. Must be 1-65535.", file=sys.stderr)
+        print(f"  Porta inválida: {args.port}. Deve ser entre 1 e 65535.", file=sys.stderr)
         sys.exit(2)
     port = tray.resolve_port(data_dir, args.port)
     if args.status:
@@ -72,9 +72,9 @@ def cmd_tray(args, *, data_dir=None, transport=None, autostart=None):
         if status.error:
             print(f"  {status.error}")
         elif status.dashboard != "running":
-            print("  Start it with `sellbird tray` or `sellbird dashboard`.")
+            print("  Inicie com `sellbird tray` ou `sellbird dashboard`.")
         elif status.sending_paused:
-            print(f"  Sending is paused: {status.sending_paused}")
+            print(f"  O envio está pausado: {status.sending_paused}")
         return
     if args.port is not None:
         tray.remember_port(data_dir, args.port)

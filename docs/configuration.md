@@ -1,12 +1,12 @@
-# Configuration and commands
+# Configuração e comandos
 
-## Configuration
+## Configuração
 
-Two files, both plain text.
+Dois arquivos, ambos texto puro.
 
-**`.env`** — credentials. Every variable documented inline with where to get it. The only required one is a mail provider; everything else is optional.
+**`.env`** — credenciais. Cada variável documentada junto com onde obtê-la. A única obrigatória é um provedor de e-mail; todo o resto é opcional.
 
-**`sellbird.yaml`** — who Sellbird is and who it sells to:
+**`sellbird.yaml`** — quem o Sellbird é e para quem ele vende:
 
 ```yaml
 persona:      { name, company, role, email, tone }
@@ -16,30 +16,30 @@ channels:
   email:      { provider: gmail | microsoft | smtp | instantly, max_daily_sends, per_inbox_daily_cap,
                 require_approval, send_to_risky, min_write_score, max_bounce_rate, follow_ups, warmup, send_window, signature }
 usage:        { max_daily_claude_percent, heartbeat_interval_minutes, quiet_hours }
-brain:        { provider: claude | codex, model, reasoning_effort }   # optional; claude by default
-writer:       { humanizer, site_facts, require_tip }   # optional; humanizer true adds one editing pass per batch using ~/.claude/skills/humanizer/SKILL.md
-              # site_facts (default true): the Writer sees what the free homepage signals found (no structured data,
-              # a stale or very small site, AI crawlers blocked) so an email can name one concrete thing to change.
-              # They come from an automated read of one page and can be wrong, so check a draft's claim
-              # against the site before approving it. false keeps them away from the Writer.
-              # require_tip (default false): true writes a first email only for a prospect with something concrete to
-              # build its one tip on (a site finding, a startup fact, a signal or the Scout's notes). The others are
-              # marked "no_tip" and skipped, instead of getting a draft that says it has no advice. The dashboard shows
-              # them as "Nothing to write about yet"; `sellbird retry-writes --no-tip` puts them back in line.
-              # email_rules: your own markdown rules for the emails' shape (see The skills library)
+brain:        { provider: claude | codex, model, reasoning_effort }   # opcional; claude por padrão
+writer:       { humanizer, site_facts, require_tip }   # opcional; humanizer true adiciona uma passada de edição por lote usando ~/.claude/skills/humanizer/SKILL.md
+              # site_facts (padrão true): o Writer vê o que os sinais gratuitos da homepage encontraram (sem dados estruturados,
+              # um site desatualizado ou muito pequeno, rastreadores de IA bloqueados) para um e-mail poder citar uma coisa concreta a mudar.
+              # Eles vêm de uma leitura automatizada de uma página e podem estar errados, então confira a afirmação de um rascunho
+              # contra o site antes de aprová-lo. false os mantém longe do Writer.
+              # require_tip (padrão false): true escreve um primeiro e-mail só para um prospect com algo concreto no qual
+              # basear sua dica (uma descoberta do site, um fato de startup, um sinal ou as notas do Scout). Os demais são
+              # marcados como "no_tip" e pulados, em vez de receberem um rascunho que diz não ter conselho. O dashboard os mostra
+              # como "Nothing to write about yet"; `sellbird retry-writes --no-tip` os devolve à fila.
+              # email_rules: suas próprias regras markdown para o formato dos e-mails (veja The skills library)
 ```
 
-`min_write_score` (0-100, default 0) is the lowest Scout fit score the writer
-drafts for: a prospect below it keeps its deliverable address but gets no
-sequence, so Claude calls and sends go to the best matches first.
+`min_write_score` (0-100, padrão 0) é a menor pontuação de aderência do Scout para a qual o writer
+redige: um prospect abaixo dela mantém seu endereço entregável mas não recebe
+sequência, então chamadas ao Claude e envios vão para as melhores correspondências primeiro.
 
-`follow_ups` (default true) set to `false` makes a campaign stage only its first email on Gmail, Microsoft and SMTP. Steps 2 and 3 are never prepared, so none can go out to someone who has not answered. A reply is still read, and the answer waits in the Outbox for you as usual. The Writer still drafts the whole sequence; the Sender just doesn't stage the later steps.
+`follow_ups` (padrão true) definido como `false` faz uma campanha escalonar apenas seu primeiro e-mail no Gmail, Microsoft e SMTP. Os passos 2 e 3 nunca são preparados, então nenhum pode sair para alguém que não respondeu. Uma resposta ainda é lida, e a resposta espera na Caixa de saída para você, como de costume. O Writer ainda redige a sequência inteira; o Sender apenas não escalona os passos posteriores.
 
-`max_daily_claude_percent` caps whichever subscription `brain.provider` uses (the name predates Codex support).
+`max_daily_claude_percent` limita a assinatura que `brain.provider` usar (o nome é anterior ao suporte ao Codex).
 
-If `sellbird.local.yaml` exists it wins. It's gitignored, so a fork can carry real product configuration while the tracked `sellbird.yaml` stays a template — nobody publishes their positioning and pricing by accident.
+Se `sellbird.local.yaml` existir, ele ganha. Está no gitignore, então um fork pode carregar configuração real de produto enquanto o `sellbird.yaml` versionado continua um template — ninguém publica seu posicionamento e preço por acidente.
 
-### Commands
+### Comandos
 
 ```bash
 sellbird run                   # the heartbeat loop
@@ -67,88 +67,86 @@ sellbird gmail auth            # one-time Gmail OAuth
 sellbird microsoft auth|test  # one-time Microsoft 365 sign-in (docs/microsoft365.md)
 ```
 
-Prospect CSV exports exclude opted-out contacts, including when using
-`--status` or `--email-status` filters. `sellbird export --all` is an unfiltered
-raw-data export for inspection: it includes opted-out and unverified contacts
-and should not be imported as an outreach list. The dashboard's prospect CSV
-download follows the same policy; `?all=true` selects its raw export.
+Exportações CSV de prospects excluem contatos que pediram descadastro, inclusive ao usar
+os filtros `--status` ou `--email-status`. `sellbird export --all` é uma exportação de dados
+brutos sem filtro, para inspeção: inclui contatos descadastrados e não verificados
+e não deve ser importada como lista de contato. O download CSV de prospects do dashboard
+segue a mesma política; `?all=true` seleciona sua exportação bruta.
 
-## Several sending inboxes
+## Várias caixas de envio
 
-The main mailbox is the one `channels.email.provider` sets up. You can send
-from more inboxes you already own, besides it:
+A caixa principal é a que `channels.email.provider` configura. Você pode enviar
+de mais caixas que já possui, além dela:
 
 ```bash
-sellbird inboxes connect gmail --address two@yourdomain.co      # browser sign-in
+sellbird inboxes connect gmail --address two@yourdomain.co      # login pelo navegador
 sellbird inboxes connect microsoft --address three@yourdomain.co
 sellbird inboxes connect smtp --address four@yourdomain.co --smtp-host smtp.example.com
-sellbird inboxes list                                           # each inbox and today's cold sends
+sellbird inboxes list                                           # cada caixa e os envios frios de hoje
 ```
 
-- **Where sign-ins live.** In your system keychain (service `sellbird`), never
-  in the database or a file. A Gmail or Microsoft inbox keeps only its refresh
-  token; an SMTP inbox's password is asked for at the prompt, never on the
-  command line. Signing in as a different account than `--address` connects
-  nothing. Docker and other headless machines have no keychain, so extra
-  inboxes can't be connected there yet.
-- **Which inbox sends what.** A prospect's first email goes from the inbox
-  with the most room left today. Once anything in a thread has gone out, its
-  follow-ups and Sellbird's replies leave from that same inbox. A reply is
-  answered from the inbox it arrived in.
-- **Caps.** Each inbox, the main one included, sends up to
-  `per_inbox_daily_cap` cold emails a day (default 30), or the number you set
-  with `sellbird inboxes cap <address> <n>`. An inbox connected with
-  `--warmup-started YYYY-MM-DD` ramps up from that day like
-  `channels.email.warmup` describes; the main mailbox ramps from
-  `warmup.start_date`. `max_daily_sends` stays the ceiling on everything sent
-  in a day, so raise it when you add inboxes.
-- **Pausing and removing.** `sellbird inboxes pause <address>` stops one inbox.
-  Its unsent first emails move to the others, and threads it started wait for
-  it. `remove` stops using it for good: threads it started end. Its sign-in
-  stays in your keychain until you delete it there.
-- **Choosing inboxes per campaign.** `sellbird inboxes use <campaign>
-  <address>...` limits a campaign's new threads to those inboxes (`main` is
-  the main mailbox); with no addresses it uses every inbox again.
-- Replies are read from every inbox each cycle. If one can't be read,
-  nothing is sent that cycle, as with one inbox, and the Today page says
-  which inbox.
-- The dashboard's **Inboxes** tab shows every inbox with today's cold sends
-  against its cap. Click one to pause, resume, cap, rename, check or remove
-  it. **Add inbox** connects one: Gmail and Microsoft 365 open their sign-in
-  in the browser on the computer running Sellbird (it needs the same
-  `GMAIL_CLIENT_ID`/`M365_CLIENT_ID` setup as the main mailbox), and an SMTP
-  password goes straight to your system keychain and is never shown again.
-  On a server with no browser, use `sellbird inboxes connect` instead.
-- Your coding agent can list inboxes and pause one (`inboxes_list`,
-  `inbox_pause`); only you resume one or change its cap.
-- An extension can add another way to connect an inbox with
+- **Onde ficam os logins.** No keychain do seu sistema (serviço `sellbird`), nunca
+  no banco ou em um arquivo. Uma caixa Gmail ou Microsoft guarda apenas seu refresh
+  token; a senha de uma caixa SMTP é pedida no prompt, nunca na
+  linha de comando. Entrar com uma conta diferente de `--address` não conecta
+  nada. Docker e outras máquinas headless não têm keychain, então caixas extras
+  não podem ser conectadas ali ainda.
+- **Qual caixa envia o quê.** O primeiro e-mail de um prospect sai da caixa
+  com mais espaço restante hoje. Depois que algo numa thread saiu, seus
+  follow-ups e as respostas do Sellbird saem da mesma caixa. Uma resposta é
+  respondida a partir da caixa em que chegou.
+- **Tetos.** Cada caixa, inclusive a principal, envia até
+  `per_inbox_daily_cap` e-mails frios por dia (padrão 30), ou o número que você definir
+  com `sellbird inboxes cap <address> <n>`. Uma caixa conectada com
+  `--warmup-started YYYY-MM-DD` sobe a partir daquele dia como
+  `channels.email.warmup` descreve; a caixa principal sobe a partir de
+  `warmup.start_date`. `max_daily_sends` continua sendo o teto de tudo enviado
+  num dia, então aumente-o quando adicionar caixas.
+- **Pausar e remover.** `sellbird inboxes pause <address>` para uma caixa.
+  Seus primeiros e-mails não enviados se movem para as outras, e threads que ela
+  iniciou esperam por ela. `remove` para de usá-la de vez: threads que ela
+  iniciou terminam. Seu login permanece no keychain até você apagá-lo lá.
+- **Escolher caixas por campanha.** `sellbird inboxes use <campaign>
+  <address>...` limita as novas threads de uma campanha a essas caixas (`main` é
+  a caixa principal); sem endereços, usa todas as caixas novamente.
+- Respostas são lidas de todas as caixas a cada ciclo. Se uma não puder ser lida,
+  nada é enviado naquele ciclo, como com uma só caixa, e a aba Hoje diz
+  qual caixa.
+- A aba **Caixas de entrada** do dashboard mostra cada caixa com os envios frios de hoje
+  contra seu teto. Clique numa para pausar, retomar, definir teto, renomear, verificar ou remover.
+  **Adicionar caixa de entrada** conecta uma: Gmail e Microsoft 365 abrem o login
+  no navegador do computador que roda o Sellbird (precisa da mesma
+  configuração `GMAIL_CLIENT_ID`/`M365_CLIENT_ID` da caixa principal), e uma senha SMTP
+  vai direto para o keychain do seu sistema e nunca é mostrada de novo.
+  Num servidor sem navegador, use `sellbird inboxes connect`.
+- Seu agente de código pode listar caixas e pausar uma (`inboxes_list`,
+  `inbox_pause`); só você retoma uma ou muda seu teto.
+- Uma extensão pode adicionar outra forma de conectar uma caixa com
   `registry.add_mailbox_connection` ([docs/extensions.md](extensions.md)).
 
-## The menu-bar app
+## O app da barra de menu
 
-`sellbird tray` puts Sellbird in the macOS menu bar (the Windows tray). It
-starts the dashboard if it isn't running, then lets you start and stop
-Sellbird, pause and resume sending, and open the dashboard, already unlocked.
-Quitting the icon leaves Sellbird running. `sellbird autostart install` starts
-the icon when you log in: a LaunchAgent on macOS, a Startup-folder shortcut on
-Windows. It only ever touches its own entry, and refuses if something else is
-at that path. Linux has no tray: run `sellbird dashboard` and `sellbird run`
-as services instead.
+`sellbird tray` coloca o Sellbird na barra de menu do macOS (a bandeja do Windows). Ele
+inicia o dashboard se ele não estiver rodando, e então deixa você iniciar e parar o
+Sellbird, pausar e retomar o envio, e abrir o dashboard, já desbloqueado.
+Sair do ícone deixa o Sellbird rodando. `sellbird autostart install` inicia
+o ícone quando você faz login: um LaunchAgent no macOS, um atalho na pasta Inicializar no
+Windows. Ele só mexe na própria entrada e recusa se houver outra coisa
+naquele caminho. O Linux não tem bandeja: rode `sellbird dashboard` e `sellbird run`
+como serviços.
 
-## Your coding agent (MCP)
+## Seu agente de código (MCP)
 
-`sellbird mcp install` adds Sellbird to Claude Code (`sellbird mcp install codex`
-for Codex). It shows the exact change to your agent's config first and applies it
-only on a yes, touches only its own entry, and refuses if a Sellbird entry it
-didn't write is already there. `--print` shows the entry to add by hand to any
-other MCP client; `sellbird mcp uninstall` takes it out again.
+`sellbird mcp install` adiciona o Sellbird ao Claude Code (`sellbird mcp install codex`
+para Codex). Ele mostra primeiro a mudança exata na configuração do seu agente e a aplica
+só com um sim, mexe apenas na própria entrada e recusa se já houver uma entrada do Sellbird
+que ele não escreveu. `--print` mostra a entrada para adicionar à mão em qualquer
+outro cliente MCP; `sellbird mcp uninstall` a remove de novo.
 
-Your agent then talks to the running dashboard (`sellbird dashboard`) with its
-own token, `data/agent-token`, never yours. With it the agent can read
-everything Sellbird knows (Today, campaigns, prospects, companies,
-conversations, the Outbox, signals, usage, setup), estimate what a discovery
-run would cost, and pause sending. It can't approve or send email, resume
-sending, confirm signals, start discovery, change settings or keys, or delete
-anything: the dashboard answers 403 to the agent's token for every route that
-isn't on its short allowlist (`sellbird/agent_policy.py`).
-
+Seu agente então fala com o dashboard em execução (`sellbird dashboard`) com seu
+próprio token, `data/agent-token`, nunca o seu. Com ele o agente pode ler
+tudo o que o Sellbird sabe (Hoje, campanhas, contatos, empresas, conversas, a Caixa de saída, sinais, uso, setup), estimar o que uma execução de discovery
+custaria e pausar o envio. Ele não pode aprovar ou enviar e-mail, retomar
+o envio, confirmar sinais, iniciar discovery, mudar configurações ou chaves, ou apagar
+nada: o dashboard responde 403 ao token do agente para toda rota que
+não está na sua pequena allowlist (`sellbird/agent_policy.py`).

@@ -91,7 +91,7 @@ def test_second_install_is_a_no_op_without_backup(tmp_path):
     change = mi.plan_claude(home=tmp_path, which=no_cli, runner=FakeRunner())
     assert change.action == "none"
     assert mi.apply_change(change, runner=FakeRunner(), now=NOW) == \
-        "Already set up for Claude Code."
+        "Já configurado para Claude Code."
     assert path.read_bytes() == before
     assert backups(tmp_path) == []
 
@@ -103,7 +103,7 @@ def test_invalid_json_is_never_rewritten(tmp_path):
         runner = FakeRunner()
         change = mi.plan_claude(home=tmp_path, which=which, runner=runner)
         assert change.action == "refuse"
-        assert change.reason == "~/.claude.json isn't valid JSON, so it was left alone."
+        assert change.reason == "~/.claude.json não é um JSON válido, então foi deixado intacto."
         assert mi.apply_change(change, runner=runner, now=NOW) == change.reason
         assert runner.calls == []
     assert path.read_bytes() == b'{"mcpServers": {broken'
@@ -113,8 +113,8 @@ def test_invalid_json_is_never_rewritten(tmp_path):
 def test_missing_claude_is_refused(tmp_path):
     change = mi.plan_claude(home=tmp_path, which=no_cli, runner=FakeRunner())
     assert change.action == "refuse"
-    assert change.reason == ("Claude Code isn't installed here (no `claude` command "
-                             "and no ~/.claude.json).")
+    assert change.reason == ("O Claude Code não está instalado aqui (sem o comando `claude` "
+                             "e sem ~/.claude.json).")
     assert not (tmp_path / ".claude.json").exists()
 
 
@@ -187,7 +187,7 @@ def test_claude_cli_add_failure_after_remove_puts_old_entry_back(tmp_path):
     change = mi.plan_claude(home=tmp_path, which=lambda name: "/bin/claude", runner=runner)
     with pytest.raises(mi.InstallError) as err:
         mi.apply_change(change, runner=runner, now=NOW)
-    assert "put back" in str(err.value)
+    assert "foi restaurada" in str(err.value)
     assert [c[2] for c in runner.calls] == ["remove", "add-json", "add-json"]
     entry = json.loads(path.read_text(encoding="utf-8"))["mcpServers"]["sellbird"]
     assert {k: v for k, v in entry.items() if k != "type"} == old
@@ -202,7 +202,7 @@ def test_claude_cli_both_adds_failing_names_the_backup(tmp_path):
     with pytest.raises(mi.InstallError) as err:
         mi.apply_change(change, runner=runner, now=NOW)
     backup = tmp_path / ".claude.json.sellbird-backup-20261024093000"
-    assert "was removed" in str(err.value)
+    assert "foi removida" in str(err.value)
     assert str(backup) in str(err.value)
     assert json.loads(backup.read_text(encoding="utf-8"))["mcpServers"]["sellbird"] == old
 
@@ -233,14 +233,14 @@ def test_symlinked_configs_are_refused(tmp_path):
     for which in (no_cli, lambda name: "/bin/claude"):
         change = mi.plan_claude(home=tmp_path, which=which, runner=FakeRunner())
         assert change.action == "refuse"
-        assert change.reason.startswith("~/.claude.json is a symlink, so it was left alone.")
+        assert change.reason.startswith("~/.claude.json é um symlink, então foi deixado intacto.")
     real_toml = tmp_path / "real.toml"
     real_toml.write_text(CODEX_ORIGINAL, encoding="utf-8")
     (tmp_path / "codex").mkdir()
     (tmp_path / "codex" / "config.toml").symlink_to(real_toml)
     change = mi.plan_codex(env=codex_env(tmp_path), home=tmp_path)
     assert change.action == "refuse"
-    assert "is a symlink" in change.reason
+    assert "é um symlink" in change.reason
     assert (tmp_path / ".claude.json").is_symlink()
     assert real.read_text(encoding="utf-8") == "{}"
 
@@ -276,7 +276,7 @@ def test_apply_time_errors_are_clean_and_write_nothing(tmp_path, monkeypatch):
     monkeypatch.setattr(mi, "_backup_path", no_backup)
     with pytest.raises(mi.InstallError) as err:
         mi.apply_change(change, runner=FakeRunner(), now=NOW)
-    assert "couldn't be read or backed up (Permission denied)" in str(err.value)
+    assert "não pôde ser lido ou copiado (Permission denied)" in str(err.value)
     assert path.read_text(encoding="utf-8") == "{}"
 
 
@@ -427,7 +427,7 @@ def test_invalid_toml_is_never_rewritten(tmp_path):
     path = write_codex(tmp_path, "model = [unclosed\n")
     change = mi.plan_codex(env=codex_env(tmp_path), home=tmp_path)
     assert change.action == "refuse"
-    assert change.reason == "~/.codex/config.toml isn't valid TOML, so it was left alone."
+    assert change.reason == "~/.codex/config.toml não é um TOML válido, então foi deixado intacto."
     mi.apply_change(change, now=NOW)
     assert path.read_bytes() == b"model = [unclosed\n"
 
@@ -438,8 +438,8 @@ def test_foreign_codex_entry_is_refused(tmp_path):
     change = mi.plan_codex(env=codex_env(tmp_path), home=tmp_path)
     assert change.action == "refuse"
     assert change.reason == (
-        "~/.codex/config.toml already has a Sellbird server that this command didn't "
-        "add. Edit it yourself, or remove it and run this again.")
+        "~/.codex/config.toml já tem um servidor Sellbird que este comando não "
+        "adicionou. Edite-o você mesmo, ou remova-o e rode isto de novo.")
     mi.apply_change(change, now=NOW)
     assert mi.plan_uninstall_codex(env=codex_env(tmp_path), home=tmp_path).action == "refuse"
     assert path.read_bytes() == text.encode("utf-8")
@@ -498,7 +498,7 @@ def test_verify_failure_restores_original(tmp_path, monkeypatch):
 
     with pytest.raises(mi.InstallVerifyFailed) as err:
         mi.apply_change(change, runner=FakeRunner(), now=NOW)
-    assert str(err.value) == "The change didn't check out, so your original file was restored."
+    assert str(err.value) == "A mudança não foi confirmada, então seu arquivo original foi restaurado."
     assert path.read_bytes() == before
 
 
@@ -529,7 +529,7 @@ def test_non_tty_without_yes_changes_nothing(tmp_path, capsys, monkeypatch):
     path.write_text("{}", encoding="utf-8")
     code, text = run(tmp_path, "install")
     assert code == 2
-    assert text.splitlines()[-1] == "Nothing was changed. Re-run with --yes to apply."
+    assert text.splitlines()[-1] == "Nada foi alterado. Rode de novo com --yes para aplicar."
     assert path.read_text(encoding="utf-8") == "{}"
     assert backups(tmp_path) == []
 
@@ -568,7 +568,7 @@ def test_no_client_install_never_touches_codex(tmp_path):
     assert code == 0
     assert codex.read_bytes() == CODEX_ORIGINAL.encode("utf-8")
     assert runner.calls == []
-    assert "Codex found. To add Sellbird to it too, run: sellbird mcp install codex" in text
+    assert "Codex encontrado. Para adicionar o Sellbird nele também, rode: sellbird mcp install codex" in text
     code, text = run(tmp_path, "uninstall", "--yes", runner=runner,
                      which=lambda name: "/bin/codex" if name == "codex" else None)
     assert code == 0
@@ -578,7 +578,7 @@ def test_no_client_install_never_touches_codex(tmp_path):
 def test_refusal_exits_nonzero_and_says_why(tmp_path):
     code, text = run(tmp_path, "install", "--yes")
     assert code == 1
-    assert "Claude Code isn't installed here" in text
+    assert "O Claude Code não está instalado aqui" in text
 
 
 def test_already_set_up_exits_zero_without_asking(tmp_path):
@@ -586,7 +586,7 @@ def test_already_set_up_exits_zero_without_asking(tmp_path):
         json.dumps({"mcpServers": {"sellbird": mi.server_entry()}}), encoding="utf-8")
     code, text = run(tmp_path, "install")
     assert code == 0
-    assert "Already set up for Claude Code." in text
+    assert "Já configurado para Claude Code." in text
 
 
 def test_plain_sellbird_mcp_still_serves_stdio(monkeypatch, capsys):
@@ -638,7 +638,7 @@ def test_flags_without_an_action_are_an_error(monkeypatch, capsys, argv):
     assert served == []
     out = capsys.readouterr()
     assert out.out == ""
-    assert "go with install or uninstall" in out.err
+    assert "vão junto com install ou uninstall" in out.err
 
 
 def test_print_config_writes_nothing(tmp_path, capsys):
@@ -649,7 +649,7 @@ def test_print_config_writes_nothing(tmp_path, capsys):
     assert text == config
     assert '"mcpServers"' in config and mi.CODEX_MARKER in config
     assert config.splitlines()[-1] == (
-        f"Any other MCP client: command {sys.executable}, args -P -m sellbird mcp, "
+        f"Qualquer outro cliente MCP: command {sys.executable}, args -P -m sellbird mcp, "
         f"env SELLBIRD_HOME={mi.server_entry()['env']['SELLBIRD_HOME']}")
     first_json = config.split("\n\n")[0]
     assert json.loads(first_json) == {"mcpServers": {"sellbird": mi.server_entry()}}
@@ -719,4 +719,4 @@ def test_cli_remove_with_an_unreadable_file_afterwards_is_not_success(tmp_path, 
     monkeypatch.setattr(mi, "_read_claude", lambda p: (None, "unreadable"))
     with pytest.raises(mi.InstallError) as err:
         mi.apply_change(change, runner=runner, now=NOW)
-    assert "didn't end up as expected" in str(err.value)
+    assert "não ficou como esperado" in str(err.value)

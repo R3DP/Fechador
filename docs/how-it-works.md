@@ -1,36 +1,60 @@
-# How Sellbird works
+# Como o Sellbird funciona
 
-## Why the subscription thing matters
+## Por que a história da assinatura importa
 
-Every other autonomous sales agent bills you per token. That is the whole reason they cost what they cost: an agent that thinks in a loop, all day, is an agent that burns API credits in a loop, all day. Vendors solve this by thinking less — shorter prompts, cheaper models, fewer passes.
+Todo outro agente de vendas autônomo cobra por token. É exatamente por isso que custam o
+que custam: um agente que pensa em laço, o dia todo, é um agente que queima créditos de API
+em laço, o dia todo. Os fornecedores resolvem isso pensando menos — prompts mais curtos,
+modelos mais baratos, menos passadas.
 
-Sellbird uses the subscription-backed CLI for the provider you choose: `claude` for Claude Code, or an isolated `codex app-server` for Codex. Both return text with model tools disabled. Sellbird handles the prospecting and mail operations itself.
+O Sellbird usa a CLI respaldada por assinatura do provedor que você escolher: `claude`
+para o Claude Code, ou um `codex app-server` isolado para o Codex. Ambos retornam texto
+com as ferramentas do modelo desativadas. O Sellbird cuida da prospecção e das operações
+de e-mail por conta própria.
 
-Claude calls run with none of your own Claude Code setup: no `CLAUDE.md` (yours, the project's or any parent folder's), no hooks, skills, plugins, MCP servers or settings files, no tools, in an empty temporary folder, and nothing saved to your Claude transcripts. Your login (subscription or `claude setup-token`) and any admin-managed policy still apply. This needs a Claude CLI with `--safe-mode`; with an older one Sellbird pauses instead of sending prompts unisolated and says to run `claude update`. To check this offline against your installed CLI, with no credentials or network: `SELLBIRD_CLAUDE_CLI_TESTS=1 pytest tests/test_claude_cli_isolation.py`.
+As chamadas do Claude rodam sem nada da sua configuração própria do Claude Code: sem
+`CLAUDE.md` (seu, do projeto ou de qualquer pasta pai), sem hooks, skills, plugins,
+servidores MCP ou arquivos de configuração, sem ferramentas, em uma pasta temporária
+vazia, e nada é salvo nos seus transcripts do Claude. Seu login (assinatura ou
+`claude setup-token`) e qualquer política gerenciada pelo admin continuam valendo. Isso
+exige uma CLI do Claude com `--safe-mode`; com uma mais antiga, o Sellbird pausa em vez
+de enviar prompts sem isolamento e pede para rodar `claude update`. Para verificar isso
+offline na sua CLI instalada, sem credenciais nem rede: `SELLBIRD_CLAUDE_CLI_TESTS=1 pytest tests/test_claude_cli_isolation.py`.
 
-Your selected subscription covers model calls, subject to its usage limits. That lets Sellbird use its skills library for personalization and reply handling without a separate model API bill.
+A assinatura que você selecionou cobre as chamadas ao modelo, sujeitas aos limites de uso
+dela. Isso permite ao Sellbird usar sua biblioteca de skills para personalização e
+tratamento de respostas sem uma conta separada de API de modelo.
 
-**What this costs you:**
+**O que isso custa para você:**
 
 | | |
 |---|---|
-| Claude Pro/Max or a ChatGPT plan with Codex access | your existing subscription |
-| Finding businesses | **$0** on the default source, or ~$0.37 per 1,000 on the cheapest paid one |
-| Reading their websites | **$0** — three HTTP requests each, no model call |
-| Writing and sending | your subscription + a mailbox (~$7/mo Google Workspace) |
-| Prospecting tools | **none.** No Apollo, no ZoomInfo, no Clearbit, no Clay. |
+| Claude Pro/Max ou um plano ChatGPT com acesso ao Codex | sua assinatura atual |
+| Encontrar empresas | **$0** na fonte padrão, ou ~$0,37 por 1.000 na paga mais barata |
+| Ler os sites delas | **$0** — três requisições HTTP cada, sem chamada a modelo |
+| Escrever e enviar | sua assinatura + uma caixa de e-mail (~$7/mês Google Workspace) |
+| Ferramentas de prospecção | **nenhuma.** Sem Apollo, sem ZoomInfo, sem Clearbit, sem Clay. |
 
-For comparison, the tools Sellbird replaces start at $250–500/month — and they are weakest precisely where Sellbird is strongest: small local businesses with 5–50 people, where single-provider contact coverage caps out around 30% and micro-businesses are frequently absent entirely.
+Para comparar, as ferramentas que o Sellbird substitui começam em $250–500/mês — e são
+mais fracas exatamente onde o Sellbird é mais forte: pequenos negócios locais com 5–50
+pessoas, onde a cobertura de contatos de um único provedor para por volta de 30% e
+microempresas costumam estar totalmente ausentes.
 
-**Sellbird also budgets itself.** It reads the active provider's subscription quota and throttles to leave headroom for your own Claude or Codex work. Set `max_daily_claude_percent: 80` for either provider—the setting's name predates Codex support. If quota cannot be read, Sellbird reports it as unavailable and falls back to its daily call budget.
+**O Sellbird também se orça.** Ele lê a cota da assinatura do provedor ativo e se limita
+para deixar folga para o seu próprio trabalho no Claude ou Codex. Defina
+`max_daily_claude_percent: 80` para qualquer provedor — o nome da configuração é anterior
+ao suporte ao Codex. Se a cota não puder ser lida, o Sellbird a reporta como indisponível
+e volta ao seu orçamento diário de chamadas.
 
-Sellbird runs locally with your own login. Check the terms and usage limits of the provider you choose.
+O Sellbird roda localmente com o seu próprio login. Confira os termos e limites de uso do
+provedor que você escolher.
 
 ---
 
-## What Sellbird actually does
+## O que o Sellbird realmente faz
 
-Sellbird runs a heartbeat: wake up, check the budget, decide what most needs doing, do it, log it, sleep. Every 15 minutes by default.
+O Sellbird roda um heartbeat: acorda, confere o orçamento, decide o que mais precisa ser
+feito, faz, registra, dorme. A cada 15 minutos por padrão.
 
 ```
                  ┌──────────────────────────────────────┐
@@ -40,15 +64,17 @@ Sellbird runs a heartbeat: wake up, check the budget, decide what most needs doi
               (sleep)         (sleep)
 ```
 
-It decides deterministically, not by asking a model what to do — that would burn a call on something derivable from four counts:
+Ele decide de forma determinística, sem perguntar a um modelo o que fazer — isso queimaria
+uma chamada com algo que pode ser derivado de quatro contagens:
 
 ```
 handle replies  >  send campaigns  >  write campaigns  >  prospect  >  idle (analyze)
 ```
 
-Profiling and outbox draining ride along on **every** cycle regardless, because they cost nothing and have to happen on schedule.
+A criação de perfil e o esvaziamento da caixa de saída acompanham **todo** ciclo, de
+qualquer forma, porque não custam nada e precisam acontecer no prazo.
 
-## Project structure
+## Estrutura do projeto
 
 ```
 sellbird/
@@ -76,16 +102,29 @@ tests/                   # 242 tests
 
 ---
 
-## Philosophy
+## Filosofia
 
-**Autonomous doesn't mean unsupervised.** Quiet hours, spend caps, send limits, an approval queue, a deterministic pre-send gate, and a kill switch. Sellbird asks before it spends and before it sends, until you tell it not to.
+**Autônomo não significa sem supervisão.** Horário de silêncio, tetos de gasto, limites
+de envio, uma fila de aprovação, um bloqueio determinístico antes do envio e um kill
+switch. O Sellbird pergunta antes de gastar e antes de enviar, até você dizer para não.
 
-**You decide what a good prospect is.** Sellbird proposes signals; you confirm them. A prospect list you can't explain is a prospect list you shouldn't send to.
+**Você decide o que é um bom prospect.** O Sellbird propõe sinais; você os confirma. Uma
+lista de prospects que você não consegue explicar é uma lista de prospects para a qual você
+não deveria enviar.
 
-**If it can be gotten deterministically, don't use a model.** Rank position, tech detection, junk filtering, the priority decision, the pre-send gate — all plain code. Claude or Codex is reserved for the parts that need judgment. That's why this runs on a subscription at all.
+**Se dá para obter de forma determinística, não use um modelo.** Posição no ranking, detecção
+de tecnologias, filtragem de lixo, a decisão de prioridade, o bloqueio antes do envio —
+tudo código simples. Claude ou Codex fica reservado para as partes que exigem julgamento.
+É por isso que isto roda em uma assinatura.
 
-**A failure is an observation, not silence.** "No team page found" is a finding. "Overpass is throttling" is a finding. Silent failures look exactly like clean results, which is how a broken run gets mistaken for an empty market.
+**Uma falha é uma observação, não silêncio.** "Nenhuma página de equipe encontrada" é um
+achado. "O Overpass está limitando as requisições" é um achado. Falhas silenciosas
+parecem exatamente com resultados limpos, e é assim que uma execução quebrada passa por
+mercado vazio.
 
-**The database is the asset, not the agent.** The initial list is worth little. The same signals observed over quarters — who changed agencies, who started spending on ads, who let their content go stale — is worth a great deal.
+**O banco de dados é o ativo, não o agente.** A lista inicial vale pouco. Os mesmos sinais
+observados ao longo de trimestres — quem trocou de agência, quem passou a gastar com
+anúncios, quem deixou o conteúdo envelhecer — valem muito.
 
-**Everything is editable.** Prompts, skills, config, the dashboard. All plain text. You don't need to be a developer to change how Sellbird sells.
+**Tudo é editável.** Prompts, skills, configuração, o dashboard. Tudo texto simples. Você
+não precisa ser desenvolvedor para mudar como o Sellbird vende.

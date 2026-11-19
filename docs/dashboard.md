@@ -1,70 +1,127 @@
-# The dashboard and the data
+# O dashboard e os dados
 
-## The dashboard
+## O dashboard
 
 ```bash
-sellbird dashboard     # prints the link to open, e.g. http://127.0.0.1:5555/#token=…
+sellbird dashboard     # exibe o link para abrir, ex.: http://127.0.0.1:5555/#token=…
 ```
 
-**Opening it.** The dashboard can change your mail settings, approve the outbox and start Sellbird, so it is locked to you, not just to your machine. On first start it creates a random token in `data/dashboard-token` (readable only by you) and prints a link carrying it after the `#`. Open that link: the page keeps the token for that browser tab only and removes it from the address bar. A new tab, or a tab opened without the link, shows a locked screen; paste the token there, or run `sellbird dashboard --url` to print the link again. Every API request needs the token as an `Authorization: Bearer` header — scripts and `curl` included — and the token is never accepted from a cookie or a query string. Delete `data/dashboard-token` and restart the dashboard to replace it.
+**Abrindo.** O painel pode mudar suas configurações de e-mail, aprovar a caixa de saída
+e iniciar o Sellbird, então ele é trancado para você, não apenas para a sua máquina. Na
+primeira inicialização ele cria um token aleatório em `data/dashboard-token` (legível só
+por você) e imprime um link que o carrega depois do `#`. Abra esse link: a página mantém o
+token apenas para aquela aba do navegador e o remove da barra de endereço. Uma nova aba, ou
+uma aba aberta sem o link, mostra uma tela bloqueada; cole o token ali, ou rode
+`sellbird dashboard --url` para imprimir o link de novo. Toda requisição à API precisa do
+token como cabeçalho `Authorization: Bearer` — scripts e `curl` inclusive — e o token
+nunca é aceito por cookie ou string de consulta. Apague `data/dashboard-token` e reinicie
+o dashboard para substituí-lo.
 
-**It only listens on this machine.** `--host` accepts loopback addresses only (`127.0.0.1`, `::1`, `localhost`), and requests must name one of them in their `Host` header, which also stops a DNS name pointed at 127.0.0.1 from reaching it. Requests sent by other websites open in your browser are refused. To use it from another computer, tunnel instead of exposing it: `ssh -L 5555:127.0.0.1:5555 your-machine`, then open the printed link locally. The token protects against other users and other websites, not against programs already running as your own user account, which can read the token file just as they can read `.env` or the database.
+> Os rótulos e nomes de grupo abaixo são os da interface em português do Brasil. As
+> capturas de tela são da interface original em inglês e ainda não foram refeitas; o
+> layout e os dados são os mesmos.
 
-**Windows:** the token file is protected by the permissions of the folder it lives in (your user profile normally restricts this to you); Sellbird doesn't apply POSIX file modes there.
+**Ele só escuta nesta máquina.** `--host` aceita apenas endereços loopback (`127.0.0.1`,
+`::1`, `localhost`), e as requisições precisam nomear um deles no cabeçalho `Host`, o que
+também impede que um nome DNS apontado para 127.0.0.1 o alcance. Requisições enviadas por
+outros sites abertos no seu navegador são recusadas. Para usá-lo de outro computador,
+faça um túnel em vez de expor: `ssh -L 5555:127.0.0.1:5555 your-machine`, e então abra o
+link impresso localmente. O token protege contra outros usuários e outros sites, não
+contra programas que já rodam com a sua própria conta de usuário, que podem ler o arquivo
+de token assim como podem ler o `.env` ou o banco de dados.
 
-Plain HTML, CSS and JavaScript served from `sellbird/web/`. No build step, no framework, no bundler — edit `app.css` and reload. Fonts are vendored, so it renders correctly with the network off.
+**Windows:** o arquivo de token é protegido pelas permissões da pasta em que fica (seu
+perfil de usuário normalmente restringe isso a você); o Sellbird não aplica modos de
+arquivo POSIX ali.
+
+HTML, CSS e JavaScript simples servidos de `sellbird/web/`. Sem etapa de build, sem
+framework, sem bundler — edite `app.css` e recarregue. As fontes vêm junto, então ele
+renderiza corretamente mesmo com a rede desligada.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="screenshots/today-dark.png">
-  <img alt="The Today screen: four headline figures with 14-day trends, the list of things waiting on you, contacts by stage, and collector runs" src="screenshots/today-light.png">
+  <img alt="A tela Hoje: quatro números de destaque com tendências de 14 dias, a lista de coisas esperando por você, contatos por estágio e execuções de coleta" src="screenshots/today-light.png">
 </picture>
 
-The sidebar is grouped by what you're doing: **Work** (what needs you), **Pipeline** (what Sellbird is building) and **System** (how it's running). Counts next to a tab mean something is waiting there.
+A barra lateral é agrupada pelo que você está fazendo: **Trabalho** (o que precisa de você),
+**Funil** (o que o Sellbird está construindo) e **Sistema** (como ele está rodando).
+Contagens ao lado de uma aba significam que há algo esperando ali.
 
-**Work**
-- **Today** — four headline figures with 14-day trends (contacts found, emails sent, conversations, waiting on you), then everything that needs a decision, contacts by stage, collector runs and what the pipeline is doing right now. Setup shows here until it's finished, then disappears.
-- **Outbox** — the decisions desk. Each email sits next to what Sellbird knew when it wrote it: the company, how the address was found and verified, and the signals the email draws on. `J`/`K` to move, `A` approve, `E` edit, `R` reject.
-- **Conversations** — every reply in the context of the emails that led to it. Threads Sellbird handed to you (a contract request, a reply it had no safe answer for) come first, with **Hand back to Sellbird**, **Close** and **Reopen**.
+**Trabalho**
+- **Hoje** — quatro números de destaque com tendências de 14 dias (contatos encontrados,
+  e-mails enviados, conversas, esperando por você), depois tudo que precisa de uma
+  decisão, contatos por estágio, execuções de coletores e o que o pipeline está fazendo
+  agora mesmo. A configuração aparece aqui até terminar, depois desaparece.
+- **Sua empresa** — o que você vende, para quem vende, a oferta com que todo primeiro
+  e-mail termina e de quem ele sai. Tudo o que o Sellbird usa para escrever.
+- **Caixa de saída** — a mesa de decisões. Cada e-mail fica ao lado do que o Sellbird sabia
+  quando o escreveu: a empresa, como o endereço foi encontrado e verificado, e os sinais
+  em que o e-mail se baseia. `J`/`K` para navegar, `A` aprovar, `E` editar, `R` rejeitar.
+- **Caixas de entrada** — os endereços de e-mail de onde o Sellbird envia. Mais caixas
+  significam mais e-mails frios por dia; respostas ficam na caixa que iniciou a conversa.
+- **Conversas** — cada resposta no contexto dos e-mails que levaram a ela. Conversas que
+  o Sellbird passou para você (um pedido de contrato, uma resposta para a qual não tinha
+  resposta segura) vêm primeiro, com **Devolver ao Sellbird**, **Fechar** e **Reabrir**.
 
-**Pipeline**
-- **Signals** — the confirmation gate and the cohort builder
-- **Discover** — the provider menu with prices side by side, an estimate, then a run; plus reading the sites of companies found but not yet looked at
-- **Companies / Contacts** — everything found, searchable, with CSV export. Companies are sorted by a 0-100 fit score and show their status (emailed, draft waiting, or why not contacted); click one for its details card, or export the whole company register
-- **Campaigns** — each sequence Sellbird wrote, who it's going to, and per-campaign feedback for the writer
+**Funil**
+- **Sinais** — o portão de confirmação e o construtor de coortes
+- **Descobrir** — o menu de provedores com preços lado a lado, uma estimativa e então uma
+  execução; e ainda a leitura dos sites de empresas encontradas mas ainda não vistas
+- **Empresas / Contatos** — tudo que foi encontrado, pesquisável, com exportação CSV. As
+  empresas são ordenadas por uma pontuação de aderência de 0 a 100 e mostram seu status
+  (e-mail enviado, rascunho esperando, ou por que não foi contatada); clique em uma para
+  ver o card de detalhes, ou exporte o registro completo de empresas
+- **Campanhas** — cada sequência que o Sellbird escreveu, para quem vai, e feedback por
+  campanha para o writer
 
-**System**
-- **Activity**, **Usage**, **Controls**, **Settings**, **Help**. Usage shows Claude or Codex quota gauges and per-agent token counts, with no dollar figures: you're on a subscription and aren't billed per token, so showing costs would be made up.
+**Sistema**
+- **Atividade**, **Uso**, **Controles**, **Configurações**, **Ajuda**. **Uso** mostra os medidores
+  de cota do Claude ou Codex e as contagens de tokens por agente, sem valores em dólar:
+  você está numa assinatura e não é cobrado por token, então mostrar custos seria inventado.
 
-| Outbox | Conversations |
+| Caixa de saída | Conversas |
 |---|---|
-| <picture><source media="(prefers-color-scheme: dark)" srcset="screenshots/outbox-dark.png"><img alt="The outbox decisions desk: a drafted reply to an objection, with the company, contact, verification and signals beside it" src="screenshots/outbox-light.png"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="screenshots/conversations-dark.png"><img alt="A conversation that needs you: the two emails Sellbird sent and the prospect's reply, marked Objection and Needs you" src="screenshots/conversations-light.png"></picture> |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="screenshots/outbox-dark.png"><img alt="A mesa de decisões da Caixa de saída: uma resposta redigida a uma objeção, com a empresa, o contato, a verificação e os sinais ao lado" src="screenshots/outbox-light.png"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="screenshots/conversations-dark.png"><img alt="Uma conversa que precisa de você: os dois e-mails que o Sellbird enviou e a resposta do prospect, marcados como Objeção e Precisa de você" src="screenshots/conversations-light.png"></picture> |
 
-Colour is kept for meaning. The chrome is neutral and a single blue marks what you can act on. Status (waiting on you, done, failed, running) uses the same small set of tones in every tab, so "waiting on you" looks the same wherever it shows up. Figures are tabular, so columns line up and a changing number doesn't shift the layout.
+A cor é mantida para significado. A moldura é neutra e um único azul marca aquilo sobre o
+que você pode agir. Status (esperando por você, concluído, falhou, rodando) usa o mesmo
+conjunto pequeno de tons em toda aba, então "esperando por você" parece igual onde quer
+que apareça. Os números são tabulares, então as colunas se alinham e um número mudando
+não desloca o layout.
 
-Appearance has three states: `auto` follows your OS and is the default, or pick light or dark from the button at the bottom of the sidebar. Dark mode uses the same layout with a different set of colour tokens.
+A aparência tem três estados: **Seguir o seu computador** (`auto`) segue o sistema
+operacional e é o padrão, ou escolha **Claro** ou **Escuro** pelo botão no fim da barra
+lateral. O modo escuro usa o mesmo layout com um conjunto diferente de tokens de cor.
 
 ---
 
-## How the data is stored
+## Como os dados são armazenados
 
-SQLite at `data/sellbird.db`. One idea drives the schema:
+SQLite em `data/sellbird.db`. Uma ideia conduz o schema:
 
-> **Every fact is a row, never a column.**
+> **Todo fato é uma linha, nunca uma coluna.**
 
-Not `companies.has_agency`. Not `companies.rank`. A row in `observations`:
+Não `companies.has_agency`. Não `companies.rank`. Uma linha em `observations`:
 
 ```
 observations(company_id, prospect_id, collector, signal_code,
              value_num, value_text, confidence, evidence_url, observed_at, run_id)
 ```
 
-Four things fall out of that, none of which you get from columns:
+Quatro coisas decorrem disso, nenhuma das quais você obtém com colunas:
 
-1. **A new signal needs no migration.** A collector invents a code and it works.
-2. **History is free.** The same signal observed quarterly *is* a time series — and "they dropped their agency last quarter" is a far better trigger than any static fact.
-3. **Confidence and provenance travel with the fact** instead of being lost on overwrite. *"We think their agency is X, 0.9 confidence, here's the URL."*
-4. **A cohort is a query.** Set intersection happens in SQL, not in application code over a capped fetch.
+1. **Um novo sinal não precisa de migração.** Um coletor inventa um código e funciona.
+2. **O histórico é de graça.** O mesmo sinal observado trimestralmente *é* uma série
+   temporal — e "eles largaram a agência no trimestre passado" é um gatilho muito melhor
+   que qualquer fato estático.
+3. **Confiança e procedência viajam com o fato** em vez de se perderem na sobrescrita.
+   *"Achamos que a agência deles é X, confiança 0,9, aqui está a URL."*
+4. **Uma coorte é uma consulta.** A interseção de conjuntos acontece no SQL, não em código
+   de aplicação sobre uma busca limitada.
 
-The vocabulary is governed: a database trigger rejects any `signal_code` not in the `signal_codes` table, so a typo fails loudly instead of quietly inventing a junk signal.
+O vocabulário é governado: um trigger do banco rejeita qualquer `signal_code` que não
+esteja na tabela `signal_codes`, então um erro de digitação falha alto em vez de inventar
+um sinal lixo em silêncio.
 
-Other tables: `companies`, `prospects`, `campaigns`, `conversations`, `outbox`, `actions`, `runs`, `usage_events`, `email_patterns`, `settings`, `feedback`.
+Outras tabelas: `companies`, `prospects`, `campaigns`, `conversations`, `outbox`,
+`actions`, `runs`, `usage_events`, `email_patterns`, `settings`, `feedback`.

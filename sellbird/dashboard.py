@@ -2990,12 +2990,12 @@ def start_dashboard(host: str = "127.0.0.1", port: int = 5555):
     except (DashboardSetupError, auth.TokenError) as e:
         raise DashboardSetupError(str(e)) from e
 
-    print(f"\n  Sellbird Dashboard running. Open this link to unlock it:\n\n    {url}\n")
-    print(f"  The token is stored in {token_store.path} (owner-only). Keep the link")
-    print("  private; anyone with it can use the dashboard. Press Ctrl+C to stop.\n")
+    print(f"\n  Painel do Sellbird em execução. Abra este link para desbloqueá-lo:\n\n    {url}\n")
+    print(f"  O token fica salvo em {token_store.path} (somente para o dono). Mantenha o link")
+    print("  privado; quem o tiver pode usar o painel. Pressione Ctrl+C para parar.\n")
     if os.name == "nt":
-        print("  Windows: the token file is protected by your folder's permissions,")
-        print("  not POSIX file modes.\n")
+        print("  Windows: o arquivo de token é protegido pelas permissões da pasta,")
+        print("  não pelos modos de arquivo POSIX.\n")
     from sellbird import dashboard_instance
     dashboard_instance.write(DB_PATH.parent, host=bind, port=port, instance=INSTANCE_ID)
     try:
